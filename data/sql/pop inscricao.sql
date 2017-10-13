@@ -126,4 +126,3 @@ VALUES (@idInscricao, 'JOGO', 0, 0, '', '');
 
 INSERT INTO InscricaoProvaAlinhamento(idInscricao, codigoProjetoPesquisa, presenteProvaOral, notaFinal, jsonSubcriteriosInicial, jsonSubcriteriosRecurso)
 VALUES (@idInscricao, 'PROC', 0, 0, '', '');
-
