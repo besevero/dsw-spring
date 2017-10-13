@@ -110,5 +110,3 @@ BEGIN
 	WHERE id = vIdUsuario;
 END //
 DELIMITER ;
-
-

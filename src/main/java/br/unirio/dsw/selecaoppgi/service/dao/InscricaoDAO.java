@@ -1,9 +1,14 @@
 package br.unirio.dsw.selecaoppgi.service.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
@@ -268,7 +273,21 @@ public class InscricaoDAO extends AbstractDAO
 	{
 		// Muda o campo aprovadoProvas de uma inscrição para TRUE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
-		return false;
+		Connection c = getConnection();
+		try
+		{
+			PreparedStatement ps = c.prepareStatement("UPDATE inscricao Provas SET aprovadoProvas = 1 WHERE id = ?");
+			ps.setLong(1, idInscricao);
+			
+			ResultSet rs = ps.executeQuery();			
+			c.close();
+			return true;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
+			return true;
+		}
 	}
 	
 	/**
@@ -278,8 +297,22 @@ public class InscricaoDAO extends AbstractDAO
 	{
 		// Muda o campo aprovadoProvas de uma inscrição para FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
-		return false;
-	}
+		Connection c = getConnection();
+		try
+		{
+			PreparedStatement ps = c.prepareStatement("UPDATE inscricao Provas SET aprovadoProvas = 0 WHERE id = ?");
+			ps.setLong(1, idInscricao);
+			
+			ResultSet rs = ps.executeQuery();			
+			c.close();
+			return true;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
+			return true;
+		}
+}
 	
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma prova oral

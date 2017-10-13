@@ -45,4 +45,3 @@ BEGIN
 	
 	COMMIT;
 END //
-DELIMITER ;

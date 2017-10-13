@@ -16,7 +16,7 @@
 			    <div class="wide-card mdl-card mdl-shadow--2dp min-spacer-up">
 			        <!-- Form header -->
 			        <div class="mdl-card__title">
-			            <h2 class="mdl-card__title-text">
+			            <h2  class="mdl-card__title-text">
 		            			<spring:message code="edital.form.titulo.criacao"/>
 			            </h2>
 			        </div>
