@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -204,7 +205,49 @@ public class InscricaoDAO extends AbstractDAO
 	public List<InscricaoEdital> carregaPresencaProvaEscrita(int idEdital, String codigoProva)
 	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		return null;
+		
+		String SQL = "SELECT" + 
+				     	"usuario.nome AS 'Nome'," +
+				     	"inscricaoprovaescrita.codigoProvaEscrita AS 'Prova'," +
+				     	"inscricaoprovaescrita.presente AS 'Presença'" +
+				     		"FROM usuario" +
+				     			"JOIN" +
+					     			"inscricao ON usuario.id = inscricao.id" +
+					     				"AND homologado = 1" +	
+					     				"AND idEdital = ?" +
+			     				"JOIN" +
+			     					"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
+							        "AND codigoProvaEscrita = ?";
+			    
+		Connection c = getConnection();
+		
+		if (c == null)
+			return null;
+		
+		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
+		
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQL);
+			ps.setInt(1, idEdital);
+			ps.setString(2, "%" + codigoProva + "%");
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next())
+			{
+				// InscricaoEdital item = carregaResumo(rs, new InscricaoEdital());
+				// lista.add(item);
+			}
+			
+			c.close();
+
+		} catch (SQLException e)
+		{
+			log("EditalDAO.lista: " + e.getMessage());
+		}
+		    
+		return lista;
 	}
 
 	/**
