@@ -219,7 +219,6 @@ public class InscricaoDAO extends AbstractDAO
 			     			"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
 						     "AND codigoProvaEscrita = ?";
 			    
-		Connection c = getConnection();
 		
 		if (c == null)
 			return null;
@@ -310,7 +309,7 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		return false;
+		return true;
 	}
 	
 	/**
@@ -359,7 +358,7 @@ public class InscricaoDAO extends AbstractDAO
 			log("EditalDAO.lista: " + e.getMessage());
 		}
 		
-				return false;
+				return true;
 			}
 	
 	/**
