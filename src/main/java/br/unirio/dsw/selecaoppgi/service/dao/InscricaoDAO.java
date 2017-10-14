@@ -248,6 +248,7 @@ public class InscricaoDAO extends AbstractDAO
 				InscricaoEdital item = new InscricaoEdital(edital);
 				item.setNomeCandidato(rs.getString("nome"));
 				item.(rs.getString("nome"));
+				//TODO REVISAR: Inscrição Edital não tem os atributos retornados na consulta, é essa mesma a consulta?
 				
 				lista.add(item);
 				// lista.add(item);
