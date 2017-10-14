@@ -207,17 +207,17 @@ public class InscricaoDAO extends AbstractDAO
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 		
 		String SQL = "SELECT" + 
-				     	"usuario.nome AS 'Nome'," +
-				     	"inscricaoprovaescrita.codigoProvaEscrita AS 'Prova'," +
-				     	"inscricaoprovaescrita.presente AS 'Presença'" +
-				     		"FROM usuario" +
-				     			"JOIN" +
-					     			"inscricao ON usuario.id = inscricao.id" +
-					     				"AND homologado = 1" +	
-					     				"AND idEdital = ?" +
-			     				"JOIN" +
-			     					"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
-							        "AND codigoProvaEscrita = ?";
+				     		"usuario.nome AS 'Nome'," +
+				     		"inscricaoprovaescrita.codigoProvaEscrita AS 'Prova'," +
+				     		"inscricaoprovaescrita.presente AS 'Presença'" +
+				      "FROM usuario" +
+				      "JOIN" +
+					  		"inscricao ON usuario.id = inscricao.id" +
+					  		"AND homologado = 1" +	
+					  		"AND idEdital = ?" +
+					  "JOIN" +
+			     			"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
+						     "AND codigoProvaEscrita = ?";
 			    
 		Connection c = getConnection();
 		
@@ -236,7 +236,20 @@ public class InscricaoDAO extends AbstractDAO
 
 			while (rs.next())
 			{
-				// InscricaoEdital item = carregaResumo(rs, new InscricaoEdital());
+				/*Exemplo
+				 * publicacao = new PublicacaoModelo();
+                publicacao.setTitulo(rs.getString("titulo"));
+                publicacao.setId(rs.getInt("id"));
+                publicacao.setPaginaFinal(rs.getInt("paginafinal"));
+                publicacao.setPaginaInicial(rs.getInt("paginainicial"));
+                publicacao.setDataPublicacao(rs.getString("datapublicacao"));
+                listaPublicacao.add(publicacao);
+                */
+				InscricaoEdital item = new InscricaoEdital(edital);
+				item.setNomeCandidato(rs.getString("nome"));
+				item.(rs.getString("nome"));
+				
+				lista.add(item);
 				// lista.add(item);
 			}
 			
@@ -255,6 +268,43 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public boolean indicaPresencaProvaEscrita(int idInscricao, String codigoProva)
 	{
+		String SQLConsulta = "Select homologadoInicial, "
+							 + "homologadoRecurso, "
+							 + "dispensadoProvaInicial, "
+							 + "dispensadoProvaRecurso "
+				    + "From inscricao"
+				    + "WHERE id = ?;";
+		
+	   String SQLUpdate = "UPDATE inscricaoprovaescrita "
+	   					+ "SET presente = 1 "
+	   					+ "WHERE idInscricao = ? and codigoProvaEscrita = ?";
+	   
+	   Connection c = getConnection();
+		
+		if (c == null)
+			return null;
+								
+		try
+			{
+				PreparedStatement ps = c.prepareStatement(SQLConsulta);
+				ps.setInt(1, idInscricao);	
+				ResultSet rs = ps.executeQuery();
+				
+				if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
+					rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
+				{
+					ps = c.prepareStatement(SQLUpdate);
+					ps.setInt(1, idInscricao);	
+					ps.setString(1, codigoProva);
+					rs = ps.executeQuery();
+				}
+				
+				c.close();
+			} catch (SQLException e)
+			{
+				log("EditalDAO.lista: " + e.getMessage());
+			}
+
 		// Muda o campo presente para TRUE no registro da prova escrita associada à inscrição
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
@@ -271,8 +321,45 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		return false;
-	}
+		String SQLConsulta = "Select homologadoInicial, "
+									 + "homologadoRecurso, "
+									 + "dispensadoProvaInicial, "
+									 + "dispensadoProvaRecurso "
+							 + "From inscricao"
+							 + "WHERE id = ?;";
+
+		String SQLUpdate = "UPDATE inscricaoprovaescrita "
+						+ "SET presente = 0 "
+						+ "WHERE idInscricao = ? and codigoProvaEscrita = ?";
+
+		Connection c = getConnection();
+		
+		if (c == null)
+			return false;
+							
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQLConsulta);
+			ps.setInt(1, idInscricao);	
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
+				rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
+			{
+				ps = c.prepareStatement(SQLUpdate);
+				ps.setInt(1, idInscricao);	
+				ps.setString(1, codigoProva);
+				rs = ps.executeQuery();
+			}
+			
+			c.close();
+		} catch (SQLException e)
+		{
+			log("EditalDAO.lista: " + e.getMessage());
+		}
+		
+				return false;
+			}
 	
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que fizeram uma prova
@@ -320,7 +407,7 @@ public class InscricaoDAO extends AbstractDAO
 		try
 		{
 			PreparedStatement ps = c.prepareStatement("UPDATE inscricao Provas SET aprovadoProvas = 1 WHERE id = ?");
-			ps.setLong(1, idInscricao);
+			ps.setInt(1, idInscricao);
 			
 			ResultSet rs = ps.executeQuery();			
 			c.close();
@@ -344,7 +431,7 @@ public class InscricaoDAO extends AbstractDAO
 		try
 		{
 			PreparedStatement ps = c.prepareStatement("UPDATE inscricao Provas SET aprovadoProvas = 0 WHERE id = ?");
-			ps.setLong(1, idInscricao);
+			ps.setInt(1, idInscricao);
 			
 			ResultSet rs = ps.executeQuery();			
 			c.close();
