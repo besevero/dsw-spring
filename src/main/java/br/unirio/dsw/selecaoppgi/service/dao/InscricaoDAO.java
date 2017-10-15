@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
@@ -208,7 +209,7 @@ public class InscricaoDAO extends AbstractDAO
 		String SQL = "SELECT" + 
 				     		"usuario.nome AS 'Nome'," +
 				     		"inscricaoprovaescrita.codigoProvaEscrita AS 'Prova'," +
-				     		"inscricaoprovaescrita.presente AS 'Presença'" +
+				     		"inscricaoprovaescrita.presente AS 'Presenca'" +
 				      "FROM usuario" +
 				      "JOIN" +
 					  		"inscricao ON usuario.id = inscricao.idCandidato" +
@@ -234,25 +235,14 @@ public class InscricaoDAO extends AbstractDAO
 
 			while (rs.next())
 			{
-				/*Exemplo
-				 * publicacao = new PublicacaoModelo();
-                publicacao.setTitulo(rs.getString("titulo"));
-                publicacao.setId(rs.getInt("id"));
-                publicacao.setPaginaFinal(rs.getInt("paginafinal"));
-                publicacao.setPaginaInicial(rs.getInt("paginainicial"));
-                publicacao.setDataPublicacao(rs.getString("datapublicacao"));
-                listaPublicacao.add(publicacao);
-                */
-								
-				//TODO REVISAR: Inscrição Edital não tem os atributos retornados na consulta, é essa mesma a consulta?
-				// lista.add(item);
+
 			}
-			
+
 			c.close();
 
 		} catch (SQLException e)
 		{
-			log("EditalDAO.lista: " + e.getMessage());
+			log("InscricaoDAO.lista: " + e.getMessage());
 		}
 		    
 		return lista;
