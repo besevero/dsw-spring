@@ -211,8 +211,8 @@ public class InscricaoDAO extends AbstractDAO
 				     		"inscricaoprovaescrita.presente AS 'Presença'" +
 				      "FROM usuario" +
 				      "JOIN" +
-					  		"inscricao ON usuario.id = inscricao.id" +
-					  		"AND homologado = 1" +	
+					  		"inscricao ON usuario.id = inscricao.idCandidato" +
+					  		"AND homologado = 1" +
 					  		"AND idEdital = ?" +
 					  "JOIN" +
 			     			"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
