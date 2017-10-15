@@ -1,6 +1,8 @@
 package br.unirio.dsw.selecaoppgi.controller;
 
-import java.awt.List;
+
+
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 
@@ -18,9 +20,8 @@ public class ProvaEscritaController
 //	/edital/escrita/encerramento
 	InscricaoDAO inscricaoDAO = new InscricaoDAO();
 	
-	public List VerificaHomologacaoDasInscricoes(List<InscricaoEdital> ListaDeCanditados){
-		//TODO: Testar e Revisar;
-		
+	public List<InscricaoEdital> VerificaHomologacaoDasInscricoes(List<InscricaoEdital> ListaDeCanditados){
+		//TODO: Testar e Revisar
 		List<InscricaoEdital> candidatosComPendencia = new List<InscricaoEdital>();
 		
 		for(InscricaoEdital candidato : ListaDeCanditados){
@@ -38,4 +39,5 @@ public class ProvaEscritaController
 		}
 		return candidatosComPendencia;
 	}
+	
 }

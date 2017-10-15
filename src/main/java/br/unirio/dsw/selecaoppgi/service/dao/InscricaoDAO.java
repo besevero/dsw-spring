@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
@@ -218,9 +217,9 @@ public class InscricaoDAO extends AbstractDAO
 					  "JOIN" +
 			     			"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
 						     "AND codigoProvaEscrita = ?";
-			    
-		
-		if (c == null)
+		 Connection c = getConnection();
+		 
+		 if (c == null)
 			return null;
 		
 		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
@@ -244,12 +243,8 @@ public class InscricaoDAO extends AbstractDAO
                 publicacao.setDataPublicacao(rs.getString("datapublicacao"));
                 listaPublicacao.add(publicacao);
                 */
-				InscricaoEdital item = new InscricaoEdital(edital);
-				item.setNomeCandidato(rs.getString("nome"));
-				item.(rs.getString("nome"));
+								
 				//TODO REVISAR: Inscrição Edital não tem os atributos retornados na consulta, é essa mesma a consulta?
-				
-				lista.add(item);
 				// lista.add(item);
 			}
 			
@@ -282,7 +277,7 @@ public class InscricaoDAO extends AbstractDAO
 	   Connection c = getConnection();
 		
 		if (c == null)
-			return null;
+			return false;
 								
 		try
 			{
@@ -406,17 +401,18 @@ public class InscricaoDAO extends AbstractDAO
 		Connection c = getConnection();
 		try
 		{
-			PreparedStatement ps = c.prepareStatement("UPDATE inscricao Provas SET aprovadoProvas = 1 WHERE id = ?");
+			PreparedStatement ps = c.prepareStatement("UPDATE inscricao SET aprovadoProvas = 1 WHERE id = ?");
 			ps.setInt(1, idInscricao);
 			
-			ResultSet rs = ps.executeQuery();			
+			ps.executeQuery();			
+			
 			c.close();
 			return true;
 
 		} catch (SQLException e)
 		{
 			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
-			return true;
+			return false;
 		}
 	}
 	
@@ -430,17 +426,18 @@ public class InscricaoDAO extends AbstractDAO
 		Connection c = getConnection();
 		try
 		{
-			PreparedStatement ps = c.prepareStatement("UPDATE inscricao Provas SET aprovadoProvas = 0 WHERE id = ?");
+			PreparedStatement ps = c.prepareStatement("UPDATE inscricao SET aprovadoProvas = 0 WHERE id = ?");
 			ps.setInt(1, idInscricao);
 			
-			ResultSet rs = ps.executeQuery();			
+			ps.executeQuery();			
+			
 			c.close();
 			return true;
 
 		} catch (SQLException e)
 		{
 			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
-			return true;
+			return false;
 		}
 }
 	
