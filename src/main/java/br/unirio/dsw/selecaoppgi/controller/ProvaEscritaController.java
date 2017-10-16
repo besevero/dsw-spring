@@ -2,6 +2,7 @@ package br.unirio.dsw.selecaoppgi.controller;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.access.annotation.Secured;
@@ -25,9 +26,14 @@ public class ProvaEscritaController
 //	/edital/escrita/encerramento
 	InscricaoDAO inscricaoDAO = new InscricaoDAO();
 	
-	public List<InscricaoEdital> VerificaHomologacaoDasInscricoes(List<InscricaoEdital> ListaDeCanditados){
+	/*
+	 *Função que verifica quais candidatos possuem pendências
+	 * 
+	 */
+	
+	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> ListaDeCanditados){
 		//TODO: Testar e Revisar
-		List<InscricaoEdital> candidatosComPendencia = new List<InscricaoEdital>();
+		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
 		
 		for(InscricaoEdital candidato : ListaDeCanditados){
 			for(AvaliacaoProvaEscrita provaEscrita : candidato.getAvaliacoesProvasEscritas()) {
@@ -37,13 +43,21 @@ public class ProvaEscritaController
 				
 				if(inscricaoDAO.indicaAusenciaProvaEscrita(idCandidato, codigoProva)) {
 					candidatosComPendencia.add(candidato);
-				}else {
-					
+				}
+				else{
+					CalculaNotaDaProvaEscrita(candidato);
 				}
 			}
 		}
 		return candidatosComPendencia;
 	}
+	
+	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato){
+		
+		
+	}
+	
+	
 	
 
     /**
