@@ -47,13 +47,13 @@ public class ProvaEscritaController
 	
 
     /**
-     * Ação que redireciona o usuário para a tela de esquecimento de senha
+     * Ação que redireciona o usuário para a tela presença em prova escrita
      */
-	@RequestMapping(value = "/edital/presenca", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET)
 	public ModelAndView mostraPaginaPresencaProvaEscrita()
 	{
 		ModelAndView model = new ModelAndView();
-        model.setViewName("edital/presenca");
+        model.setViewName("edital/escrita/presenca");
 		return model;
 	}
 	
