@@ -4,11 +4,16 @@ package br.unirio.dsw.selecaoppgi.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
+import br.unirio.dsw.selecaoppgi.view.login.ForgotPasswordForm;
 
 @Controller
 public class ProvaEscritaController
@@ -38,6 +43,18 @@ public class ProvaEscritaController
 			}
 		}
 		return candidatosComPendencia;
+	}
+	
+
+    /**
+     * Ação que redireciona o usuário para a tela de esquecimento de senha
+     */
+	@RequestMapping(value = "/edital/presenca", method = RequestMethod.GET)
+	public ModelAndView mostraPaginaPresencaProvaEscrita()
+	{
+		ModelAndView model = new ModelAndView();
+        model.setViewName("edital/presenca");
+		return model;
 	}
 	
 }
