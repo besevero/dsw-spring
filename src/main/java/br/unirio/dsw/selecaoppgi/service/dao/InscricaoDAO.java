@@ -217,7 +217,8 @@ public class InscricaoDAO extends AbstractDAO
 					  "JOIN" +
 			     			"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
 						     "AND codigoProvaEscrita = ?";
-		 Connection c = getConnection();
+
+		Connection c = getConnection();
 		 
 		 if (c == null)
 			return null;
@@ -243,8 +244,12 @@ public class InscricaoDAO extends AbstractDAO
                 publicacao.setDataPublicacao(rs.getString("datapublicacao"));
                 listaPublicacao.add(publicacao);
                 */
-								
+				InscricaoEdital item = new InscricaoEdital(edital);
+				item.setNomeCandidato(rs.getString("nome"));
+				item.(rs.getString("nome"));
 				//TODO REVISAR: Inscrição Edital não tem os atributos retornados na consulta, é essa mesma a consulta?
+				
+				lista.add(item);
 				// lista.add(item);
 			}
 			
@@ -257,7 +262,6 @@ public class InscricaoDAO extends AbstractDAO
 		    
 		return lista;
 	}
-
 	/**
 	 * Indica que um candidato esteve presente em uma prova
 	 */
