@@ -6,7 +6,7 @@
 
    <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col page-header">
-			<h3><spring:message code="edital.presenca.prova.titulo"/></h3>
+			<h3><spring:message code="edital.presenca.prova.escrita.titulo"/></h3>
 		</div>
 	</div>
 	
