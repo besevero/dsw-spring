@@ -243,10 +243,9 @@ public class InscricaoDAO extends AbstractDAO
 				item.setNomeCandidato(rs.getString("Nome"));
 				
 				ProvaEscrita provaEscrita = new ProvaEscrita();
-				provaEscrita.setCodigo( rs.getString("Prova"));
+				provaEscrita.setCodigo(rs.getString("Prova"));
 				AvaliacaoProvaEscrita avaliacaoEscrita = new AvaliacaoProvaEscrita(provaEscrita);
 				avaliacaoEscrita.setPresente(rs.getBoolean("Presenca"));
-				
 				
 				lista.add(item);				
 			}
@@ -255,7 +254,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("EditalDAO.lista: " + e.getMessage());
+			log("InscricaoDAO.lista: " + e.getMessage());
 		}
 		    
 		return lista;
