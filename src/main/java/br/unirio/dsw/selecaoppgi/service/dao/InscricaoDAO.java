@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.unirio.dsw.selecaoppgi.model.edital.CriterioAlinhamento;
 import br.unirio.dsw.selecaoppgi.model.edital.Edital;
+import br.unirio.dsw.selecaoppgi.model.edital.ProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
@@ -448,8 +450,61 @@ public class InscricaoDAO extends AbstractDAO
 	public List<InscricaoEdital> carregaPresencaProvaOral(int idEdital, String codigoProjetoPesquisa)
 	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		return null;
-	}
+		String SQL = "SELECT" + 
+	     		"usuario.nome AS 'Nome'," +
+	     		"inscricaoprovaoral.codigoProvaOral AS 'Prova'," +
+	     		"inscricaoprovaoral.presente AS 'Presenca'" +
+	      "FROM usuario" +
+	      "JOIN" +
+		  		"inscricao ON usuario.id = inscricao.idCandidato" +
+		  		"AND homologado = 1" +
+		  		"AND idEdital = ?" +
+		  "JOIN" +
+     			"inscricaoprovaoral ON usuario.id = inscricaoprovaoral.idInscricao" +
+			     "AND codigoProvaOral = ?";
+
+		Connection c = getConnection();
+		
+		if (c == null)
+			return null;
+		
+		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
+		
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQL);
+			ps.setInt(1, idEdital);
+			ps.setString(2, "%" + codigoProjetoPesquisa + "%");
+		
+			ResultSet rs = ps.executeQuery();
+		
+		while (rs.next())
+		{
+			Edital edital = null;
+			
+			InscricaoEdital item = new InscricaoEdital(edital);
+			item.setNomeCandidato(rs.getString("Nome"));
+			
+			CriterioAlinhamento provaOral = new CriterioAlinhamento();
+			provaOral.setCodigo(rs.getString("Prova"));
+			CriterioAlinhamento avaliacaoOral = new CriterioAlinhamento();
+			//avaliacaoOral.setPresente(rs.getBoolean("Presenca"));
+			
+			lista.add(item);				
+		}
+		
+		c.close();
+		
+		} 
+			catch (SQLException e)
+		{
+			log("InscricaoDAO.lista: " + e.getMessage());
+		}
+		
+		return lista;
+		}
+
+	
 
 	/**
 	 * Indica que um candidato esteve presente na prova oral de um projeto
