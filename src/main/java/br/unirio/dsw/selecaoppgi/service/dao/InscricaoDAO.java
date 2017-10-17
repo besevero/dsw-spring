@@ -526,9 +526,9 @@ public class InscricaoDAO extends AbstractDAO
 		 + "From inscricao"
 		 + "WHERE id = ?;";
 
-		String SQLUpdate = "UPDATE inscricaoprovaescrita "
+		String SQLUpdate = "UPDATE inscricaoprovaoral "
 			+ "SET presente = 0 "
-			+ "WHERE idInscricao = ? and codigoProvaEscrita = ?";
+			+ "WHERE idInscricao = ? and codigoProvaOral = ?";
 		
 		Connection c = getConnection();
 		
