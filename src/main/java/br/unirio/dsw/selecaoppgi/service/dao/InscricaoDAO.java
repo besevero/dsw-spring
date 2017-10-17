@@ -463,8 +463,50 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se a nota final de todas as provas escritas for maior do que a nota mínima para aprovação
 		// Somente se o projeto exigir prova oral
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		return false;
-	}
+		String SQLConsulta = "Select homologadoInicial, "
+				 + "homologadoRecurso, "
+				 + "dispensadoProvaInicial, "
+				 + "dispensadoProvaRecurso "
+				 + "notaFinalProvaEscrita"
+				 + "exigeProvaOral"
+		 + "From inscricao"
+		 + "WHERE id = ?;";
+
+		String SQLUpdate = "UPDATE inscricaoprovaescrita "
+			+ "SET presente = 0 "
+			+ "WHERE idInscricao = ? and codigoProvaEscrita = ?";
+		
+		Connection c = getConnection();
+		
+		if (c == null)
+			return false;
+				
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQLConsulta);
+			ps.setInt(1, idInscricao);	
+			ResultSet rs = ps.executeQuery();
+		
+		if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
+		  rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0||
+		  rs.getInt("notaFinalProvaEscrita") > 7)
+		{
+				ps = c.prepareStatement(SQLUpdate);
+				ps.setInt(1, idInscricao);	
+				ps.setString(1, codigoProjetoPesquisa);
+				rs = ps.executeQuery();
+		}
+		
+		c.close();
+		} 
+			catch (SQLException e)
+		{
+			log("EditalDAO.lista: " + e.getMessage());
+		}
+		
+			return true;
+		}
+
 	
 	/**
 	 * Indica que um candidato esteve ausente na prova oral de um projeto
