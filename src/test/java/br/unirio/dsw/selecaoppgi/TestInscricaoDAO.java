@@ -1,6 +1,6 @@
 package br.unirio.dsw.selecaoppgi;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,16 +20,18 @@ public class TestInscricaoDAO
 	}
 	
 	@Test
-	public void TestmarcaAprovadoProvasEscritas()
+	public void testmarcaAprovadoProvasEscritas() throws Exception
 	{
-		assertTrue(inscricaoDAO.marcaAprovadoProvasEscritas(5) == true);
+		int idInscricao = 1;
+		try
+		{
+			assertTrue(inscricaoDAO.marcaAprovadoProvasEscritas(idInscricao));
+			
+		}
+		catch (Exception e)
+		{
+			fail ("Ops! Deveria ter ocorrido uma exceção");
+		}
 	}
-
-	@Test
-	public void testmarcaReprovadoProvasEscritas()
-	{
-		assertTrue(inscricaoDAO.marcaReprovadoProvasEscritas(6) == true);
-	}
-
 	
 }
