@@ -27,8 +27,16 @@ public class ProvaEscrita
 		this.codigo = "";
 		this.nome = "";
 		this.dispensavel = false;
-		this.notaMinimaAprovacao = 0;
+		this.notaMinimaAprovacao = 70;
 		this.pesosQuestoes = new ArrayList<Integer>();
+	}
+	
+	/**
+	 * metodo que tem por objetivo retornar a nota mínima
+	 * @return retorna nota mínima
+	 */
+	public int getNotaMinimaAprovacao() {
+	  return this.notaMinimaAprovacao;
 	}
 
 	/**

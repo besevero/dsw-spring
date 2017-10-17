@@ -5,16 +5,15 @@ package br.unirio.dsw.selecaoppgi.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
-import br.unirio.dsw.selecaoppgi.view.login.ForgotPasswordForm;
 
 @Controller
 public class ProvaEscritaController
@@ -53,8 +52,30 @@ public class ProvaEscritaController
 	}
 	
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato){
-		
-		
+		//candidato.getDispensadoProvaOriginal();
+	  
+	  ProvaEscrita provaEscrita = new ProvaEscrita();
+	  if(!provaEscrita.isDispensavel()) {
+    	  provaEscrita.adicionaQuestao(1);
+    	  provaEscrita.adicionaQuestao(1);
+    	  provaEscrita.adicionaQuestao(1);
+	  }
+	  else { return; }
+	  AvaliacaoProvaEscrita avaliacaoProvaEscrita = new AvaliacaoProvaEscrita(provaEscrita);
+	  avaliacaoProvaEscrita.setNotaOriginalQuestao(0, 50);
+	  avaliacaoProvaEscrita.setNotaOriginalQuestao(1, 80);
+	  avaliacaoProvaEscrita.setNotaOriginalQuestao(2, 100);
+	  
+	  for(int i=0; i<provaEscrita.contaQuestoes(); i++) {
+	    if(avaliacaoProvaEscrita.possuiNotaRecursoQuestao(i)) {
+	      avaliacaoProvaEscrita.setNotaOriginalQuestao(i, avaliacaoProvaEscrita.getNotaRecursoQuestao(i));
+	    }
+	  }
+	  
+	  int minhaNota = (avaliacaoProvaEscrita.getNotaOriginalQuestao(0) + avaliacaoProvaEscrita.getNotaOriginalQuestao(1) + avaliacaoProvaEscrita.getNotaOriginalQuestao(2))
+	  / provaEscrita.contaQuestoes();
+	  
+	  System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado":"reprovado");
 	}
 	
 	
