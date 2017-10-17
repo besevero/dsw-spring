@@ -9,13 +9,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
 import br.unirio.dsw.selecaoppgi.model.edital.CriterioAlinhamento;
 import br.unirio.dsw.selecaoppgi.model.edital.Edital;
-import br.unirio.dsw.selecaoppgi.model.edital.ProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
+import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader;
 
 /**
  * Classe responsavel pela persistencia de inscrições em edital de seleção
@@ -205,51 +208,54 @@ public class InscricaoDAO extends AbstractDAO
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma prova
 	 */
-	public List<InscricaoEdital> carregaPresencaProvaEscrita(int idEdital, String codigoProva)
+	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, String codigoProva)
 	{
+		
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 		
-		String SQL = "SELECT" + 
-				     		"usuario.nome AS 'Nome'," +
-				     		"inscricaoprovaescrita.codigoProvaEscrita AS 'Prova'," +
-				     		"inscricaoprovaescrita.presente AS 'Presenca'" +
-				      "FROM usuario" +
-				      "JOIN" +
-					  		"inscricao ON usuario.id = inscricao.idCandidato" +
-					  		"AND homologado = 1" +
-					  		"AND idEdital = ?" +
-					  "JOIN" +
-			     			"inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.idInscricao" +
-						     "AND codigoProvaEscrita = ?";
+		String SQL = "SELECT ipe.* " + 
+		     		 "FROM InscricaoProvaEscrita ipe " +
+		     		 "INNER JOIN Inscricao i ON ipe.idInscricao = i.id " +
+		     		 "WHERE codigoProvaEscrita = ? " +
+		     		 "AND idEdital = ?";
 
 		Connection c = getConnection();
 		 
 		 if (c == null)
 			return null;
 		
-		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
+		 ProvaEscrita prova = edital.pegaProvaEscritaCodigo(codigoProva);
+		 
+		 if (prova == null)
+			 return null;
+		 
+		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
+		eliminaInscricoesSemProvaEscrita(lista, edital, codigoProva);
 		
 		try
 		{
 			PreparedStatement ps = c.prepareStatement(SQL);
-			ps.setInt(1, idEdital);
-			ps.setString(2, "%" + codigoProva + "%");
+			ps.setString(1, codigoProva);
+			ps.setInt(2, edital.getId());
 			
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next())
 			{
-				Edital edital = null;
+				int idInscricao = rs.getInt("idInscricao");
+				boolean presente = rs.getInt("presente") != 0;
+				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
+				String jsonQuestoesRecursoString = rs.getString("jsonQuestoesRecurso");
+
+				InscricaoEdital inscricao = pegaInscricaoId(lista, idInscricao);
 				
-				InscricaoEdital item = new InscricaoEdital(edital);
-				item.setNomeCandidato(rs.getString("Nome"));
-				
-				ProvaEscrita provaEscrita = new ProvaEscrita();
-				provaEscrita.setCodigo(rs.getString("Prova"));
-				AvaliacaoProvaEscrita avaliacaoEscrita = new AvaliacaoProvaEscrita(provaEscrita);
-				avaliacaoEscrita.setPresente(rs.getBoolean("Presenca"));
-				
-				lista.add(item);				
+				if (inscricao != null)
+				{
+					AvaliacaoProvaEscrita inscricaoProva = inscricao.pegaAvaliacaoProvaEscrita(prova);
+					inscricaoProva.setPresente(presente);
+					// muda as notas na avaliacao original
+					// muda as notas no recurso
+				}
 			}
 			
 			c.close();
@@ -261,6 +267,92 @@ public class InscricaoDAO extends AbstractDAO
 		    
 		return lista;
 	}
+	
+
+	/**
+	 * Carrega todas as inscrições em um edital
+	 */
+	private List<InscricaoEdital> carregaInscricoesEdital(Edital edital) 
+	{
+		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " +
+					 "FROM Inscricao " +
+					 "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " +
+					 "AND homologado = 1 " +
+					 "AND idEdital = ?";
+		
+		Connection c = getConnection();
+		
+		if (c == null)
+			return null;
+		
+		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
+		
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQL);
+			ps.setInt(1, edital.getId());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next())
+			{
+				InscricaoEdital item = new InscricaoEdital(edital);
+				item.setId(rs.getInt("inscricao.id"));
+				item.setIdCandidato(rs.getInt("id"));				
+				item.setNomeCandidato(rs.getString("Nome"));				
+				item.setCotaNegros(rs.getInt("inscricao.cotaNegros") != 0);				
+				item.setCotaDeficientes(rs.getInt("inscricao.cotaDeficientes") != 0);				
+				item.setHomologadoOriginal(rs.getInt("inscricao.homologadoInicial") != 0);				
+				item.setJustificativaHomologacaoOriginal(rs.getString("inscricao.justificativaHomologacaoInicial"));				
+				item.setHomologadoRecurso(rs.getInt("inscricao.homologadoRecurso") != 0);				
+				item.setJustificativaHomologacaoRecurso(rs.getString("inscricao.justificativaHomologacaoRecurso"));
+				item.setDispensadoProvaOriginal(rs.getInt("dispensadoProvaInicial") != 0);
+				item.setJustificativaDispensaOriginal(rs.getString("justificativaDispensaInicial"));
+				item.setDispensadoProvaRecurso(rs.getInt("dispensadoProvaRecurso") != 0);
+				item.setJustificativaDispensaRecurso(rs.getString("justificativaDispensaRecurso"));
+
+				String jsonProjetosString = rs.getString("inscricao.jsonProjetos");
+				JsonArray jsonProjetos = (JsonArray) new JsonParser().parse(jsonProjetosString);
+				
+				JsonInscricaoProjetoPesquisaReader reader = new JsonInscricaoProjetoPesquisaReader();
+				reader.execute(jsonProjetos, edital, item);
+						
+				lista.add(item);				
+			}
+			
+			c.close();
+		
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.carregaTodos: " + e.getMessage());
+		}
+
+		return lista;
+	}
+
+	/**
+	 * Elimina todas as inscrições que não farão uma prova
+	 */
+	private void eliminaInscricoesSemProvaEscrita(List<InscricaoEdital> lista, Edital edital, String codigoProva) 
+	{
+		ProvaEscrita prova = edital.pegaProvaEscritaCodigo(codigoProva);
+		
+		if (prova == null)
+		{
+			lista.clear();
+			return;
+		}
+		
+		for (int i = lista.size()-1; i >= 0; i--) 
+		{
+			InscricaoEdital inscricao = lista.get(i);
+			
+			if (inscricao.pegaAvaliacaoProvaEscrita(prova) == null)
+				lista.remove(i);
+		}
+		
+	}
+
 	/**
 	 * Indica que um candidato esteve presente em uma prova
 	 */

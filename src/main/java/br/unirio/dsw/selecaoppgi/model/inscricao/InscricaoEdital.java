@@ -105,7 +105,6 @@ public class InscricaoEdital
 			if (pegaAvaliacaoProvaEscrita(prova) == null)
 				provasEscritas.add(new AvaliacaoProvaEscrita(prova));
 		
-		
 		return inscricaoProjeto;
 	}
 
