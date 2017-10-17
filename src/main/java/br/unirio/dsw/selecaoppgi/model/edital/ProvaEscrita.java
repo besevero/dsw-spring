@@ -33,7 +33,7 @@ public class ProvaEscrita
 	
 	/**
 	 * metodo que tem por objetivo retornar a nota mínima
-	 * @return retorna nota mínima
+	 * @return retorna nota mínima 
 	 */
 	public int getNotaMinimaAprovacao() {
 	  return this.notaMinimaAprovacao;

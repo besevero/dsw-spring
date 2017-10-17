@@ -45,7 +45,7 @@ public class TestInscricaoDAO
 	  ProvaEscritaController a = new ProvaEscritaController();
 	  Edital edital = null;
 	  InscricaoEdital candidato = new InscricaoEdital(edital);
-	  a.CalculaNotaDaProvaEscrita(candidato);//retorna 76 de média
+	  a.CalculaNotaDaProvaEscrita(candidato);//retorna 76 de média 
 	}
 
 	
