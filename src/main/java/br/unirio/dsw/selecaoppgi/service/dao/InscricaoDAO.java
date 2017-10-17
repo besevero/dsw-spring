@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.unirio.dsw.selecaoppgi.model.edital.Edital;
+import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
@@ -235,22 +237,18 @@ public class InscricaoDAO extends AbstractDAO
 
 			while (rs.next())
 			{
-				/*Exemplo
-				 * publicacao = new PublicacaoModelo();
-                publicacao.setTitulo(rs.getString("titulo"));
-                publicacao.setId(rs.getInt("id"));
-                publicacao.setPaginaFinal(rs.getInt("paginafinal"));
-                publicacao.setPaginaInicial(rs.getInt("paginainicial"));
-                publicacao.setDataPublicacao(rs.getString("datapublicacao"));
-                listaPublicacao.add(publicacao);
-                */
-				InscricaoEdital item = new InscricaoEdital(edital);
-				item.setNomeCandidato(rs.getString("nome"));
-				item.(rs.getString("nome"));
-				//TODO REVISAR: Inscrição Edital não tem os atributos retornados na consulta, é essa mesma a consulta?
+				Edital edital = null;
 				
-				lista.add(item);
-				// lista.add(item);
+				InscricaoEdital item = new InscricaoEdital(edital);
+				item.setNomeCandidato(rs.getString("Nome"));
+				
+				ProvaEscrita provaEscrita = new ProvaEscrita();
+				provaEscrita.setCodigo( rs.getString("Prova"));
+				AvaliacaoProvaEscrita avaliacaoEscrita = new AvaliacaoProvaEscrita(provaEscrita);
+				avaliacaoEscrita.setPresente(rs.getBoolean("Presenca"));
+				
+				
+				lista.add(item);				
 			}
 			
 			c.close();
