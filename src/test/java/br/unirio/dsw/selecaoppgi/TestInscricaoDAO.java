@@ -22,13 +22,13 @@ public class TestInscricaoDAO
 	@Test
 	public void TestmarcaAprovadoProvasEscritas()
 	{
-		assertTrue(inscricaoDAO.marcaAprovadoProvasEscritas(5) == true);
+		assertTrue(inscricaoDAO.marcaAprovadoProvasEscritas(7) == true);
 	}
 
 	@Test
 	public void testmarcaReprovadoProvasEscritas()
 	{
-		assertTrue(inscricaoDAO.marcaReprovadoProvasEscritas(6) == true);
+		assertTrue(inscricaoDAO.marcaReprovadoProvasEscritas(8) == true);
 	}
 
 	
