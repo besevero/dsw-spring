@@ -22,23 +22,10 @@ public class TestInscricaoDAO
 	
 	}
 	
-<<<<<<< HEAD
-	@Test//(expected = NullPointerException.class)
-	public void TestmarcaAprovadoProvasEscritas()
-	{
-	  //try {
-	    assertTrue(inscricaoDAO.marcaAprovadoProvasEscritas(1));
-	  /*}
-	  catch(Exception e) {
-	    e.getMessage();
-	  }*/
-
-	}
-
 	@Test
 	public void testmarcaReprovadoProvasEscritas()
 	{
-		assertTrue(inscricaoDAO.marcaReprovadoProvasEscritas(6) == true);
+		assertTrue(inscricaoDAO.marcaReprovadoProvasEscritas(1) == true);
 	}
 	
 	@Test
@@ -49,7 +36,7 @@ public class TestInscricaoDAO
 	  a.CalculaNotaDaProvaEscrita(candidato);//retorna 76 de média 
 	}
 
-=======
+
 	@Test
 	public void testmarcaAprovadoProvasEscritas() throws Exception
 	{
@@ -64,6 +51,6 @@ public class TestInscricaoDAO
 			fail ("Ops! Deveria ter ocorrido uma exceção");
 		}
 	}
->>>>>>> a8bc9f9870215217301888e145206cfc10b5d61a
+
 	
 }
