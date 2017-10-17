@@ -52,7 +52,7 @@ public class ProvaEscritaController
 	}
 	
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato){
-  
+  //calculo da prova
 	  ProvaEscrita provaEscrita = new ProvaEscrita();
 	  if(!provaEscrita.isDispensavel()) {
     	  provaEscrita.adicionaQuestao(1);
