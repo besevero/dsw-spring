@@ -244,7 +244,7 @@ public class InscricaoDAO extends AbstractDAO
                 publicacao.setDataPublicacao(rs.getString("datapublicacao"));
                 listaPublicacao.add(publicacao);
                 */
-				InscricaoEdital item = new InscricaoEdital();
+				InscricaoEdital item = new InscricaoEdital(edital);
 				item.setNomeCandidato(rs.getString("nome"));
 				item.(rs.getString("nome"));
 				//TODO REVISAR: Inscrição Edital não tem os atributos retornados na consulta, é essa mesma a consulta?
@@ -257,7 +257,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.lista: " + e.getMessage());
+			log("EditalDAO.lista: " + e.getMessage());
 		}
 		    
 		return lista;
