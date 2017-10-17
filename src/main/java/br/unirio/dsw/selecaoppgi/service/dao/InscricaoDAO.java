@@ -246,9 +246,10 @@ public class InscricaoDAO extends AbstractDAO
 				boolean presente = rs.getInt("presente") != 0;
 				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
 				String jsonQuestoesRecursoString = rs.getString("jsonQuestoesRecurso");
+				//TODO: FAzer Os dois Jsons
 
 				InscricaoEdital inscricao = pegaInscricaoId(lista, idInscricao);
-				
+				//TODO: fazer o pegaInscricaoId
 				if (inscricao != null)
 				{
 					AvaliacaoProvaEscrita inscricaoProva = inscricao.pegaAvaliacaoProvaEscrita(prova);
