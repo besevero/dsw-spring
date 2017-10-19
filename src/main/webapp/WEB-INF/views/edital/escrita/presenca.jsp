@@ -3,7 +3,7 @@
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/third-party/ngTable/ng-table.min.css" />
 
-<div id="contents" data-ng-controller="listaController as ctrl">
+<div id="contents" data-ng-controller="presencaController as ctrl">
 
 	<div class="mdl-grid">
 		<div class="mdl-cell mdl-cell--12-col page-header">
