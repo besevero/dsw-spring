@@ -1,9 +1,11 @@
 package br.unirio.dsw.selecaoppgi.service.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.model.usuario.Usuario;
+import br.unirio.dsw.selecaoppgi.service.json.JsonEditalWriter;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader;
 
 /**
@@ -27,12 +30,14 @@ import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader
  * @author Marcio Barros
  */
 @Service("inscricaoDAO")
-public class InscricaoDAO extends AbstractDAO {
+public class InscricaoDAO extends AbstractDAO
+{
 	/**
 	 * Registra uma nova inscrição de um candidato, incluindo os projetos de
 	 * pesquisa, provas e critérios de alinhamento
 	 */
-	public boolean registraInscricao(InscricaoEdital inscricao) {
+	public boolean registraInscricao(InscricaoEdital inscricao)
+	{
 		// Cria um registro preenchendo os seguintes campos na tabela de Inscricao:
 		//
 		// * dataRegistro
@@ -56,7 +61,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Carrega a lista de inscrições de um determinado edital que podem ser
 	 * homologadas
 	 */
-	public List<InscricaoEdital> carregaAvaliacaoHomologacao(int idEdital) {
+	public List<InscricaoEdital> carregaAvaliacaoHomologacao(int idEdital)
+	{
 		// TODO Grupo 4: implementar este método em função do caso de uso #6
 		return null;
 	}
@@ -64,7 +70,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a homologação de uma inscrição na avaliação inicial
 	 */
-	public boolean homologacaoInicial(int idInscricao) {
+	public boolean homologacaoInicial(int idInscricao)
+	{
 		// Muda o campo homologadoInicial para TRUE e limpa o campo
 		// justificativaHomologacaoInicial
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -75,7 +82,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a recusa de homologação de uma inscrição na avaliação inicial
 	 */
-	public boolean recusaHomologacaoInicial(int idInscricao, String justificativa) {
+	public boolean recusaHomologacaoInicial(int idInscricao, String justificativa)
+	{
 		// Muda o campo homologadoInicial para FALSE e preenche o campo
 		// justificativaHomologacaoInicial
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -86,7 +94,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a homologação de uma inscrição no recurso
 	 */
-	public boolean homologacaoRecurso(int idInscricao) {
+	public boolean homologacaoRecurso(int idInscricao)
+	{
 		// Muda o campo homologadoRecurso para TRUE e limpa o campo
 		// justificativaHomologacaoRecurso
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -98,7 +107,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a recusa de homologação de uma inscrição no recurso
 	 */
-	public boolean recusaHomologacaoRecurso(int idInscricao, String justificativa) {
+	public boolean recusaHomologacaoRecurso(int idInscricao, String justificativa)
+	{
 		// Muda o campo homologadoRecurso para FALSE e preenche o campo
 		// justificativaHomologacaoRecurso
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -111,7 +121,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Carrega a lista de inscrições de um determinado edital que podem ser
 	 * dispensados de prova
 	 */
-	public List<InscricaoEdital> carregaAvaliacaoDispensaProva(int idEdital) {
+	public List<InscricaoEdital> carregaAvaliacaoDispensaProva(int idEdital)
+	{
 		// As inscrições devem estar homologadas na avaliação inicial ou no recurso
 		// TODO Grupo 4: implementar este método em função do caso de uso #6
 		return null;
@@ -120,7 +131,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a dispensa de provas de uma inscrição na avaliação inicial
 	 */
-	public boolean dispensaProvaInicial(int idInscricao) {
+	public boolean dispensaProvaInicial(int idInscricao)
+	{
 		// Muda o campo dispensadoProvaInicial para TRUE e limpa o campo
 		// justificativaDispensaInicial
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -133,7 +145,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a recusa de dispensa de provas de uma inscrição na avaliação inicial
 	 */
-	public boolean recusaDispensaProvaInicial(int idInscricao, String justificativa) {
+	public boolean recusaDispensaProvaInicial(int idInscricao, String justificativa)
+	{
 		// Muda o campo dispensadoProvaInicial para FALSE e preenche o campo
 		// justificativaDispensaInicial
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -146,7 +159,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a dispensa de provas de uma inscrição no recurso
 	 */
-	public boolean dispensaProvaRecurso(int idInscricao) {
+	public boolean dispensaProvaRecurso(int idInscricao)
+	{
 		// Muda o campo dispensadoProvaRecurso para TRUE e limpa o campo
 		// justificativaDispensaRecurso
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -160,7 +174,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Registra a recusa de dispensa de provas de uma inscrição no recurso
 	 */
-	public boolean recusaDispensaProvaRecurso(int idInscricao, String justificativa) {
+	public boolean recusaDispensaProvaRecurso(int idInscricao, String justificativa)
+	{
 		// Muda o campo dispensadoProvaRecurso para FALSE e preenche o campo
 		// justificativaDispensaRecurso
 		// Muda a data de atualização do registro de inscrição para a data de hoje
@@ -175,7 +190,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Marca uma inscrição como homologada, como parte do encerramento das
 	 * homologações
 	 */
-	public boolean marcaHomologado(int idInscricao) {
+	public boolean marcaHomologado(int idInscricao)
+	{
 		// Muda o campo homologado da inscricao para TRUE
 		// TODO Grupo 3: implementar este método em função do caso de uso #8
 		return false;
@@ -185,7 +201,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Marca uma inscrição como não homologada, como parte do encerramento das
 	 * homologações
 	 */
-	public boolean marcaNaoHomologado(int idInscricao) {
+	public boolean marcaNaoHomologado(int idInscricao)
+	{
 		// Muda o campo homologado da inscricao para FALSE
 		// TODO Grupo 3: implementar este método em função do caso de uso #8
 		return false;
@@ -195,7 +212,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Marca uma inscrição como dispensada da prova, como parte do encerramento das
 	 * homologações
 	 */
-	public boolean marcaDispensadoProva(int idInscricao) {
+	public boolean marcaDispensadoProva(int idInscricao)
+	{
 		// Muda o campo dispensado da inscricao para TRUE
 		// TODO Grupo 3: implementar este método em função do caso de uso #8
 		return false;
@@ -205,7 +223,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Marca uma inscrição como não dispensada da prova, como parte do encerramento
 	 * das homologações
 	 */
-	public boolean marcaNaoDispensadoProva(int idInscricao) {
+	public boolean marcaNaoDispensadoProva(int idInscricao)
+	{
 		// Muda o campo dispensado da inscricao para FALSE
 		// TODO Grupo 3: implementar este método em função do caso de uso #8
 		return false;
@@ -215,7 +234,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova
 	 */
-	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, String codigoProva) {
+	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, String codigoProva)
+	{
 
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 
@@ -236,14 +256,16 @@ public class InscricaoDAO extends AbstractDAO {
 		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
 		eliminaInscricoesSemProvaEscrita(lista, edital, codigoProva);
 
-		try {
+		try
+		{
 			PreparedStatement ps = c.prepareStatement(SQL);
 			ps.setString(1, codigoProva);
 			ps.setInt(2, edital.getId());
 
 			ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) {
+			while (rs.next())
+			{
 				int idInscricao = rs.getInt("idInscricao");
 				boolean presente = rs.getInt("presente") != 0;
 				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
@@ -252,7 +274,8 @@ public class InscricaoDAO extends AbstractDAO {
 
 				InscricaoEdital inscricao = pegaInscricaoId(lista, idInscricao);
 				// TODO: fazer o pegaInscricaoId
-				if (inscricao != null) {
+				if (inscricao != null)
+				{
 					AvaliacaoProvaEscrita inscricaoProva = inscricao.pegaAvaliacaoProvaEscrita(prova);
 					inscricaoProva.setPresente(presente);
 					// muda as notas na avaliacao original
@@ -262,7 +285,8 @@ public class InscricaoDAO extends AbstractDAO {
 
 			c.close();
 
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			log("InscricaoDAO.lista: " + e.getMessage());
 		}
 
@@ -272,15 +296,17 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Retorna o id de inscrição de um candidato da lista de inscrições de um edital
 	 */
-	private InscricaoEdital pegaInscricaoId(List<InscricaoEdital> lista, int idInscricao) {
-		
+	private InscricaoEdital pegaInscricaoId(List<InscricaoEdital> lista, int idInscricao)
+	{
+
 		return null;
 	}
 
 	/**
 	 * Carrega todas as inscrições em um edital
 	 */
-	private List<InscricaoEdital> carregaInscricoesEdital(Edital edital) {
+	private List<InscricaoEdital> carregaInscricoesEdital(Edital edital)
+	{
 		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
 				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
 				+ "AND idEdital = ?";
@@ -292,13 +318,15 @@ public class InscricaoDAO extends AbstractDAO {
 
 		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
 
-		try {
+		try
+		{
 			PreparedStatement ps = c.prepareStatement(SQL);
 			ps.setInt(1, edital.getId());
 
 			ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) {
+			while (rs.next())
+			{
 				InscricaoEdital item = new InscricaoEdital(edital);
 				item.setId(rs.getInt("inscricao.id"));
 				item.setIdCandidato(rs.getInt("id"));
@@ -325,7 +353,8 @@ public class InscricaoDAO extends AbstractDAO {
 
 			c.close();
 
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			log("InscricaoDAO.carregaTodos: " + e.getMessage());
 		}
 
@@ -335,15 +364,18 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Elimina todas as inscrições que não farão uma prova
 	 */
-	private void eliminaInscricoesSemProvaEscrita(List<InscricaoEdital> lista, Edital edital, String codigoProva) {
+	private void eliminaInscricoesSemProvaEscrita(List<InscricaoEdital> lista, Edital edital, String codigoProva)
+	{
 		ProvaEscrita prova = edital.pegaProvaEscritaCodigo(codigoProva);
 
-		if (prova == null) {
+		if (prova == null)
+		{
 			lista.clear();
 			return;
 		}
 
-		for (int i = lista.size() - 1; i >= 0; i--) {
+		for (int i = lista.size() - 1; i >= 0; i--)
+		{
 			InscricaoEdital inscricao = lista.get(i);
 
 			if (inscricao.pegaAvaliacaoProvaEscrita(prova) == null)
@@ -355,93 +387,62 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica que um candidato esteve presente em uma prova
 	 */
-	public boolean indicaPresencaProvaEscrita(int idInscricao, String codigoProva) {
-		String SQLConsulta = "Select homologadoInicial, " + "homologadoRecurso, " + "dispensadoProvaInicial, "
-				+ "dispensadoProvaRecurso " + "From inscricao" + "WHERE id = ?;";
-
-		String SQLUpdate = "UPDATE inscricaoprovaescrita " + "SET presente = 1 "
-				+ "WHERE idInscricao = ? and codigoProvaEscrita = ?";
-
+	public boolean indicaPresencaProvaEscrita(int idInscricao, String codigoProva)
+	{
 		Connection c = getConnection();
 
 		if (c == null)
 			return false;
 
-		try {
-			PreparedStatement ps = c.prepareStatement(SQLConsulta);
-			ps.setInt(1, idInscricao);
-			ResultSet rs = ps.executeQuery();
-
-			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
-					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0) {
-				ps = c.prepareStatement(SQLUpdate);
-				ps.setInt(1, idInscricao);
-				ps.setString(1, codigoProva);
-				rs = ps.executeQuery();
-			}
-
+		try
+		{
+			CallableStatement cs = c.prepareCall("{call AtualizaPresencaProvaEscrita(?, ?, ?)}");
+			cs.setInt(1, idInscricao);
+			cs.setString(2, codigoProva);
+			cs.setInt(3, 1);
+			cs.execute();
 			c.close();
-		} catch (SQLException e) {
-			log("EditalDAO.lista: " + e.getMessage());
-		}
+			return true;
 
-		// Muda o campo presente para TRUE no registro da prova escrita associada à
-		// inscrição
-		// Somente se o campo homologadoInicial estiver TRUE ou o campo
-		// homologadoRecurso estiver TRUE
-		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
-		// dispensadoProvaRecurso estiver FALSE
-		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		return true;
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.indicaPresenca: " + e.getMessage());
+			return false;
+		}
 	}
 
 	/**
 	 * Indica que um candidato faltou a uma prova
 	 */
-	public boolean indicaAusenciaProvaEscrita(int idInscricao, String codigoProva) {
-		// Muda o campo presente para FALSE no registro da prova escrita associada à
-		// inscrição
-		// Somente se o campo homologadoInicial estiver TRUE ou o campo
-		// homologadoRecurso estiver TRUE
-		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
-		// dispensadoProvaRecurso estiver FALSE
-		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		String SQLConsulta = "Select homologadoInicial, " + "homologadoRecurso, " + "dispensadoProvaInicial, "
-				+ "dispensadoProvaRecurso " + "From inscricao" + "WHERE id = ?;";
-
-		String SQLUpdate = "UPDATE inscricaoprovaescrita " + "SET presente = 0 "
-				+ "WHERE idInscricao = ? and codigoProvaEscrita = ?";
-
+	public boolean indicaAusenciaProvaEscrita(int idInscricao, String codigoProva)
+	{
 		Connection c = getConnection();
 
 		if (c == null)
 			return false;
 
-		try {
-			PreparedStatement ps = c.prepareStatement(SQLConsulta);
-			ps.setInt(1, idInscricao);
-			ResultSet rs = ps.executeQuery();
-
-			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
-					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0) {
-				ps = c.prepareStatement(SQLUpdate);
-				ps.setInt(1, idInscricao);
-				ps.setString(1, codigoProva);
-				rs = ps.executeQuery();
-			}
-
+		try
+		{
+			CallableStatement cs = c.prepareCall("{call AtualizaPresencaProvaEscrita(?, ?, ?)}");
+			cs.setInt(1, idInscricao);
+			cs.setString(2, codigoProva);
+			cs.setInt(3, 0);
+			cs.execute();
 			c.close();
-		} catch (SQLException e) {
-			log("EditalDAO.lista: " + e.getMessage());
-		}
+			return true;
 
-		return true;
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.indicaAusencia: " + e.getMessage());
+			return false;
+		}
 	}
 
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que fizeram uma prova
 	 */
-	public List<InscricaoEdital> carregaAvaliacaoProvaEscrita(int idEdital, String codigoProva) {
+	public List<InscricaoEdital> carregaAvaliacaoProvaEscrita(int idEdital, String codigoProva)
+	{
 		// TODO Grupo 2: implementar este método em função do caso de uso #10
 		return null;
 	}
@@ -449,7 +450,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Atualiza os notas da avaliação inicial de uma inscrição
 	 */
-	public boolean indicaNotasProvaEscritaInicial(int idInscricao, AvaliacaoProvaEscrita avaliacao) {
+	public boolean indicaNotasProvaEscritaInicial(int idInscricao, AvaliacaoProvaEscrita avaliacao)
+	{
 		// Muda os campos jsonQuestoes e notaFinal de acordo com os parâmetros
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo
 		// homologadoRecurso estiver TRUE
@@ -463,7 +465,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Atualiza os notas do recurso de uma inscrição
 	 */
-	public boolean indicaNotasProvaEscritaRecurso(int idInscricao, AvaliacaoProvaEscrita avaliacao) {
+	public boolean indicaNotasProvaEscritaRecurso(int idInscricao, AvaliacaoProvaEscrita avaliacao)
+	{
 		// Muda os campos jsonQuestoes e notaFinal de acordo com os parâmetros
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo
 		// homologadoRecurso estiver TRUE
@@ -477,11 +480,13 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica que um candidato foi aprovado nas provas escritas
 	 */
-	public boolean marcaAprovadoProvasEscritas(int idInscricao) {
+	public boolean marcaAprovadoProvasEscritas(int idInscricao)
+	{
 		// Muda o campo aprovadoProvas de uma inscrição para TRUE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
 		Connection c = getConnection();
-		try {
+		try
+		{
 			PreparedStatement ps = c.prepareStatement("UPDATE inscricao SET aprovadoProvas = 1 WHERE id = ?");
 			ps.setInt(1, idInscricao);
 
@@ -490,7 +495,8 @@ public class InscricaoDAO extends AbstractDAO {
 			c.close();
 			return true;
 
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
 			return false;
 		}
@@ -499,11 +505,13 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica que um candidato foi reprovado nas provas escritas
 	 */
-	public boolean marcaReprovadoProvasEscritas(int idInscricao) {
+	public boolean marcaReprovadoProvasEscritas(int idInscricao)
+	{
 		// Muda o campo aprovadoProvas de uma inscrição para FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
 		Connection c = getConnection();
-		try {
+		try
+		{
 			PreparedStatement ps = c.prepareStatement("UPDATE inscricao SET aprovadoProvas = 0 WHERE id = ?");
 			ps.setInt(1, idInscricao);
 
@@ -512,7 +520,8 @@ public class InscricaoDAO extends AbstractDAO {
 			c.close();
 			return true;
 
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
 			return false;
 		}
@@ -522,7 +531,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova oral
 	 */
-	public List<InscricaoEdital> carregaPresencaProvaOral(int idEdital, String codigoProjetoPesquisa) {
+	public List<InscricaoEdital> carregaPresencaProvaOral(int idEdital, String codigoProjetoPesquisa)
+	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
 		String SQL = "SELECT" + "usuario.nome AS 'Nome'," + "inscricaoprovaoral.codigoProvaOral AS 'Prova',"
 				+ "inscricaoprovaoral.presente AS 'Presenca'" + "FROM usuario" + "JOIN"
@@ -536,14 +546,16 @@ public class InscricaoDAO extends AbstractDAO {
 
 		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
 
-		try {
+		try
+		{
 			PreparedStatement ps = c.prepareStatement(SQL);
 			ps.setInt(1, idEdital);
 			ps.setString(2, "%" + codigoProjetoPesquisa + "%");
 
 			ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) {
+			while (rs.next())
+			{
 				Edital edital = null;
 
 				InscricaoEdital item = new InscricaoEdital(edital);
@@ -559,7 +571,8 @@ public class InscricaoDAO extends AbstractDAO {
 
 			c.close();
 
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			log("InscricaoDAO.lista: " + e.getMessage());
 		}
 
@@ -569,7 +582,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica que um candidato esteve presente na prova oral de um projeto
 	 */
-	public boolean indicaPresencaProvaOral(int idInscricao, String codigoProjetoPesquisa) {
+	public boolean indicaPresencaProvaOral(int idInscricao, String codigoProjetoPesquisa)
+	{
 		// Muda o campo presenteProvaOral para TRUE no registro da prova de alinhamento
 		// associada à inscrição e projeto de pesquisa
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo
@@ -592,14 +606,16 @@ public class InscricaoDAO extends AbstractDAO {
 		if (c == null)
 			return false;
 
-		try {
+		try
+		{
 			PreparedStatement ps = c.prepareStatement(SQLConsulta);
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
 					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0
-					|| rs.getInt("notaFinalProvaEscrita") > 7) {
+					|| rs.getInt("notaFinalProvaEscrita") > 7)
+			{
 				ps = c.prepareStatement(SQLUpdate);
 				ps.setInt(1, idInscricao);
 				ps.setString(1, codigoProjetoPesquisa);
@@ -607,7 +623,8 @@ public class InscricaoDAO extends AbstractDAO {
 			}
 
 			c.close();
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			log("EditalDAO.lista: " + e.getMessage());
 		}
 
@@ -617,7 +634,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica que um candidato esteve ausente na prova oral de um projeto
 	 */
-	public boolean indicaAusenciaProvaOral(int idInscricao, String codigoProjetoPesquisa) {
+	public boolean indicaAusenciaProvaOral(int idInscricao, String codigoProjetoPesquisa)
+	{
 		// Muda o campo presenteProvaOral para FALSE no registro da prova de alinhamento
 		// associada à inscrição e projeto de pesquisa
 		// Somente se o campo homologadoInicial estiver TRUE ou o campo
@@ -635,7 +653,8 @@ public class InscricaoDAO extends AbstractDAO {
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova oral
 	 */
-	public List<InscricaoEdital> carregaAvaliacaoAlinhamento(int idEdital, String codigoProjetoPesquisa) {
+	public List<InscricaoEdital> carregaAvaliacaoAlinhamento(int idEdital, String codigoProjetoPesquisa)
+	{
 		// TODO Grupo 7: implementar este método em função dos casos de uso #14 e #15
 		return null;
 	}
@@ -643,7 +662,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica as notas de alinhamento de um projeto de pesquisa na avaliação inicial
 	 */
-	public boolean indicaNotasAlinhamentoInicial(int idInscricao, InscricaoProjetoPesquisa avaliacao) {
+	public boolean indicaNotasAlinhamentoInicial(int idInscricao, InscricaoProjetoPesquisa avaliacao)
+	{
 		// Muda o campo justificativaNotasInicial do alinhamento da inscrição e projeto
 		// de pesquisa de acordo com o parâmetro
 		// Muda o campo jsonSubcriteriosInicial com as avaliações dos critérios
@@ -664,7 +684,8 @@ public class InscricaoDAO extends AbstractDAO {
 	/**
 	 * Indica as notas de alinhamento de um projeto de pesquisa no recurso
 	 */
-	public boolean indicaNotasAlinhamentoRecurso(int idInscricao, InscricaoProjetoPesquisa avaliacao) {
+	public boolean indicaNotasAlinhamentoRecurso(int idInscricao, InscricaoProjetoPesquisa avaliacao)
+	{
 		// Muda o campo justificativaNotasRecurso do alinhamento da inscrição e projeto
 		// de pesquisa de acordo com o parâmetro
 		// Muda o campo jsonSubcriteriosRecurso com as avaliações dos critérios

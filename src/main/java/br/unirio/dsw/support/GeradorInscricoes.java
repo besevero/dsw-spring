@@ -33,7 +33,6 @@ public class GeradorInscricoes
 		EditalDAO editalDAO = new EditalDAO();
 		
 		Edital editalMestrado = editalDAO.carregaEditalNome("PPGI Mestrado 2018", usuarioDAO);
-//		Edital editalDoutorado = editalDAO.carregaEditalNome("PPGI Doutorado 2018", usuarioDAO);
 
 		System.out.println("SET SQL_SAFE_UPDATES = 0;");
 		System.out.println("delete from InscricaoProvaAlinhamento;");
@@ -71,8 +70,11 @@ public class GeradorInscricoes
 		String jsonProjetos = new JsonInscricaoProjetoPesquisaWriter().execute(inscricao).toString().replace("\"", "\\\"");
 
 		// Publica a inscricao
-		System.out.println("INSERT INTO Inscricao(dataRegistro, dataAtualizacao, idEdital, idCandidato, cotaNegros, cotaDeficientes, jsonProjetos)");
-		System.out.println("SELECT NOW(), NOW(), " + edital.getId() + ", id, " + cotaNegros + ", " + cotaDeficientes + ", '" + jsonProjetos + "'");
+	 	int estaHomologadoInicial = inscricao.getHomologadoOriginal() ? 1 : 0;
+	 	int estaDispensadoInicial = inscricao.getDispensadoProvaOriginal() ? 1 : 0;
+
+	 	System.out.println("INSERT INTO Inscricao(dataRegistro, dataAtualizacao, idEdital, idCandidato, cotaNegros, cotaDeficientes, homologadoInicial, homologado, dispensadoProvaInicial, dispensado, jsonProjetos)");
+		System.out.println("SELECT NOW(), NOW(), " + edital.getId() + ", id, " + cotaNegros + ", " + cotaDeficientes + ", '" + estaHomologadoInicial + ", " + estaHomologadoInicial + ", " + estaDispensadoInicial + ", " + jsonProjetos + "'");
 		System.out.println("FROM Usuario WHERE nome = '" + nome + "';");
 		System.out.println();
 
@@ -119,6 +121,8 @@ public class GeradorInscricoes
 				inscricao.adicionaInscricaoProjetoPesquisa(projeto, "minhas intencoes de pesquisa");
 		}
 		
+		inscricao.setHomologadoOriginal(true);
+		inscricao.setDispensadoProvaOriginal(Math.random() > 0.8);
 		return inscricao;
 	}
 }
