@@ -661,9 +661,18 @@ div.page-filter {
 	background: white;
 	padding: 8px;
 }
-div.page-filter input {
+div.page-filter input, div.page-filter select {
     font-size: 14px;
     margin-top: 8px;
+    padding: 5px;
+}
+
+div.page-filter select {
+	width: 240px;
+}
+
+.mdl-dialog__content.presenca {
+	padding: 10px;
 }
 
 /*
