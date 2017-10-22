@@ -74,7 +74,7 @@ public class GeradorInscricoes
 	 	int estaDispensadoInicial = inscricao.getDispensadoProvaOriginal() ? 1 : 0;
 
 	 	System.out.println("INSERT INTO Inscricao(dataRegistro, dataAtualizacao, idEdital, idCandidato, cotaNegros, cotaDeficientes, homologadoInicial, homologado, dispensadoProvaInicial, dispensado, jsonProjetos)");
-		System.out.println("SELECT NOW(), NOW(), " + edital.getId() + ", id, " + cotaNegros + ", " + cotaDeficientes + ", '" + estaHomologadoInicial + ", " + estaHomologadoInicial + ", " + estaDispensadoInicial + ", " + jsonProjetos + "'");
+		System.out.println("SELECT NOW(), NOW(), " + edital.getId() + ", id, " + cotaNegros + ", " + cotaDeficientes + ", " + estaHomologadoInicial + ", " + estaHomologadoInicial + ", " + estaDispensadoInicial + ", " + estaDispensadoInicial + ", '" + jsonProjetos + "'");
 		System.out.println("FROM Usuario WHERE nome = '" + nome + "';");
 		System.out.println();
 
