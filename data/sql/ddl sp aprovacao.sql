@@ -1,0 +1,15 @@
+DROP PROCEDURE IF EXISTS AtualizaCampoAprovadoProvas;
+DELIMITER //
+CREATE PROCEDURE AtualizaCampoAprovadoProvas(vId INT, vAprovadoProvas INT)
+BEGIN
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION ROLLBACK;
+	START TRANSACTION;
+
+	UPDATE inscricao
+	SET aprovadoProvas = vAprovadoProvas
+	WHERE id = vId;
+	
+	COMMIT;
+END //
+
+DELIMITER ;

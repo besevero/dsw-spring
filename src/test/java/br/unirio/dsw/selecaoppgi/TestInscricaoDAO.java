@@ -1,15 +1,14 @@
 package br.unirio.dsw.selecaoppgi;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import br.unirio.dsw.selecaoppgi.controller.ProvaEscritaController;
 import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
-import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
 
+<<<<<<< HEAD
 public class TestInscricaoDAO {
 	private InscricaoDAO inscricaoDAO;
 
@@ -32,17 +31,24 @@ public class TestInscricaoDAO {
 	public void setup() {
 
 	}
+=======
+public class TestInscricaoDAO
+{
+>>>>>>> 15635db5675b1d913202487a6cf50df670efa0e8
 
 	@Test
-	public void testmarcaReprovadoProvasEscritas() {
-		assertTrue(inscricaoDAO.marcaReprovadoProvasEscritas(1) == true);
+	public void test()
+	{
+		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testCalculaNotaDaProvaEscrita() {
+	public void testCalculaNotaDaProvaEscrita()
+	{
 		ProvaEscritaController a = new ProvaEscritaController();
 		Edital edital = null;
 		InscricaoEdital candidato = new InscricaoEdital(edital);
+<<<<<<< HEAD
 		a.CalculaNotaDaProvaEscrita(candidato);// retorna 76 de média apenas
 	}
 
@@ -58,3 +64,8 @@ public class TestInscricaoDAO {
 	}
 
 }
+=======
+		a.CalculaNotaDaProvaEscrita(candidato); // retorna 76 de média
+	}
+}
+>>>>>>> 15635db5675b1d913202487a6cf50df670efa0e8

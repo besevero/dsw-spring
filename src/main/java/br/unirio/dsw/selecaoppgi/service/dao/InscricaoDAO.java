@@ -386,6 +386,12 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public boolean indicaPresencaProvaEscrita(int idInscricao, String codigoProva)
 	{
+		
+		// Muda o campo presente para TRUE no registro da prova escrita associada à inscrição
+		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
+		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
+		// TODO Grupo 1: implementar este método em função do caso de uso #9
+		
 		Connection c = getConnection();
 
 		if (c == null)
@@ -413,6 +419,12 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public boolean indicaAusenciaProvaEscrita(int idInscricao, String codigoProva)
 	{
+		
+		// Muda o campo presente para FALSE no registro da prova escrita associada à inscrição
+		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
+		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
+		// TODO Grupo 1: implementar este método em função do caso de uso #9
+		
 		Connection c = getConnection();
 
 		if (c == null)
@@ -481,20 +493,20 @@ public class InscricaoDAO extends AbstractDAO
 	{
 		// Muda o campo aprovadoProvas de uma inscrição para TRUE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
+		
 		Connection c = getConnection();
 		try
 		{
-			PreparedStatement ps = c.prepareStatement("UPDATE inscricao SET aprovadoProvas = 1 WHERE id = ?");
-			ps.setInt(1, idInscricao);
-
-			ps.executeQuery();
-
+			CallableStatement cs = c.prepareCall("{call AtualizaCampoAprovadoProvas(?, ?)}");
+			cs.setInt(1, idInscricao);
+			cs.setInt(2, 1);
+			cs.execute();
 			c.close();
 			return true;
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
+			log("InscricaoDAO.marcaAprovado: " + e.getMessage());
 			return false;
 		}
 	}
@@ -506,20 +518,20 @@ public class InscricaoDAO extends AbstractDAO
 	{
 		// Muda o campo aprovadoProvas de uma inscrição para FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
+		
 		Connection c = getConnection();
 		try
 		{
-			PreparedStatement ps = c.prepareStatement("UPDATE inscricao SET aprovadoProvas = 0 WHERE id = ?");
-			ps.setInt(1, idInscricao);
-
-			ps.executeQuery();
-
+			CallableStatement cs = c.prepareCall("{call AtualizaCampoAprovadoProvas(?, ?)}");
+			cs.setInt(1, idInscricao);
+			cs.setInt(2, 0);
+			cs.execute();
 			c.close();
 			return true;
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.getInscricaoId: " + e.getMessage());
+			log("InscricaoDAO.marcaReprovado: " + e.getMessage());
 			return false;
 		}
 	}
