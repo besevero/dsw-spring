@@ -3,7 +3,6 @@ package br.unirio.dsw.selecaoppgi;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import br.unirio.dsw.selecaoppgi.controller.ProvaEscritaController;
@@ -14,8 +13,7 @@ import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
 public class TestInscricaoDAO {
 	private InscricaoDAO inscricaoDAO;
 
-	@Before
-<<<<<<< HEAD
+	/*@Before
 	public void setup()
 	{
 	
@@ -31,9 +29,7 @@ public class TestInscricaoDAO {
 	  catch(Exception e) {
 	    e.getMessage();
 	  }*/
-=======
 	public void setup() {
->>>>>>> 521a71fbfdd55c690a0a571528824e017bbe9277
 
 	}
 
@@ -47,13 +43,9 @@ public class TestInscricaoDAO {
 		ProvaEscritaController a = new ProvaEscritaController();
 		Edital edital = null;
 		InscricaoEdital candidato = new InscricaoEdital(edital);
-		a.CalculaNotaDaProvaEscrita(candidato);// retorna 76 de média
+		a.CalculaNotaDaProvaEscrita(candidato);// retorna 76 de média apenas
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 521a71fbfdd55c690a0a571528824e017bbe9277
 	@Test
 	public void testmarcaAprovadoProvasEscritas() throws Exception {
 		int idInscricao = 1;
@@ -64,9 +56,5 @@ public class TestInscricaoDAO {
 			fail("Ops! Deveria ter ocorrido uma exceção");
 		}
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 521a71fbfdd55c690a0a571528824e017bbe9277
 }
