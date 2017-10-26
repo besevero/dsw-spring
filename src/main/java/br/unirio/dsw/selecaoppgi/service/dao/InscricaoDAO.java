@@ -268,17 +268,13 @@ public class InscricaoDAO extends AbstractDAO
 				boolean presente = rs.getInt("presente") != 0;
 				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
 				JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
-				JsonQuestoesReader reader = new JsonQuestoesReader();
-				reader.execute(jsonQuestoesInicialArray);
+				JsonQuestoesReader readerJsonQuestoesInicialArray = new JsonQuestoesReader();
+				readerJsonQuestoesInicialArray.execute(jsonQuestoesInicialArray);
 			
-				
-				
 				String jsonQuestoesRecursoString = rs.getString("jsonQuestoesRecurso");
 				JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
-				JsonQuestoesReader reader = new JsonQuestoesReader();
-				reader.execute();
-				
-				
+				JsonQuestoesReader readerJsonQuestoesRecursoArray = new JsonQuestoesReader();
+				readerJsonQuestoesRecursoArray.execute(jsonQuestoesRecursoArray);
 				
 				// TODO: FAzer Os dois Jsons
 
