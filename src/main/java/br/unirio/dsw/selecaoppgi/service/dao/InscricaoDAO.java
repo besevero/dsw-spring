@@ -253,7 +253,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
 		eliminaInscricoesSemProvaEscrita(lista, edital, codigoProva);
-
+		
 		try
 		{
 			PreparedStatement ps = c.prepareStatement(SQL);
@@ -267,23 +267,26 @@ public class InscricaoDAO extends AbstractDAO
 				int idInscricao = rs.getInt("idInscricao");
 				boolean presente = rs.getInt("presente") != 0;
 				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
-				JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
-				JsonQuestoesReader readerJsonQuestoesInicialArray = new JsonQuestoesReader();
-				readerJsonQuestoesInicialArray.execute(jsonQuestoesInicialArray);
-			
 				String jsonQuestoesRecursoString = rs.getString("jsonQuestoesRecurso");
-				JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
-				JsonQuestoesReader readerJsonQuestoesRecursoArray = new JsonQuestoesReader();
-				readerJsonQuestoesRecursoArray.execute(jsonQuestoesRecursoArray);
-				
-				// TODO: FAzer Os dois Jsons
 
+				// TODO: FAzer Os dois Jsons
 				InscricaoEdital inscricao = pegaInscricaoId(lista, idInscricao);
+
 				// TODO: fazer o pegaInscricaoId
 				if (inscricao != null)
 				{
 					AvaliacaoProvaEscrita inscricaoProva = inscricao.pegaAvaliacaoProvaEscrita(prova);
 					inscricaoProva.setPresente(presente);
+					
+					JsonQuestoesReader readerJsonQuestoes = new JsonQuestoesReader();
+
+					JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
+					readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray, inscricaoProva);
+		
+					JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
+					readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
+					
+
 					// muda as notas na avaliacao original
 					// muda as notas no recurso
 				}

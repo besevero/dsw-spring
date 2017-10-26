@@ -23,10 +23,10 @@ public class ProvaEscritaController {
 	InscricaoDAO inscricaoDAO = new InscricaoDAO();
 
 	/*
-	 * Função que verifica quais candidatos possuem pendências
+	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova caso não haja pendências.
 	 * 
 	 */
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_PROFESSOR")
 	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> ListaDeCanditados) {
 		// TODO: Testar e Revisar
 		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();

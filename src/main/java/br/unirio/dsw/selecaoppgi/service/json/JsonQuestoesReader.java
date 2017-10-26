@@ -1,24 +1,37 @@
 package br.unirio.dsw.selecaoppgi.service.json;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
-import br.unirio.dsw.selecaoppgi.model.edital.Edital;
-import br.unirio.dsw.selecaoppgi.model.edital.ProjetoPesquisa;
-import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
-import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
+import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 
+/**
+ * Classe responsável por carregar as notas de uma avaliação de prova no formato JSON
+ * 
+ * @author Bernardo
+ */
 public class JsonQuestoesReader
 {
+	/**
+	 * Carrega a representação JSON das notas originais de uma prova
+	 */
+	public void carregaNotasIniciais(JsonArray jsonQuestoes, AvaliacaoProvaEscrita avaliacao)
+	{
+		for (int i = 0; i < jsonQuestoes.size(); i++)
+		{
+			int nota = jsonQuestoes.get(i).getAsInt();
+			avaliacao.setNotaOriginalQuestao(i, nota);
+		}
+	}
 
 	/**
-	 * Gera a representação JSON
+	 * Carrega a representação JSON das notas de recurso de uma prova
 	 */
-	public void execute(JsonArray jsonQuestoesArray)
+	public void carregaNotasRecurso(JsonArray jsonQuestoes, AvaliacaoProvaEscrita avaliacao)
 	{
-		for (int i = 0; i < jsonQuestoesArray.size(); i++)
+		for (int i = 0; i < jsonQuestoes.size(); i++)
 		{
-
+			int nota = jsonQuestoes.get(i).getAsInt();
+			avaliacao.setNotaRecursoQuestao(i, nota);
 		}
 	}
 }
