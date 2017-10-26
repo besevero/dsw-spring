@@ -20,6 +20,7 @@ import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader;
+import br.unirio.dsw.selecaoppgi.service.json.JsonQuestoesReader;
 
 /**
  * Classe responsavel pela persistencia de inscrições em edital de seleção
@@ -266,7 +267,19 @@ public class InscricaoDAO extends AbstractDAO
 				int idInscricao = rs.getInt("idInscricao");
 				boolean presente = rs.getInt("presente") != 0;
 				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
+				JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
+				JsonQuestoesReader reader = new JsonQuestoesReader();
+				reader.execute(jsonQuestoesInicialArray);
+			
+				
+				
 				String jsonQuestoesRecursoString = rs.getString("jsonQuestoesRecurso");
+				JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
+				JsonQuestoesReader reader = new JsonQuestoesReader();
+				reader.execute();
+				
+				
+				
 				// TODO: FAzer Os dois Jsons
 
 				InscricaoEdital inscricao = pegaInscricaoId(lista, idInscricao);
