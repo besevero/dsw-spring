@@ -3,6 +3,7 @@ package br.unirio.dsw.selecaoppgi.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +26,7 @@ public class ProvaEscritaController {
 	 * Função que verifica quais candidatos possuem pendências
 	 * 
 	 */
-
+	@Secured("ROLE_ADMIN")
 	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> ListaDeCanditados) {
 		// TODO: Testar e Revisar
 		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
@@ -45,16 +46,20 @@ public class ProvaEscritaController {
 		}
 		return candidatosComPendencia;
 	}
-
+/*
+ * Função que calcula a nota da prova Escrita
+ */
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
 		// Cálculo da prova
-		ProvaEscrita provaEscrita = new ProvaEscrita();
-		if (!provaEscrita.isDispensavel()) {
-			provaEscrita.adicionaQuestao(1);
-			provaEscrita.adicionaQuestao(1);
-			provaEscrita.adicionaQuestao(1);
-		} else {
-			return;
+		Iterable<AvaliacaoProvaEscrita> provasEscritas = candidato.getAvaliacoesProvasEscritas();
+		for(AvaliacaoProvaEscrita provaEscrita : provasEscritas) {
+			if (!provaEscrita..isDispensavel()) {
+				provaEscrita.adicionaQuestao(1);
+				provaEscrita.adicionaQuestao(1);
+				provaEscrita.adicionaQuestao(1);
+			} else {
+				return;
+			}
 		}
 		AvaliacaoProvaEscrita avaliacaoProvaEscrita = new AvaliacaoProvaEscrita(provaEscrita);
 		avaliacaoProvaEscrita.setNotaOriginalQuestao(0, 50);

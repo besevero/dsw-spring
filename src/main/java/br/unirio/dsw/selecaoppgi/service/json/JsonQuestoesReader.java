@@ -19,8 +19,6 @@ public class JsonQuestoesReader
 		for (int i = 0; i < jsonQuestoesArray.size(); i++)
 		{
 
-
 		}
 	}
-
 }
