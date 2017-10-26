@@ -295,7 +295,16 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	private InscricaoEdital pegaInscricaoId(List<InscricaoEdital> lista, int idInscricao)
 	{
+		for (int i = lista.size() - 1; i > 0;)
+		{
+			if (i == idInscricao)
+			{
+				InscricaoEdital inscricao = lista.get(idInscricao);
+				return inscricao;
+			} else
+				return null;
 
+		}
 		return null;
 	}
 
@@ -386,12 +395,15 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public boolean indicaPresencaProvaEscrita(int idInscricao, String codigoProva)
 	{
-		
-		// Muda o campo presente para TRUE no registro da prova escrita associada à inscrição
-		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
-		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
+
+		// Muda o campo presente para TRUE no registro da prova escrita associada à
+		// inscrição
+		// Somente se o campo homologadoInicial estiver TRUE ou o campo
+		// homologadoRecurso estiver TRUE
+		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
+		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		
+
 		Connection c = getConnection();
 
 		if (c == null)
@@ -419,12 +431,15 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public boolean indicaAusenciaProvaEscrita(int idInscricao, String codigoProva)
 	{
-		
-		// Muda o campo presente para FALSE no registro da prova escrita associada à inscrição
-		// Somente se o campo homologadoInicial estiver TRUE ou o campo homologadoRecurso estiver TRUE
-		// Somente se o campo dispensadoProvaInicial estiver FALSE ou dispensadoProvaRecurso estiver FALSE
+
+		// Muda o campo presente para FALSE no registro da prova escrita associada à
+		// inscrição
+		// Somente se o campo homologadoInicial estiver TRUE ou o campo
+		// homologadoRecurso estiver TRUE
+		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
+		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		
+
 		Connection c = getConnection();
 
 		if (c == null)
@@ -493,7 +508,7 @@ public class InscricaoDAO extends AbstractDAO
 	{
 		// Muda o campo aprovadoProvas de uma inscrição para TRUE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
-		
+
 		Connection c = getConnection();
 		try
 		{
@@ -518,7 +533,7 @@ public class InscricaoDAO extends AbstractDAO
 	{
 		// Muda o campo aprovadoProvas de uma inscrição para FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #12
-		
+
 		Connection c = getConnection();
 		try
 		{
