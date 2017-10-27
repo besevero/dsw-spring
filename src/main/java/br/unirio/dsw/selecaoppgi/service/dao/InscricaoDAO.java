@@ -234,7 +234,6 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, String codigoProva)
 	{
-
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 
 		String SQL = "SELECT ipe.* " + "FROM InscricaoProvaEscrita ipe "
@@ -253,7 +252,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
 		eliminaInscricoesSemProvaEscrita(lista, edital, codigoProva);
-		
+
 		try
 		{
 			PreparedStatement ps = c.prepareStatement(SQL);
@@ -269,23 +268,20 @@ public class InscricaoDAO extends AbstractDAO
 				String jsonQuestoesInicialString = rs.getString("jsonQuestoesInicial");
 				String jsonQuestoesRecursoString = rs.getString("jsonQuestoesRecurso");
 
-				// TODO: FAzer Os dois Jsons
 				InscricaoEdital inscricao = pegaInscricaoId(lista, idInscricao);
 
-				// TODO: fazer o pegaInscricaoId
 				if (inscricao != null)
 				{
 					AvaliacaoProvaEscrita inscricaoProva = inscricao.pegaAvaliacaoProvaEscrita(prova);
 					inscricaoProva.setPresente(presente);
-					
+
 					JsonQuestoesReader readerJsonQuestoes = new JsonQuestoesReader();
 
 					JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
 					readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray, inscricaoProva);
-		
+
 					JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
 					readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
-					
 
 					// muda as notas na avaliacao original
 					// muda as notas no recurso
@@ -306,16 +302,13 @@ public class InscricaoDAO extends AbstractDAO
 	 * Retorna o id de inscrição de um candidato da lista de inscrições de um edital
 	 */
 	private InscricaoEdital pegaInscricaoId(List<InscricaoEdital> lista, int idInscricao)
-	{
-		for (int i = lista.size() - 1; i > 0;)
+	{	
+		for (int i = lista.size() - 1; i > 0; i++)
 		{
-			if (i == idInscricao)
-			{
-				InscricaoEdital inscricao = lista.get(idInscricao);
+			InscricaoEdital inscricao = lista.get(i);
+			
+			if (inscricao.getId() == idInscricao)
 				return inscricao;
-			} else
-				return null;
-
 		}
 		return null;
 	}
