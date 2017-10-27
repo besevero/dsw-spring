@@ -1,6 +1,10 @@
 App.factory("dataService", ["$http", function ($http) {
 	return {
-		lista: function(params) {
+		pegaProvas: function(params) {
+			return $http.get(contextPath + "/edital/escrita/presenca?page=" + params.page + "&size=" + params.size + "&nome=" + (params.nome || "") + "&prova=" + params.prova + "&presenca=" + params.presenca);
+		},
+		
+		pegaInscricaoProvas: function(params) {
 			return $http.get(contextPath + "/edital/escrita/presenca?page=" + params.page + "&size=" + params.size + "&nome=" + (params.nome || "") + "&prova=" + params.prova + "&presenca=" + params.presenca);
 		},
 		
