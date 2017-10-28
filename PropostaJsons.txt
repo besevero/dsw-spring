@@ -1,0 +1,108 @@
+*Os valores após os ':' são placeholders.
+
+
+Questões:
+			{
+				"nota":[10.0, 9.0, 8.0, 8.0, 10.0, 7.0, 8.0, 8.0, 9.0, 10.0]
+			}
+
+Inscrição Edital:
+	{
+		"id": 1,
+		"idCandidato": 1,
+		"nomeCandidato": "texto",
+		"edital":{
+			"id":1,;
+			"nome":"texto",
+			"dataInicio":"data",
+			"dataTermino":data,
+			status:{
+				"codigo":1,
+				"nome":"texto"
+			},
+			"notaMinimaAlinhamento": 1,
+			"comissaoSelecao":[
+				{"id":1, "nome":texto, "papel":{"codigo":1}, dataUltimoLogin:"texto", "contadorLoginFalhas":1, "tokenLogin":1, "dataTokenLogin":"texto", "idEdital":1}
+			],
+			"comissaoRecurso":[
+				{"id":1, "nome":texto, "papel":{"codigo":1}, dataUltimoLogin:"texto", "contadorLoginFalhas":1, "tokenLogin":1, "dataTokenLogin":"texto", "idEdital":1}
+			],
+			"provasEscritas": [
+				{"codigo":"codigo", "nome":"nome", "dispensavel":false,"notaMinimaAprovacao":70, pesoQuestoes: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] }
+			],
+			"projetosPesquisa":[
+				{"codigo":"texto", "nome":"texto", "exigeProvaOral": false, "professores":[
+					{"id":1, "nome":texto, "papel":{"codigo":1}, dataUltimoLogin:"texto", "contadorLoginFalhas":1, "tokenLogin":1, "dataTokenLogin":"texto", "idEdital":1}
+				],"provasEscritas": [
+					{"codigo":"codigo", "nome":"nome", "dispensavel":false,"notaMinimaAprovacao":70, pesoQuestoes: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] }
+				]},
+					{"codigo":"texto", "nome":"texto", "exigeProvaOral": false, "professores":[
+					{"id":1, "nome":texto, "papel":{"codigo":1}, dataUltimoLogin:"texto", "contadorLoginFalhas":1, "tokenLogin":1, "dataTokenLogin":"texto", "idEdital":1}
+				],"provasEscritas": [
+					{"codigo":"codigo", "nome":"nome", "dispensavel":false,"notaMinimaAprovacao":70, pesoQuestoes: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] },
+				]}
+			],
+			criteriosAlinhamento:
+				"criterioAlinhamento":{
+				"codigo" :"texto",
+				"nome":"texto",
+				"pesoComProvaOral":1,
+				"pesoSemProvaOral":1,
+				"pertenceProvaOral": false,
+				"subcriterios":[
+					{"codigo":"texto", "nome":"texto", "descricao":"texto", "peso": 1 }
+				]
+			},
+			"presenteProvaOral": false,
+			"justificativaNotasOriginal": "Texto",
+			"justificativaNotasRecurso" : "Texto",
+			"subcriterios":[
+				{
+					"subcriterio": { 
+						"codigo":"texto", "nome": "texto", "descricao": "texto", "peso":1
+					},
+					"notaOriginal":"Texto",
+					"notaRecurso":"Texto"}
+				}
+			]
+		}
+	},
+		"cotaNegros":false,
+		"cotaDeficientes:"false",
+		"homologadoOriginal":false,
+		"justificativaHomologacaoOriginal": "texto",
+		"homologadoRecurso": false,
+		"justificativaHomologacaoRecurso":"texto",
+		"dispensadoProvaOriginal":"texto",
+		"justificativaDispensaOriginal":"texto",
+		"dispensadoProvaRecurso": false;
+		"justificativaDispensaRecurso":"texto";
+		"projetosPesquisa":[
+				{"codigo":"texto", "nome":"texto", "exigeProvaOral": false, "professores":[
+					{"id":1, "nome":texto, "papel":{"codigo":1}, dataUltimoLogin:"texto", "contadorLoginFalhas":1, "tokenLogin":1, "dataTokenLogin":"texto", "idEdital":1}
+					],
+					"provasEscritas": [
+						{"codigo":"codigo", "nome":"nome", "dispensavel":false,"notaMinimaAprovacao":70, pesoQuestoes: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] }
+					]
+				},
+			]
+		"provasEscritas":[
+		{
+			"provaEscrita":{
+				"codigo":"codigo",
+				"nome":"nome",
+				"dispensavel":false,
+				"notaMinimaAprovacao":70,
+				pesoQuestoes: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
+			},
+			"presente": false,
+			"notaOriginalQuestao": [10.0, 9.0, 8.0, 8.0, 10.0, 7.0, 8.0, 8.0, 9.0, 10.0],
+			"notaRecursoQuestao":[10.0, 9.0, 8.0, 8.0, 10.0, 7.0, 8.0, 8.0, 9.0, 10.0]
+		}]
+	}
+
+
+	
+
+
+		
