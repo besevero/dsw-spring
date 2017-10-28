@@ -5,10 +5,17 @@ import java.util.List;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
@@ -79,6 +86,19 @@ public class ProvaEscritaController {
 		System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado" : "reprovado");
 	}
 
+	/**
+	 * Ação AJAX que lista todos as inscrições de um edital
+	 */
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
+	public InscricaoEdital lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("codeProof") String codigoProva)
+	{
+		List<InscricaoEdital> editais = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
+
+		return null;
+	}
+	
 	/**
 	 * Ação que redireciona o usuário para a tela presença em prova escrita
 	 */
