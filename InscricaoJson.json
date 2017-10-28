@@ -15,77 +15,77 @@
 		"projetosPesquisa":
 		[
 			{
-			"projetoPesquisa":
-			{
-				"codigo":"texto", 
-				"nome":"texto", 
-				"exigeProvaOral": false, 
-				"professores":
-				[
-					{
-						"id":1,
-						"nome":"texto", 
-						"papel":{"codigo":1},
-						"dataUltimoLogin":"texto", 
-						"contadorLoginFalhas":1, 
-						"tokenLogin":"texto",
-						"dataTokenLogin":"texto", 
-						"idEdital":1
-					}
-				],
-				"provasEscritas": 
-				[
-					{
-						"codigo":"codigo", 
-						"nome":"nome", 
-						"dispensavel":false,
-						"notaMinimaAprovacao":70,
-						"pesoQuestoes": [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] 
-					}
-				]
-			
-			"intencoes": "texto",
-			"criteriosAlinhamento":
-			[
+				"projetoPesquisa":
 				{
-					criterioAlinhamento:
+					"codigo":"texto", 
+					"nome":"texto", 
+					"exigeProvaOral": false, 
+					"professores":
+					[
+						{
+							"id":1,
+							"nome":"texto", 
+							"papel":{"codigo":1},
+							"dataUltimoLogin":"texto", 
+							"contadorLoginFalhas":1, 
+							"tokenLogin":"texto",
+							"dataTokenLogin":"texto", 
+							"idEdital":1
+						}
+					],
+					"provasEscritas": 
+					[
+						{
+							"codigo":"codigo", 
+							"nome":"nome", 
+							"dispensavel":false,
+							"notaMinimaAprovacao":70,
+							"pesoQuestoes": [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] 
+						}
+					]
+				},
+				"intencoes": "texto",
+				"criteriosAlinhamento":
+				[
 					{
-						"codigo" :"texto", 
-						"nome":"texto", 
-						"pesoComProvaOral":1,
-						"pesoSemProvaOral":1,
-						"pertenceProvaOral": false, 
+						"criterioAlinhamento":
+						{
+							"codigo" :"texto", 
+							"nome":"texto", 
+							"pesoComProvaOral":1,
+							"pesoSemProvaOral":1,
+							"pertenceProvaOral": false, 
+							"subcriterios":
+							[
+								{
+									"codigo":"texto", 
+									"nome":"texto", 
+									"descricao":"texto", 
+									"peso": 1 
+								}
+							]
+						},
+						"presenteProvaOral":false,
+						"justificativaNotasOriginal":"texto",
+						"justificativaNotasRecurso": "texto",
 						"subcriterios":
 						[
 							{
-								"codigo":"texto", 
-								"nome":"texto", 
-								"descricao":"texto", 
-								"peso": 1 
+								"subcriterio":
+								{
+									"codigo":"texto", 
+									"nome":"texto", 
+									"descricao":"texto", 
+									"peso": 1 	
+								},
+								"notaOriginal":1,
+								"notalRecurso":1
 							}
 						]
-					},
-					"presenteProvaOral":false,
-					"justificativaNotasOriginal":"texto",
-					"justificativaNotasRecurso": "texto",
-					"subcriterios":
-					[
-						{
-							"subcriterio":
-							{
-								"codigo":"texto", 
-								"nome":"texto", 
-								"descricao":"texto", 
-								"peso": 1 	
-							}
-							"notaOriginal":1,
-							"notalRecurso":1
-						}
-					]
-				}
-			]
-			}
-		]
+					}
+				]
+			}		
+		],
 		"provasEscritas":
 		[
 			{
