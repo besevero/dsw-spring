@@ -5,16 +5,18 @@ import com.google.gson.JsonObject;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 
-public class JsonInscricaoWritter {
-	
+public class JsonInscricaoWritter
+{
+
 	/*
-	 * Gera a representação Json 
+	 * Gera a representação Json
 	 */
-	
-	public JsonObject execute(InscricaoEdital inscricaoEdital) {
-		
+
+	public JsonObject execute(InscricaoEdital inscricaoEdital)
+	{
+
 		JsonObject json = new JsonObject();
-		
+
 		json.addProperty("id", inscricaoEdital.getId());
 		json.addProperty("idCandidato", inscricaoEdital.getIdCandidato());
 		json.addProperty("nomeCandidato", inscricaoEdital.getNomeCandidato());
@@ -28,26 +30,28 @@ public class JsonInscricaoWritter {
 		json.addProperty("justificativaDispensaOriginal", inscricaoEdital.getJustificativaDispensaOriginal());
 		json.addProperty("dispensadoProvaRecurso", inscricaoEdital.getDispensadoProvaRecurso());
 		json.addProperty("justificativaDispensaRecurso", inscricaoEdital.getJustificativaDispensaRecurso());
-		
+
 		JsonArray jsonProvas = geraRepresentacaoAvaliacaoProvasEscritas(inscricaoEdital);
-		
+
 		if (jsonProvas.size() > 0)
 			json.add("provasEscritas", jsonProvas);
-		
+
 		return json;
 	}
+
 	/*
 	 * Gera Representação Json das Avaliações de Prova Escrita
-	 * */
+	 */
 	private JsonArray geraRepresentacaoAvaliacaoProvasEscritas(InscricaoEdital inscricaoEdital)
 	{
 		JsonArray jsonProvas = new JsonArray();
-		
+
 		for (AvaliacaoProvaEscrita prova : inscricaoEdital.getAvaliacoesProvasEscritas())
 			jsonProvas.add(geraRepresentacaoAvaliacaoProvaEscrita(prova));
-		
+
 		return jsonProvas;
 	}
+
 	/*
 	 * Gera representação de uma avaliação de prova escrita
 	 */
@@ -55,13 +59,12 @@ public class JsonInscricaoWritter {
 	{
 		JsonObject json = new JsonObject();
 		json.addProperty("presenca", prova.getPresente());
-		
+
 		JsonQuestoesWritter questoes = new JsonQuestoesWritter();
 		json.add("notaOriginalQuestao", questoes.salvaNotasIniciais(prova));
-		json.add("notaRecursoQuestao",questoes.salvaNotasRecurso(prova));
-	
+		json.add("notaRecursoQuestao", questoes.salvaNotasRecurso(prova));
+
 		return json;
 	}
-
 
 }

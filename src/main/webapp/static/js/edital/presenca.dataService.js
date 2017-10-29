@@ -1,15 +1,15 @@
 App.factory("dataService", ["$http", function ($http) {
 	return {
-		pegaProvas: function(params) {
-			return $http.get(contextPath + "/edital/escrita/presenca?page=" + params.page + "&size=" + params.size + "&nome=" + (params.nome || "") + "&prova=" + params.prova + "&presenca=" + params.presenca);
+		pegaProvasEscritas: function(params) {
+			return null;
 		},
 		
-		pegaInscricaoProvas: function(params) {
-			return $http.get(contextPath + "/edital/escrita/presenca?page=" + params.page + "&size=" + params.size + "&nome=" + (params.nome || "") + "&prova=" + params.prova + "&presenca=" + params.presenca);
+		pegaInscricoesProvasEscritas: function(params) {
+			return $http.get(contextPath + "/edital/escrita/presenca?edital=" + params.edital + "&code=" + params.codigoProva);
 		},
 		
-		atualizaPresenca: function(id) {
-			return $http.post(contextPath + "/edital/escrita/presenca" + id + "?" + csrf.presenca + "=" + csrf.value);
+		atualizaPresencaProvasEscritas: function(id) {
+			return null;
 		}
 	};
 }]);
