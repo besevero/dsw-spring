@@ -7,14 +7,11 @@ import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 
 public class JsonInscricaoWritter
 {
-
-	/*
+	/**
 	 * Gera a representação Json
 	 */
-
 	public JsonObject execute(InscricaoEdital inscricaoEdital)
 	{
-
 		JsonObject json = new JsonObject();
 
 		json.addProperty("id", inscricaoEdital.getId());
@@ -39,8 +36,8 @@ public class JsonInscricaoWritter
 		return json;
 	}
 
-	/*
-	 * Gera Representação Json das Avaliações de Prova Escrita
+	/**
+	 * Gera a representação Json das avaliações de provas escritas
 	 */
 	private JsonArray geraRepresentacaoAvaliacaoProvasEscritas(InscricaoEdital inscricaoEdital)
 	{
@@ -52,8 +49,8 @@ public class JsonInscricaoWritter
 		return jsonProvas;
 	}
 
-	/*
-	 * Gera representação de uma avaliação de prova escrita
+	/**
+	 * Gera a representação Json de uma avaliação de prova escrita
 	 */
 	private JsonObject geraRepresentacaoAvaliacaoProvaEscrita(AvaliacaoProvaEscrita prova)
 	{
