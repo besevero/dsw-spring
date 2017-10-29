@@ -119,5 +119,17 @@ public class ProvaEscritaController {
 		model.setViewName("edital/escrita/presenca");
 		return model;
 	}
-
-}
+	
+	/*
+	 * Acao AJAX que lista todas as notas de candidatos que fizeram provas escritas de um edital
+	 */
+	 
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/nota"), method = RequestMethod.GET, produces = "application/json")
+	public String notas() {
+		
+		
+		
+	}
+	}

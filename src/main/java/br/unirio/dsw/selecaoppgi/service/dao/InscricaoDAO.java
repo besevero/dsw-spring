@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,10 @@ import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
+import br.unirio.dsw.selecaoppgi.service.json.JsonEditalWriter;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader;
 import br.unirio.dsw.selecaoppgi.service.json.JsonQuestoesReader;
+import br.unirio.dsw.selecaoppgi.service.json.JsonQuestoesWritter;
 
 /**
  * Classe responsavel pela persistencia de inscrições em edital de seleção
@@ -232,7 +235,7 @@ public class InscricaoDAO extends AbstractDAO
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova
 	 */
-	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, String codigoProva)
+	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, AvaliacaoProvaEscrita avaliacao, String codigoProva)
 	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 
@@ -282,9 +285,8 @@ public class InscricaoDAO extends AbstractDAO
 
 					JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
 					readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
-
-					// muda as notas na avaliacao original
-					// muda as notas no recurso
+								
+					
 				}
 			}
 
@@ -297,6 +299,79 @@ public class InscricaoDAO extends AbstractDAO
 
 		return lista;
 	}
+
+/**
+ * Atualiza as notas na avaliacao original	
+ */
+	public boolean atualizaNotasOriginal(AvaliacaoProvaEscrita avaliacao, int idUsuario, int indiceQuestao, int nota)
+	{
+		Connection c = getConnection();
+		
+		if (c == null)
+			return false;
+		
+		try
+		{
+			JsonQuestoesWritter writerJsonQuestoes = new JsonQuestoesWritter();
+			
+			String jsonQuestoesOriginal = writerJsonQuestoes.salvaNotasIniciais(avaliacao).toString();
+						
+			CallableStatement cs = c.prepareCall("{call NotaOriginalAtualiza(?,?)}");
+			
+			cs.setInt(1, indiceQuestao);
+			cs.setInt(2, nota);
+			cs.setString(3, jsonQuestoesOriginal);
+			
+			cs.executeUpdate();
+			avaliacao.setNotaOriginalQuestao(indiceQuestao, nota);
+			
+			c.close();
+			return true;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.atualizaNotaOriginal: " + e.getMessage());
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Atualiza as notas no recurso
+	 */
+	public boolean atualizaNotasRecurso(AvaliacaoProvaEscrita avaliacao, int idUsuario, int indiceQuestao, int nota)
+	{
+		Connection c = getConnection();
+		
+		if (c == null)
+			return false;
+		
+		try
+		{
+			JsonQuestoesWritter writerJsonQuestoes = new JsonQuestoesWritter();
+			
+			String jsonQuestoesRecurso = writerJsonQuestoes.salvaNotasRecurso(avaliacao).toString();
+						
+			CallableStatement cs = c.prepareCall("{call NotaRecursoAtualiza(?,?)}");
+			
+			cs.setInt(1, indiceQuestao);
+			cs.setInt(2, nota);
+			cs.setString(3, jsonQuestoesRecurso);
+			
+			cs.executeUpdate();
+			avaliacao.setNotaRecursoQuestao(indiceQuestao, nota);
+			
+			c.close();
+			return true;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.atualizaNotaRecurso: " + e.getMessage());
+			return false;
+		}
+	}
+	
+	
 
 	/**
 	 * Retorna o id de inscrição de um candidato da lista de inscrições de um edital
