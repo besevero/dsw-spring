@@ -1,9 +1,14 @@
 	{
-		"id":1,
-		"nome":"texto",
-		"dataInicio":"data",
-		"dataTermino":"data",
-		"status":
+	"id": 1,
+	"nome": "texto",
+	"dataInicio": "data",
+	"dataTermino": "data",
+	"status": {
+		"codigo": 1,
+		"nome": "texto"
+	},
+	"notaMinimaAlinhamento": 1,
+	"comissaoSelecao": [
 		{
 			"codigo":1,
 			"nome":"texto"
