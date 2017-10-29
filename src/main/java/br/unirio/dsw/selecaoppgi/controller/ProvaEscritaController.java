@@ -87,7 +87,7 @@ public class ProvaEscritaController {
 	}
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos em provas escritas de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
