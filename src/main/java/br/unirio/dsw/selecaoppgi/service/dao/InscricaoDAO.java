@@ -235,7 +235,7 @@ public class InscricaoDAO extends AbstractDAO
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova
 	 */
-	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, AvaliacaoProvaEscrita avaliacao, String codigoProva)
+	public List<InscricaoEdital> carregaPresencaProvaEscrita(Edital edital, String codigoProva)
 	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 

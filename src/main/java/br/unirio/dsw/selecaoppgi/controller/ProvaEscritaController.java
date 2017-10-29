@@ -57,6 +57,7 @@ public class ProvaEscritaController {
  * Função que calcula a nota da prova Escrita
  */
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
+		/*
 		// Cálculo da prova
 		Iterable<AvaliacaoProvaEscrita> provasEscritas = candidato.getAvaliacoesProvasEscritas();
 		for(AvaliacaoProvaEscrita provaEscrita : provasEscritas) {
@@ -84,7 +85,9 @@ public class ProvaEscritaController {
 				/ provaEscrita.contaQuestoes();
 
 		System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado" : "reprovado");
+				*/
 	}
+
 
 	/**
 	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
@@ -126,10 +129,10 @@ public class ProvaEscritaController {
 	 
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/nota"), method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/edital/escrita/nota", method = RequestMethod.GET, produces = "application/json")
 	public String notas() {
 		
-		
+		return null;
 		
 	}
-	}
+}
