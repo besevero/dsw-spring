@@ -92,10 +92,9 @@ public class ProvaEscritaController {
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
-	public InscricaoEdital lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("codeProof") String codigoProva)
+	public String lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("codeProof") String codigoProva)
 	{
-		List<InscricaoEdital> editais = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
-
+		List<InscricaoEdital> editais = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);	
 		return null;
 	}
 	
