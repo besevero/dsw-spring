@@ -394,6 +394,38 @@ public class InscricaoDAO extends AbstractDAO
 		}
 
 	}
+	
+	/**
+	 * Conta o numero de inscrições de provas escritas que atendem a um filtro
+	 */
+	public int conta(String codigoProvaEscrita)
+	{
+		String SQL = "SELECT COUNT(*) " +
+				"FROM inscricaoprovaescrita" +
+				"WHERE codigoProvaEscrita LIKE ?";	
+		
+		Connection c = getConnection();
+		
+		if (c == null)
+			return 0;
+		
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQL);
+			ps.setString(1, "%" + codigoProvaEscrita + "%");
+
+			ResultSet rs = ps.executeQuery();
+			int count = rs.next() ? rs.getInt(1) : 0;
+
+			c.close();
+			return count;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.conta: " + e.getMessage());
+			return 0;
+		}
+	}
 
 	/**
 	 * Indica que um candidato esteve presente em uma prova

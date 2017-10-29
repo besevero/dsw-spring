@@ -23,14 +23,35 @@ App.controller("presencaController", function ($scope, dataService, NgTableParam
 	}
 	
 	/*
+	 * Navega para a pagina de visualizacao de edital
+	 */
+	self.edita = function(id) {
+		window.location = contextPath + "/edital/edit/" + id;
+	}
+	
+	/*
+	 * Cria um novo edital
+	 */
+	self.novo = function() {
+		window.location = contextPath + "/edital/create";
+	}
+	
+	/*
+	 * Remove o edital selecionado
+	 */
+	self.remove = function(id) {
+		dataService.remove(id).then(atualizaLista);
+	}
+	
+	
+	/*
 	 * Prepara a tabela
 	 */
 	$scope.tableParams = new NgTableParams({}, {
 		getData: function (params) {
-			return dataService.lista({
-				page: params.page() - 1,
-				size: params.count(),
-				nome: $scope.filtros.nome
+			return dataService.pegaInscricoesProvasEscritas({
+				edital: $scope.filtros.edital,
+				code: $scope.filtros.codigoProva
 			}).then(function (data) {
 				if(data.data.TotalRecordCount == 0) {
 					self.noSite = true;
