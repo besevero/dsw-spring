@@ -13,25 +13,7 @@
 	"dispensadoProvaRecurso": false,
 	"justificativaDispensaRecurso": "texto",
 	"provasEscritas": [
-		{
-			"provaEscrita": {
-				"codigo": "codigo",
-				"nome": "nome",
-				"dispensavel": false,
-				"notaMinimaAprovacao": 70,
-				"pesoQuestoes": [
-					10.0,
-					10.0,
-					10.0,
-					10.0,
-					10.0,
-					10.0,
-					10.0,
-					10.0,
-					10.0,
-					10.0
-				]
-			},
+	{
 			"presente": false,
 			"notaOriginalQuestao": [
 				10.0,
