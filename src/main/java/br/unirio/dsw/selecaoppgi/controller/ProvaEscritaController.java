@@ -95,7 +95,8 @@ public class ProvaEscritaController {
 	public String lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("code") String codigoProva)
 	{
 		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
-
+		int total = inscricaoDAO.contaInscricoesProvaEscrita(codigoProva);
+		
 		Gson gson = new Gson();
 		JsonArray jsonInscricoesEdital = new JsonArray();
 		
@@ -104,6 +105,7 @@ public class ProvaEscritaController {
 		
 		JsonObject root = new JsonObject();
 		root.addProperty("Result", "OK");
+		root.addProperty("TotalRecordCount", total);
 		root.add("Records", jsonInscricoesEdital);
 		return root.toString();
 	}

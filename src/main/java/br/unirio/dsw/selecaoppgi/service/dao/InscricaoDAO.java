@@ -398,7 +398,7 @@ public class InscricaoDAO extends AbstractDAO
 	/**
 	 * Conta o numero de inscrições de provas escritas que atendem a um filtro
 	 */
-	public int conta(String codigoProvaEscrita)
+	public int contaInscricoesProvaEscrita(String codigoProvaEscrita)
 	{
 		String SQL = "SELECT COUNT(*) " +
 				"FROM inscricaoprovaescrita" +
