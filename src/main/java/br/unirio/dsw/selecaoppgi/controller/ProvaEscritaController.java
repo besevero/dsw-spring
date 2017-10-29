@@ -87,20 +87,20 @@ public class ProvaEscritaController {
 	}
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos em provas escritas de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
 	public String lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("codeProof") String codigoProva)
 	{
-		List<InscricaoEdital> inscricao = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
+		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
 
 		Gson gson = new Gson();
 		JsonArray jsonInscricoesEdital = new JsonArray();
 		
-		for (InscricaoEdital InscricaoEdital : inscricao)
-			jsonInscricoesEdital.add(gson.toJsonTree(InscricaoEdital));
+		for (InscricaoEdital inscricao : lista)
+			jsonInscricoesEdital.add(gson.toJsonTree(inscricao));
 		
 		JsonObject root = new JsonObject();
 		root.addProperty("Result", "OK");
