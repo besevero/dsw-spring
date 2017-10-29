@@ -292,7 +292,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.lista: " + e.getMessage());
+			log("InscricaoDAO.carregaPresencaProvaEscrita: " + e.getMessage());
 		}
 
 		return lista;
@@ -366,7 +366,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.carregaTodos: " + e.getMessage());
+			log("InscricaoDAO.carregaInscricoesEdital: " + e.getMessage());
 		}
 
 		return lista;
@@ -400,9 +400,9 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public int contaInscricoesProvaEscrita(String codigoProvaEscrita)
 	{
-		String SQL = "SELECT COUNT(*) " +
+		String SQL = "SELECT COUNT(*)" +
 				"FROM inscricaoprovaescrita" +
-				"WHERE codigoProvaEscrita LIKE ?";	
+				"WHERE codigoProvaEscrita LIKE ? ";
 		
 		Connection c = getConnection();
 		
@@ -422,7 +422,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.conta: " + e.getMessage());
+			log("InscricaoDAO.contaInscricoesProvaEscrita: " + e.getMessage());
 			return 0;
 		}
 	}
@@ -458,7 +458,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.indicaPresenca: " + e.getMessage());
+			log("InscricaoDAO.indicaPresencaProvaEscrita: " + e.getMessage());
 			return false;
 		}
 	}
@@ -494,7 +494,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.indicaAusencia: " + e.getMessage());
+			log("InscricaoDAO.indicaAusenciaProvaEscrita: " + e.getMessage());
 			return false;
 		}
 	}
