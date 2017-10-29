@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
-import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
+
 
 public class JsonInscricaoReader
 {
@@ -14,9 +14,8 @@ public class JsonInscricaoReader
 	 * Carrega uma inscrição a partir da representação JSON
 	 */
 
-	public InscricaoEdital execute(JsonObject json, Edital edital, InscricaoDAO userDAO)
+	public InscricaoEdital execute(JsonObject json, Edital edital)
 	{
-
 		InscricaoEdital inscricao = new InscricaoEdital(edital);
 
 		int id = json.get("id").getAsInt();
@@ -59,7 +58,7 @@ public class JsonInscricaoReader
 		inscricao.setJustificativaDispensaRecurso(justificativaDispensaRecurso);
 
 		carregaProvasEscritas(json, inscricao);
-
+		
 		return inscricao;
 	}
 
