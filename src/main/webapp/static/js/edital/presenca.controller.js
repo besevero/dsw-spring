@@ -5,6 +5,8 @@ App.controller("presencaController", function ($scope, dataService, NgTableParam
 	 * Filtros
 	 */
 	$scope.filtros = {
+		edital: 1,
+		code: 'FSI',
 		nome: ""
 	}
 	
