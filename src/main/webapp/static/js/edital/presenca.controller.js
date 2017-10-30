@@ -6,7 +6,7 @@ App.controller("presencaController", function ($scope, dataService, NgTableParam
 	 */
 	$scope.filtros = {
 		edital: 1,
-		code: 'FSI',
+		codigoProva: "FSI",
 		nome: ""
 	}
 	
@@ -53,7 +53,7 @@ App.controller("presencaController", function ($scope, dataService, NgTableParam
 		getData: function (params) {
 			return dataService.pegaInscricoesProvasEscritas({
 				edital: $scope.filtros.edital,
-				code: $scope.filtros.codigoProva
+				codigoProva: $scope.filtros.codigoProva
 			}).then(function (data) {
 				if(data.data.TotalRecordCount == 0) {
 					self.noSite = true;

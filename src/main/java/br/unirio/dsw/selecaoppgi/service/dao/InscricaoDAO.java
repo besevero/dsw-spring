@@ -476,8 +476,8 @@ public class InscricaoDAO extends AbstractDAO
 	public int contaInscricoesProvaEscrita(String codigoProvaEscrita)
 	{
 		String SQL = "SELECT COUNT(*)" +
-				"FROM inscricaoprovaescrita" +
-				"WHERE codigoProvaEscrita LIKE ? ";
+				"FROM InscricaoProvaEscrita" +
+				"WHERE CodigoProvaEscrita LIKE ? ";
 		
 		Connection c = getConnection();
 		
