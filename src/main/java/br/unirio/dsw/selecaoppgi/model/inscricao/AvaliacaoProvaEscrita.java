@@ -40,7 +40,8 @@ public class AvaliacaoProvaEscrita
 	 */
 	public int getNotaOriginalQuestao(int indiceQuestao)
 	{
-		return notasOriginalQuestao[indiceQuestao];
+		Integer nota = notasOriginalQuestao[indiceQuestao];
+		return (nota != null) ? nota : 0;
 	}
 	
 	/**
@@ -64,7 +65,8 @@ public class AvaliacaoProvaEscrita
 	 */
 	public int getNotaRecursoQuestao(int indiceQuestao)
 	{
-		return notasRecursoQuestao[indiceQuestao];
+		Integer nota = notasRecursoQuestao[indiceQuestao];
+		return (nota != null) ? nota : 0;
 	}
 	
 	/**

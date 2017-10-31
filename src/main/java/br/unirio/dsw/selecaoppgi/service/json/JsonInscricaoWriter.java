@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 
-public class JsonInscricaoWritter
+public class JsonInscricaoWriter
 {
 	/**
 	 * Gera a representação Json
@@ -20,13 +20,24 @@ public class JsonInscricaoWritter
 		json.addProperty("cotaNegros", inscricaoEdital.isCotaNegros());
 		json.addProperty("cotaDeficientes", inscricaoEdital.isCotaDeficientes());
 		json.addProperty("homolodadoOriginal", inscricaoEdital.getHomologadoOriginal());
-		json.addProperty("justificativaHomologacaoOriginal", inscricaoEdital.getHomologadoOriginal());
+
+		if (inscricaoEdital.getJustificativaHomologacaoOriginal() != null)
+			json.addProperty("justificativaHomologacaoOriginal", inscricaoEdital.getJustificativaHomologacaoOriginal());
+
 		json.addProperty("homologadoRecurso", inscricaoEdital.getHomologadoRecurso());
-		json.addProperty("justificativaHomologacaoRecurso", inscricaoEdital.getJustificativaHomologacaoRecurso());
+		
+		if (inscricaoEdital.getJustificativaHomologacaoRecurso() != null)
+			json.addProperty("justificativaHomologacaoRecurso", inscricaoEdital.getJustificativaHomologacaoRecurso());		
+		
 		json.addProperty("dispensadoProvaOriginal", inscricaoEdital.getDispensadoProvaOriginal());
-		json.addProperty("justificativaDispensaOriginal", inscricaoEdital.getJustificativaDispensaOriginal());
+
+		if (inscricaoEdital.getJustificativaDispensaOriginal() != null)
+			json.addProperty("justificativaDispensaOriginal", inscricaoEdital.getJustificativaDispensaOriginal());
+		
 		json.addProperty("dispensadoProvaRecurso", inscricaoEdital.getDispensadoProvaRecurso());
-		json.addProperty("justificativaDispensaRecurso", inscricaoEdital.getJustificativaDispensaRecurso());
+		
+		if (inscricaoEdital.getJustificativaDispensaRecurso() != null)
+			json.addProperty("justificativaDispensaRecurso", inscricaoEdital.getJustificativaDispensaRecurso());
 
 		JsonArray jsonProvas = geraRepresentacaoAvaliacaoProvasEscritas(inscricaoEdital);
 
@@ -63,5 +74,4 @@ public class JsonInscricaoWritter
 
 		return json;
 	}
-
 }

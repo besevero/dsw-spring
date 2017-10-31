@@ -3,6 +3,9 @@ package br.unirio.dsw.selecaoppgi.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,15 +22,28 @@ import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
+import br.unirio.dsw.selecaoppgi.service.ServicoEdital;
+import br.unirio.dsw.selecaoppgi.service.dao.EditalDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
+import br.unirio.dsw.selecaoppgi.service.dao.UsuarioDAO;
+import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoWriter;
 
 @Controller
-public class ProvaEscritaController {
+public class ProvaEscritaController 
+{
+    @Autowired
+	private UsuarioDAO userDAO;
+    
+    @Autowired
+	private EditalDAO editalDAO;
+    
+    @Autowired
+	private InscricaoDAO inscricaoDAO;
+    
 	// /edital/escrita/presenca
 	// /edital/escrita/nota
 
 	// /edital/escrita/encerramento
-	InscricaoDAO inscricaoDAO = new InscricaoDAO();
 		
 	/*
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova caso não haja pendências.
@@ -83,22 +99,18 @@ public class ProvaEscritaController {
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
-	public String lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("code") String codigoProva)
+	public String lista(HttpServletRequest request, @ModelAttribute("edital") Edital edital, @ModelAttribute("code") String codigoProva)
 	{
-		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
-		int total = inscricaoDAO.contaInscricoesProvaEscrita(codigoProva);
+		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
+		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
 		
-		Gson gson = new Gson();
+		JsonInscricaoWriter writer = new JsonInscricaoWriter();
 		JsonArray jsonInscricoesEdital = new JsonArray();
 		
 		for (InscricaoEdital inscricao : lista)
-			jsonInscricoesEdital.add(gson.toJsonTree(inscricao));
+			jsonInscricoesEdital.add(writer.execute(inscricao));
 		
-		JsonObject root = new JsonObject();
-		root.addProperty("Result", "OK");
-		root.addProperty("TotalRecordCount", total);
-		root.add("Records", jsonInscricoesEdital);
-		return root.toString();
+		return jsonInscricoesEdital.toString();
 	}
 	
 	/**

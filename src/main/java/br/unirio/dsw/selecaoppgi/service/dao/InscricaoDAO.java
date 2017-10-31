@@ -251,7 +251,7 @@ public class InscricaoDAO extends AbstractDAO
 		if (prova == null)
 			return null;
 
-		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
+		List<InscricaoEdital> lista = carregaInscricoesEdital(c, edital);
 		eliminaInscricoesSemProvaEscrita(lista, edital, codigoProva);
 
 		try
@@ -278,13 +278,17 @@ public class InscricaoDAO extends AbstractDAO
 
 					JsonQuestoesReader readerJsonQuestoes = new JsonQuestoesReader();
 
-					JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
-					readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray, inscricaoProva);
-
-					JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
-					readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
-								
+					if (jsonQuestoesInicialString.length() > 0)
+					{
+						JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
+						readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray, inscricaoProva);
+					}
 					
+					if (jsonQuestoesRecursoString.length() > 0)
+					{
+						JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
+						readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
+					}
 				}
 			}
 
@@ -376,31 +380,27 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	private InscricaoEdital pegaInscricaoId(List<InscricaoEdital> lista, int idInscricao)
 	{	
-		for (int i = lista.size() - 1; i > 0; i++)
+		for (int i = lista.size() - 1; i >= 0; i--)
 		{
 			InscricaoEdital inscricao = lista.get(i);
 			
 			if (inscricao.getId() == idInscricao)
 				return inscricao;
 		}
+		
 		return null;
 	}
 
 	/**
 	 * Carrega todas as inscrições em um edital
 	 */
-	private List<InscricaoEdital> carregaInscricoesEdital(Edital edital)
+	private List<InscricaoEdital> carregaInscricoesEdital(Connection c, Edital edital)
 	{
 		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
 				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
 				+ "AND idEdital = ?";
 
-		Connection c = getConnection();
-
-		if (c == null)
-			return null;
-
-		List<InscricaoEdital> lista = carregaInscricoesEdital(edital);
+		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
 
 		try
 		{
@@ -435,8 +435,6 @@ public class InscricaoDAO extends AbstractDAO
 
 				lista.add(item);
 			}
-
-			c.close();
 
 		} catch (SQLException e)
 		{
