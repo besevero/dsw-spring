@@ -421,6 +421,7 @@ public class InscricaoDAO extends AbstractDAO
 				item.setJustificativaHomologacaoOriginal(rs.getString("inscricao.justificativaHomologacaoInicial"));
 				item.setHomologadoRecurso(rs.getInt("inscricao.homologadoRecurso") != 0);
 				item.setJustificativaHomologacaoRecurso(rs.getString("inscricao.justificativaHomologacaoRecurso"));
+				item.setHomologado(rs.getInt("homologado") != 0);
 				item.setDispensadoProvaOriginal(rs.getInt("dispensadoProvaInicial") != 0);
 				item.setJustificativaDispensaOriginal(rs.getString("justificativaDispensaInicial"));
 				item.setDispensadoProvaRecurso(rs.getInt("dispensadoProvaRecurso") != 0);

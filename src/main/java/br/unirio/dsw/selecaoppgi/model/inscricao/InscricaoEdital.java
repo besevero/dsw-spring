@@ -26,6 +26,7 @@ public class InscricaoEdital
 	private @Getter @Setter String justificativaHomologacaoOriginal;
 	private @Getter @Setter Boolean homologadoRecurso;
 	private @Getter @Setter String justificativaHomologacaoRecurso;
+	private @Getter @Setter Boolean homologado;
 	private @Getter @Setter Boolean dispensadoProvaOriginal;
 	private @Getter @Setter String justificativaDispensaOriginal;
 	private @Getter @Setter Boolean dispensadoProvaRecurso;
@@ -48,6 +49,7 @@ public class InscricaoEdital
 		this.justificativaHomologacaoOriginal = "";
 		this.homologadoRecurso = null;
 		this.justificativaHomologacaoRecurso = "";
+		this.homologado = null;
 		this.dispensadoProvaOriginal = null;
 		this.justificativaDispensaOriginal = "";
 		this.dispensadoProvaRecurso = null;

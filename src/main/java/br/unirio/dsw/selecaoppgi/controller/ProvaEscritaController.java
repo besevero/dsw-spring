@@ -34,11 +34,11 @@ public class ProvaEscritaController {
 	 * 
 	 */
 	
-	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> ListaDeCanditados) {
+	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista) {
 		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
 
-		for (InscricaoEdital candidato : ListaDeCanditados) {
-			if (candidato.getHomologadoOriginal() == false && candidato.getHomologadoRecurso() == false) {
+		for (InscricaoEdital candidato : lista) {
+			if (candidato.getHomologado() == false) {
 					candidatosComPendencia.add(candidato);
 				} else {
 					CalculaNotaDaProvaEscrita(candidato);
