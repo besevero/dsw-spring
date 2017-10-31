@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,6 @@ import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
-import br.unirio.dsw.selecaoppgi.service.json.JsonEditalWriter;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader;
 import br.unirio.dsw.selecaoppgi.service.json.JsonQuestoesReader;
 import br.unirio.dsw.selecaoppgi.service.json.JsonQuestoesWritter;
@@ -699,9 +697,6 @@ public class InscricaoDAO extends AbstractDAO
 
 				CriterioAlinhamento provaOral = new CriterioAlinhamento();
 				provaOral.setCodigo(rs.getString("Prova"));
-				CriterioAlinhamento avaliacaoOral = new CriterioAlinhamento();
-				// avaliacaoOral.setPresente(rs.getBoolean("Presenca"));
-
 				lista.add(item);
 			}
 

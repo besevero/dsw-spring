@@ -28,66 +28,54 @@ public class ProvaEscritaController {
 
 	// /edital/escrita/encerramento
 	InscricaoDAO inscricaoDAO = new InscricaoDAO();
-
+		
 	/*
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova caso não haja pendências.
 	 * 
 	 */
-	@Secured("ROLE_PROFESSOR")
+	
 	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> ListaDeCanditados) {
-		// TODO: Testar e Revisar
 		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
 
 		for (InscricaoEdital candidato : ListaDeCanditados) {
-			for (AvaliacaoProvaEscrita provaEscrita : candidato.getAvaliacoesProvasEscritas()) {
-
-				int idCandidato = candidato.getIdCandidato();
-				String codigoProva = provaEscrita.getProvaEscrita().getCodigo();
-
-				if (inscricaoDAO.indicaAusenciaProvaEscrita(idCandidato, codigoProva)) {
+			if (candidato.getHomologadoOriginal() == false && candidato.getHomologadoRecurso() == false) {
 					candidatosComPendencia.add(candidato);
 				} else {
 					CalculaNotaDaProvaEscrita(candidato);
 				}
 			}
-		}
+		
 		return candidatosComPendencia;
 	}
 /*
  * Função que calcula a nota da prova Escrita
  */
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
-		/*
 		// Cálculo da prova
-		Iterable<AvaliacaoProvaEscrita> provasEscritas = candidato.getAvaliacoesProvasEscritas();
-		for(AvaliacaoProvaEscrita provaEscrita : provasEscritas) {
-			if (!provaEscrita..isDispensavel()) {
-				provaEscrita.adicionaQuestao(1);
-				provaEscrita.adicionaQuestao(1);
-				provaEscrita.adicionaQuestao(1);
-			} else {
-				return;
-			}
-		}
-		AvaliacaoProvaEscrita avaliacaoProvaEscrita = new AvaliacaoProvaEscrita(provaEscrita);
-		avaliacaoProvaEscrita.setNotaOriginalQuestao(0, 50);
-		avaliacaoProvaEscrita.setNotaOriginalQuestao(1, 80);
-		avaliacaoProvaEscrita.setNotaOriginalQuestao(2, 100);
-
-		for (int i = 0; i < provaEscrita.contaQuestoes(); i++) {
-			if (avaliacaoProvaEscrita.possuiNotaRecursoQuestao(i)) {
-				avaliacaoProvaEscrita.setNotaOriginalQuestao(i, avaliacaoProvaEscrita.getNotaRecursoQuestao(i));
-			}
-		}
-
-		int minhaNota = (avaliacaoProvaEscrita.getNotaOriginalQuestao(0)
-				+ avaliacaoProvaEscrita.getNotaOriginalQuestao(1) + avaliacaoProvaEscrita.getNotaOriginalQuestao(2))
-				/ provaEscrita.contaQuestoes();
-
-		System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado" : "reprovado");
-				*/
+		
+		ProvaEscrita provaEscrita = new ProvaEscrita();
+		 	  if(!provaEscrita.isDispensavel()) {
+		     	  provaEscrita.adicionaQuestao(1);
+		     	  provaEscrita.adicionaQuestao(1);
+		     	  provaEscrita.adicionaQuestao(1);
+		 	  }
+		 	  else { return; }
+		 	  AvaliacaoProvaEscrita avaliacaoProvaEscrita = new AvaliacaoProvaEscrita(provaEscrita);
+		 	  avaliacaoProvaEscrita.setNotaOriginalQuestao(0, 50);
+		 	  avaliacaoProvaEscrita.setNotaOriginalQuestao(1, 80);
+		 	  avaliacaoProvaEscrita.setNotaOriginalQuestao(2, 100);
+		 	  
+		 	  for(int i=0; i<provaEscrita.contaQuestoes(); i++) {
+		 	    if(avaliacaoProvaEscrita.possuiNotaRecursoQuestao(i)) {
+		 	      avaliacaoProvaEscrita.setNotaOriginalQuestao(i, avaliacaoProvaEscrita.getNotaRecursoQuestao(i));
+		 	    }
+		 	  }
+		 	  
+		 	  int minhaNota = (avaliacaoProvaEscrita.getNotaOriginalQuestao(0) + avaliacaoProvaEscrita.getNotaOriginalQuestao(1) + avaliacaoProvaEscrita.getNotaOriginalQuestao(2))
+		 	  / provaEscrita.contaQuestoes();
+		 	  
+		 	  System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado":"reprovado");
 	}
-
 
 	/**
 	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
@@ -95,7 +83,7 @@ public class ProvaEscritaController {
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
-	public String lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("codigoProva") String codigoProva)
+	public String lista(@ModelAttribute("edital") Edital edital, @ModelAttribute("code") String codigoProva)
 	{
 		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(edital, codigoProva);
 		int total = inscricaoDAO.contaInscricoesProvaEscrita(codigoProva);
@@ -122,17 +110,4 @@ public class ProvaEscritaController {
 		model.setViewName("edital/escrita/presenca");
 		return model;
 	}
-	
-	/*
-	 * Acao AJAX que lista todas as notas de candidatos que fizeram provas escritas de um edital
-	 */
-	 
-	@ResponseBody
-	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/nota", method = RequestMethod.GET, produces = "application/json")
-	public String notas() {
-		
-		return null;
-		
 	}
-}

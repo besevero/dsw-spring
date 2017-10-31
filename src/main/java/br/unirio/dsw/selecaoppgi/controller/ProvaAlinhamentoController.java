@@ -18,7 +18,6 @@ public class ProvaAlinhamentoController
     
     for (InscricaoEdital candidato : ListaDeCanditados) {
       for (AvaliacaoProvaEscrita provaEscrita : candidato.getAvaliacoesProvasEscritas()) {
-        int idCandidato = candidato.getIdCandidato();
         //marcaAprovadoProvasEscritas(idCandidato) -> identifica estado de aprovação do candidato
         if(provaEscrita.getProvaEscrita() != null && candidato.exigeProvaOral()){
        // TODO: mover edital para estado de finalizado, calcular nota do candidato e salvar no banco de dados
