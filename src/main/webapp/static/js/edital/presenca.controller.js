@@ -1,14 +1,15 @@
-App.controller("presencaController", function ($scope, dataService, NgTableParams) {
+App.controller("presencaController", function ($scope, $log, dataService, NgTableParams) {
 	var self = this;
 	
 	/**
 	 * Filtros
 	 */
 	$scope.filtros = {
-		edital: 1,
 		codigoProva: "FSI",
 		nome: ""
 	}
+	
+	$scope.inscricoes = [];
 	
 	/*
 	 * Altera os filtros de consulta
@@ -21,49 +22,11 @@ App.controller("presencaController", function ($scope, dataService, NgTableParam
 	 * Atualiza a lista de editais
 	 */
 	var atualizaLista = function() {
-		$scope.tableParams.reload();
+		dataService.pegaInscricoesProvasEscritas($scope.filtros).then(function(data) {
+			$log.log(data);
+			$scope.inscricoes = data.data;
+		});
 	}
-	
-	/*
-	 * Navega para a pagina de visualizacao de edital
-	 */
-	self.edita = function(id) {
-		window.location = contextPath + "/edital/edit/" + id;
-	}
-	
-	/*
-	 * Cria um novo edital
-	 */
-	self.novo = function() {
-		window.location = contextPath + "/edital/create";
-	}
-	
-	/*
-	 * Remove o edital selecionado
-	 */
-	self.remove = function(id) {
-		dataService.remove(id).then(atualizaLista);
-	}
-	
-	
-	/*
-	 * Prepara a tabela
-	 */
-	$scope.tableParams = new NgTableParams({}, {
-		getData: function (params) {
-			return dataService.pegaInscricoesProvasEscritas({
-				edital: $scope.filtros.edital,
-				codigoProva: $scope.filtros.codigoProva
-			}).then(function (data) {
-				if(data.data.TotalRecordCount == 0) {
-					self.noSite = true;
-				}
-				else {
-					params.total(data.data.TotalRecordCount);
-					self.noSite = false;
-					return data = data.data.Records;
-				}
-			});
-		}
-	});
+
+	atualizaLista();
 });

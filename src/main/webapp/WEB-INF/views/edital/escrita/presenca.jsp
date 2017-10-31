@@ -41,32 +41,22 @@
 		</div>
 
 		<div class="mdl-cell mdl-cell--12-col">
-			<div data-loading-container="tableParams.settings().$loading">
-				<table data-ng-table="tableParams"
-					class="mdl-data-table mdl-js-data-table mdl-shadow--2dp wide paginated"
-					style="font-size: 12px">
-					<tr data-ng-repeat="item in $data">
-						<td class="mdl-data-table__cell--non-numeric"
-							header-class="'text-left'"
-							data-title="'<spring:message code='edital.list.table.name'/>'"
-							data-ng-click="ctrl.edita(item.id)">{{item.nome}}</td>
-						<td class="mdl-data-table__cell--non-numeric"
-							header-class="'text-left'"
-							data-title="'<spring:message code='edital.list.table.status'/>'"
-							data-ng-click="ctrl.edita(item.id)">{{item.nomeStatus}}</td>
-						<td class="text-center">
-							<button class="mdl-button mdl-js-button mdl-button--icon"
-								confirmed-click="ctrl.remove(item.id)"
-								ng-confirm-click="<spring:message code='edital.list.message.confirm.removal'/>">
-								<i class="material-icons">delete</i>
-							</button>
-						</td>
-					</tr>
-				</table>
-				<div data-ng-show="ctrl.noSite" style="text-align: center">
-					<spring:message code="edital.list.message.noresult" />
-				</div>
-			</div>
+			<table
+				class="mdl-data-table mdl-js-data-table mdl-shadow--2dp wide paginated"
+				style="font-size: 12px">
+				<tr data-ng-repeat="item in inscricoes">
+					<td class="mdl-data-table__cell--non-numeric"
+						header-class="'text-left'"
+						data-title="'<spring:message code='edital.list.table.name'/>'"
+						data-ng-click="ctrl.edita(item.id)">{{item.nomeCandidato}}</td>
+					<td class="mdl-data-table__cell--non-numeric"
+						header-class="'text-left'"
+						data-title="'<spring:message code='edital.list.table.status'/>'"
+						data-ng-click="ctrl.edita(item.id)">{{item.nomeStatus}} 
+						<input type="checkbox" name="vehicle" value="Car" checked>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </div>

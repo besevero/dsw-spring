@@ -66,7 +66,9 @@ public class JsonInscricaoWriter
 	private JsonObject geraRepresentacaoAvaliacaoProvaEscrita(AvaliacaoProvaEscrita prova)
 	{
 		JsonObject json = new JsonObject();
-		json.addProperty("presenca", prova.getPresente());
+		
+		if(prova.getPresente() != null)
+			json.addProperty("presenca", prova.getPresente());
 
 		JsonQuestoesWritter questoes = new JsonQuestoesWritter();
 		json.add("notaOriginalQuestao", questoes.salvaNotasIniciais(prova));

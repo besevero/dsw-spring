@@ -5,7 +5,7 @@ App.factory("dataService", ["$http", function ($http) {
 		},
 		
 		pegaInscricoesProvasEscritas: function(params) {
-			return $http.get(contextPath + "/edital/escrita/presenca?edital=" + params.edital + "&code=" + params.codigoProva);
+			return $http.get(contextPath + "/edital/escrita/presenca?code=" + params.codigoProva);
 		},
 		
 		atualizaPresencaProvasEscritas: function(id) {
