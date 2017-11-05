@@ -18,13 +18,18 @@
 			<div class="mdl-dialog__content presenca left">
 				<input type="text" size="40"
 					placeholder="<spring:message code='presenca.prova.escrita.list.label.name.filter'/>"
-					data-ng-model="buscaCandidato"
-					data-ng-init="buscaCandidato=''"/>
+					data-ng-model="buscaCandidato"/>
 			</div>
 			<div class="mdl-dialog__content presenca left">
 				<select class="wide">
-					<option value="">
+					<option value="default" selected>
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca' />
+					</option>
+					<option value="presentes" data-ng-model="presentes">
+						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.presentes' />
+					</option>
+					<option value="ausentes" data-ng-model="ausentes">
+						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.ausentes' />
 					</option>
 				</select>
 			</div>

@@ -1,4 +1,4 @@
-App.controller("presencaController", function ($scope, $log, dataService, NgTableParams) {
+App.controller("presencaController", function ($scope, $log, dataService) {
 	var self = this;
 	
 	/**
