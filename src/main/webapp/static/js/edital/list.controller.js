@@ -1,4 +1,4 @@
-App.controller("listaController", function ($scope, dataService, NgTableParams) {
+App.controller("listaController", function ($scope, $log, dataService, NgTableParams) {
 	var self = this;
 	
 	/**
@@ -53,6 +53,7 @@ App.controller("listaController", function ($scope, dataService, NgTableParams) 
 				size: params.count(),
 				nome: $scope.filtros.nome
 			}).then(function (data) {
+				$log.log(data);
 				if(data.data.TotalRecordCount == 0) {
 					self.noSite = true;
 				}

@@ -16,28 +16,22 @@
 	<div class="mdl-grid">
 		<div class="mdl-cell mdl-cell--12-col page-filter">
 			<div class="mdl-dialog__content presenca left">
-				<input type="text" data-ng-change='ctrl.atualizaFiltro()'
-					data-ng-model="filtros.nome"
+				<input type="text" size="40"
 					placeholder="<spring:message code='presenca.prova.escrita.list.label.name.filter'/>"
-					size="40" />
+					data-ng-model="buscaCandidato"
+					data-ng-init="buscaCandidato=''"/>
 			</div>
 			<div class="mdl-dialog__content presenca left">
-				<select ng-model="navCtrl.editalSelecionado" class="wide"
-					ng-options="edital.id as edital.nome for edital in navCtrl.editais"
-					ng-init="navCtrl.editalSelecionado=${user.idEdital}">
-					<option value="" disabled selected>
-						<spring:message
-							code='presenca.prova.escrita.list.label.select.filter.presenca' />
+				<select class="wide">
+					<option value="">
+						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca' />
 					</option>
 				</select>
 			</div>
 			<div class="mdl-dialog__content presenca left">
-				<select ng-model="navCtrl.editalSelecionado" class="wide"
-					ng-options="edital.id as edital.nome for edital in navCtrl.editais"
-					ng-init="navCtrl.editalSelecionado=${user.idEdital}">
-					<option value="" disabled selected>
-						<spring:message
-							code='presenca.prova.escrita.list.label.select.filter.prova' />
+				<select class="wide">
+					<option value="">
+						<spring:message code='presenca.prova.escrita.list.label.select.filter.prova' />
 					</option>
 				</select>
 			</div>
@@ -49,24 +43,25 @@
 				class="mdl-data-table mdl-js-data-table mdl-shadow--2dp wide paginated"
 				style="font-size: 12px">
 				<tr>
-					<td class="mdl-data-table__cell--non-numeric"><spring:message
-							code='presenca.prova.escrita.list.table.nome' /></td>
-					<td class="mdl-data-table__cell--non-numeric"><spring:message
-							code='presenca.prova.escrita.list.table.status' /></td>
+					<td class="mdl-data-table__cell--non-numeric">
+						<spring:message code='presenca.prova.escrita.list.table.nome' />
+					</td>
+					<td class="mdl-data-table__cell--non-numeric">
+						<spring:message code='presenca.prova.escrita.list.table.status' />
+					</td>
 				</tr>
-				<tr data-ng-repeat="item in inscricoes">
-					<td class="mdl-data-table__cell--non-numeric"
-						header-class="'text-left'" data-ng-click="ctrl.edita(item.id)">{{item.nomeCandidato}}</td>
-					<td class="mdl-data-table__cell--non-numeric"
-						header-class="'text-left'" data-ng-click="ctrl.edita(item.id)"><input
-						type="checkbox" ng-checked="{{item.provasEscritas[0].presenca}}"></td>
+				<tr data-ng-repeat="item in inscricoes | filter: {nomeCandidato : buscaCandidato}">
+					<td class="mdl-data-table__cell--non-numeric">
+						{{item.nomeCandidato}}
+					</td>
+					<td class="mdl-data-table__cell--non-numeric">
+						<input type="checkbox" data-ng-checked="{{item.provasEscritas[0].presenca}}">
+					</td>
 				</tr>
 			</table>
 		</div>
 	</div>
 </div>
 
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/static/js/edital/presenca.controller.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/static/js/edital/presenca.dataService.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/edital/presenca.controller.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/edital/presenca.dataService.js"></script>
