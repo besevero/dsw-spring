@@ -55,7 +55,7 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-repeat="item in inscricoes | filter: {nomeCandidato : buscaCandidato}">
+				<tr data-ng-repeat="item in inscricoes | filter: buscaCandidato}">
 					<td class="mdl-data-table__cell--non-numeric">
 						{{item.nomeCandidato}}
 					</td>
