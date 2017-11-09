@@ -39,6 +39,9 @@ App.controller("presencaController", function($scope, $log, dataService) {
 				});
 	}
 	
+ $scope.atualizaPresenca = function(codigoProva, id, status) {
+	dataService.atualizaPresencaProvasEscritas(codigoProva, id, status)
+ };
 	
 });
 
