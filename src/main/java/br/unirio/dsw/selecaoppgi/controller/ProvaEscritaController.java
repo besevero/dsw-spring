@@ -42,8 +42,9 @@ public class ProvaEscritaController
     /**
      * Ação AJAX que atualiza a presença dos canditados que fizera ou não a prova
      */
+    @ResponseBody
     @Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.POST)
+	@RequestMapping(value = "/edital/escrita/presenca/atualiza/{id}", method = RequestMethod.POST)
     public void atualizaPresença(HttpServletRequest request, @ModelAttribute("code") String codigoProva, @ModelAttribute("id") int idInscricao, @ModelAttribute("update") boolean atualiza) {
     	ServicoInscricao.atualizaPresençaCandidato(request, codigoProva, idInscricao, atualiza);
     }
