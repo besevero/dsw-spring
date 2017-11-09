@@ -29,6 +29,8 @@ App.controller("presencaController", function($scope, $log, dataService) {
 				});
 	}
 	atualizaLista();
+	//Faz a atualização da presença no banco de dados
+	
 });
 
 /*

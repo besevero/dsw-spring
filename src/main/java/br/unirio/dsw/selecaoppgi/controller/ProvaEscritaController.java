@@ -2,7 +2,6 @@ package br.unirio.dsw.selecaoppgi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.service.ServicoEdital;
+import br.unirio.dsw.selecaoppgi.service.ServicoInscricao;
 import br.unirio.dsw.selecaoppgi.service.dao.EditalDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.UsuarioDAO;
@@ -41,10 +39,49 @@ public class ProvaEscritaController
 	private InscricaoDAO inscricaoDAO;
     
 	// /edital/escrita/presenca
+    /**
+     * Ação AJAX que atualiza a presença dos canditados que fizera ou não a prova
+     */
+    @Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.POST)
+    public void atualizaPresença(HttpServletRequest request, @ModelAttribute("code") String codigoProva, @ModelAttribute("id") int idInscricao, @ModelAttribute("update") boolean atualiza) {
+    	ServicoInscricao.atualizaPresençaCandidato(request, codigoProva, idInscricao, atualiza);
+    }
 	// /edital/escrita/nota
 
 	// /edital/escrita/encerramento
 		
+	
+
+	/**
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
+	 */
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
+	public String lista(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
+	{
+		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
+		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
+		
+		JsonInscricaoWriter writer = new JsonInscricaoWriter();
+		JsonArray jsonInscricoesEdital = new JsonArray();
+		
+		for (InscricaoEdital inscricao : lista)
+			jsonInscricoesEdital.add(writer.execute(inscricao));
+		
+		return jsonInscricoesEdital.toString();
+	}
+	
+	/**
+	 * Ação que redireciona o usuário para a tela presença em prova escrita
+	 */
+	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET)
+	public ModelAndView mostraPaginaPresencaProvaEscrita() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("edital/escrita/presenca");
+		return model;
+	}
 	/*
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova caso não haja pendências.
 	 * 
@@ -91,35 +128,5 @@ public class ProvaEscritaController
 		 	  / provaEscrita.contaQuestoes();
 		 	  
 		 	  System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado":"reprovado");
-	}
-
-	/**
-	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
-	 */
-	@ResponseBody
-	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
-	public String lista(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
-	{
-		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
-		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
-		
-		JsonInscricaoWriter writer = new JsonInscricaoWriter();
-		JsonArray jsonInscricoesEdital = new JsonArray();
-		
-		for (InscricaoEdital inscricao : lista)
-			jsonInscricoesEdital.add(writer.execute(inscricao));
-		
-		return jsonInscricoesEdital.toString();
-	}
-	
-	/**
-	 * Ação que redireciona o usuário para a tela presença em prova escrita
-	 */
-	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET)
-	public ModelAndView mostraPaginaPresencaProvaEscrita() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("edital/escrita/presenca");
-		return model;
 	}
 	}
