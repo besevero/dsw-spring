@@ -14,17 +14,14 @@ public class ServicoInscricao {
 
 	public static void atualizaPresençaCandidato(HttpServletRequest request, String codigoProva, int idInscricao, boolean atualiza)
 	{
-				
 		InscricaoDAO inscricaoDAO = new InscricaoDAO();
 		if (atualiza)
 		{
 			inscricaoDAO.indicaPresencaProvaEscrita(idInscricao, codigoProva);
 		}
-		else 
+		else
 		{
 			inscricaoDAO.indicaAusenciaProvaEscrita(idInscricao, codigoProva);
 		}
-		
 	}
-
 }
