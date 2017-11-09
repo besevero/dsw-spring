@@ -28,8 +28,17 @@ App.controller("presencaController", function($scope, $log, dataService) {
 					$scope.inscricoes = data.data;
 				});
 	}
+	
 	atualizaLista();
-	//Faz a atualização da presença no banco de dados
+	
+	var carregaProvas = function() {
+		dataService.pegaProvasEscritas($scope.filtros).then(
+				function(data) {
+					$log.log(data);
+					$scope.provas = data.data;
+				});
+	}
+	
 	
 });
 
