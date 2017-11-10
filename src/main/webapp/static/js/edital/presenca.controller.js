@@ -5,7 +5,7 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 * Filtros
 	 */
 	$scope.filtros = {
-		codigoProva : "FSI",
+		codigoProva : "EDG",
 		nome : ""
 	}
 
