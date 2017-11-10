@@ -12,7 +12,7 @@ import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
  */
 public class ServicoInscricao {
 
-	public static void atualizaPresençaCandidato(HttpServletRequest request, String codigoProva, int idInscricao, boolean status)
+	public static void atualizaPresencaCandidato(HttpServletRequest request, String codigoProva, int idInscricao, boolean status)
 	{
 		InscricaoDAO inscricaoDAO = new InscricaoDAO();
 		if (status)

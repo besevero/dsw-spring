@@ -56,7 +56,7 @@ App.controller("presencaController", function($scope, $log, dataService) {
 
 App.filter("filterByPresence", function() {
 	return function(users, selectOption) {
-		console.log("filterByPresence", selectOption);
+		console.log("Selecionou filto de presença: ", selectOption);
 		var filtered = [];
 		angular.forEach(users, function(item) {
 			if (!selectOption) {
