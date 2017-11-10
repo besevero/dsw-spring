@@ -5,7 +5,7 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 * Filtros
 	 */
 	$scope.filtros = {
-		codigoProva : "FSI",
+		codigoProva : "EDG",
 		nome : ""
 	}
 
@@ -40,8 +40,8 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	}
 	
  $scope.atualizaPresenca = function(id, status) {
-	 $log.log($scope.filtros.codigoProva + " " + id + " " + status);
-	dataService.atualizaPresencaProvasEscritas($scope.filtros.codigoProva, id, status)
+	$log.log($scope.filtros.codigoProva + " " + id + " " + status);
+	dataService.atualizaPresencaProvasEscritas($scope.filtros.codigoProva, id, status);
  };
  
  $scope.selecionaProva = function() {
