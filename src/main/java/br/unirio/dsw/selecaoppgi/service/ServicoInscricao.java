@@ -15,7 +15,7 @@ public class ServicoInscricao {
 	public static boolean atualizaPresencaCandidato(HttpServletRequest request, String codigoProva, int idInscricao, boolean status)
 	{
 		InscricaoDAO inscricaoDAO = new InscricaoDAO();
-		if (status)
+		if (status == true)
 		{
 			return inscricaoDAO.indicaPresencaProvaEscrita(idInscricao, codigoProva);
 		}

@@ -5,7 +5,7 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 * Filtros
 	 */
 	$scope.filtros = {
-		codigoProva : "EDG",
+		codigoProva : "FSI",
 		nome : ""
 	}
 
@@ -39,12 +39,12 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	}
 
 	$scope.atualizaPresenca = function(idCandidato, status) {
-		$log.log("Checkbox: código prova = " + $scope.filtros.codigoProva + "  idCandidato = " + idCandidato + "  status = " + status);
+		$log.log("Checkbox: código da prova = " + $scope.filtros.codigoProva + "  idCandidato = " + idCandidato + "  status = " + status);
 		dataService.atualizaPresencaProvasEscritas($scope.filtros.codigoProva, idCandidato, status);
 	};
 
 	$scope.selecionaProva = function() {
-		$log.log("Option: código prova: " + $scope.filtros.codigoProva);
+		$log.log("Option: código da prova: " + $scope.filtros.codigoProva);
 	}
 
 });
@@ -53,19 +53,17 @@ App.controller("presencaController", function($scope, $log, dataService) {
  * Filtro de seleção de tipo de presença
  */
 
-App.filter("filterByPresence", function() {
-	return function(users, selectOption) {
-		console.log("Option: tipo de presença: ", selectOption);
+App.filter("filtroPresenca", function() {
+	return function(alunos, tipoPresenca) {
+		console.log("Option: tipo de presença: ", tipoPresenca);
 		var filtered = [];
-		angular.forEach(users, function(item) {
-			if (!selectOption) {
-				selectOption == item.provasEscritas[0].presenca;
+		angular.forEach(alunos, function(item) {
+			if (!tipoPresenca) {
+				tipoPresenca == item.provasEscritas[0].presenca;
 				filtered.push(item);
-			} else if (selectOption == "presentes"
-					&& item.provasEscritas[0].presenca) {
+			} else if (tipoPresenca == "presentes" && item.provasEscritas[0].presenca) {
 				filtered.push(item);
-			} else if (selectOption == "ausentes"
-					&& !item.provasEscritas[0].presenca) {
+			} else if (tipoPresenca == "ausentes" && !item.provasEscritas[0].presenca) {
 				filtered.push(item);
 			}
 		});

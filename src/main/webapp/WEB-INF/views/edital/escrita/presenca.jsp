@@ -21,7 +21,7 @@
 					data-ng-model="buscaCandidato"/>
 			</div>
 			<div class="mdl-dialog__content presenca left">
-				<select class="wide" data-ng-model="selectOption">
+				<select class="wide" data-ng-model="tipoPresenca">
 					<option value="" selected>
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca' />
 					</option>
@@ -60,12 +60,12 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-repeat="item in inscricoes | filter: buscaCandidato | filterByPresence: selectOption">
+				<tr data-ng-repeat="item in inscricoes | filter: buscaCandidato | filtroPresenca: tipoPresenca">
 					<td class="mdl-data-table__cell--non-numeric">
 						{{item.nomeCandidato}}
 					</td>
 					<td class="mdl-data-table__cell--non-numeric">
-						<input type="checkbox" data-ng-click="atualizaPresenca(item.idCandidato, item.provasEscritas[0].presenca)" data-ng-checked="{{item.provasEscritas[0].presenca}}">
+						<input type="checkbox" data-ng-click="atualizaPresenca(item.idCandidato, !item.provasEscritas[0].presenca)" data-ng-checked="{{item.provasEscritas[0].presenca}}">
 					</td>
 				</tr>
 			</table>
