@@ -28,26 +28,25 @@ App.controller("presencaController", function($scope, $log, dataService) {
 					$scope.inscricoes = data.data;
 				});
 	}
-	
+
 	atualizaLista();
-	
+
 	var carregaProvas = function() {
-		dataService.pegaProvasEscritas($scope.filtros).then(
-				function(data) {
-					$log.log(data);
-					$scope.provas = data.data;
-				});
+		dataService.pegaProvasEscritas($scope.filtros).then(function(data) {
+			$log.log(data);
+			$scope.provas = data.data;
+		});
 	}
-	
- $scope.atualizaPresenca = function(id, status) {
-	 $log.log($scope.filtros.codigoProva + " " + id + " " + status);
-	dataService.atualizaPresencaProvasEscritas($scope.filtros.codigoProva, id, status)
- };
- 
- $scope.selecionaProva = function() {
-	 $log.log("Selecionou prova: " + $scope.filtros.codigoProva);
- }
-	
+
+	$scope.atualizaPresenca = function(idCandidato, status) {
+		$log.log("Checkbox: código prova = " + $scope.filtros.codigoProva + "  idCandidato = " + idCandidato + "  status = " + status);
+		dataService.atualizaPresencaProvasEscritas($scope.filtros.codigoProva, idCandidato, status);
+	};
+
+	$scope.selecionaProva = function() {
+		$log.log("Option: código prova: " + $scope.filtros.codigoProva);
+	}
+
 });
 
 /*
@@ -56,15 +55,17 @@ App.controller("presencaController", function($scope, $log, dataService) {
 
 App.filter("filterByPresence", function() {
 	return function(users, selectOption) {
-		console.log("Selecionou filto de presença: ", selectOption);
+		console.log("Option: tipo de presença: ", selectOption);
 		var filtered = [];
 		angular.forEach(users, function(item) {
 			if (!selectOption) {
 				selectOption == item.provasEscritas[0].presenca;
 				filtered.push(item);
-			} else if (selectOption == "presentes" && item.provasEscritas[0].presenca) {
+			} else if (selectOption == "presentes"
+					&& item.provasEscritas[0].presenca) {
 				filtered.push(item);
-			} else if (selectOption == "ausentes" && !item.provasEscritas[0].presenca) {
+			} else if (selectOption == "ausentes"
+					&& !item.provasEscritas[0].presenca) {
 				filtered.push(item);
 			}
 		});

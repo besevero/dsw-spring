@@ -34,7 +34,7 @@
 				</select>
 			</div>
 			<div class="mdl-dialog__content presenca left">
-				<select data-ng-model="filtros.codigoProva" class="wide" data-ng-click="selecionaProva()">
+				<select class="wide" data-ng-model="filtros.codigoProva" data-ng-click="selecionaProva()">
 					<option value="default">
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.prova' />	
 					</option>
@@ -65,7 +65,7 @@
 						{{item.nomeCandidato}}
 					</td>
 					<td class="mdl-data-table__cell--non-numeric">
-						<input type="checkbox" data-ng-click="atualizaPresenca(item.id, item.provasEscritas[0].presenca)" data-ng-checked="{{item.provasEscritas[0].presenca}}">
+						<input type="checkbox" data-ng-click="atualizaPresenca(item.idCandidato, item.provasEscritas[0].presenca)" data-ng-checked="{{item.provasEscritas[0].presenca}}">
 					</td>
 				</tr>
 			</table>
