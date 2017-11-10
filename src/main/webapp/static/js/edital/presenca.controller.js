@@ -39,9 +39,14 @@ App.controller("presencaController", function($scope, $log, dataService) {
 				});
 	}
 	
- $scope.atualizaPresenca = function(codigoProva, id, status) {
-	dataService.atualizaPresencaProvasEscritas(codigoProva, id, status)
+ $scope.atualizaPresenca = function(id, status) {
+	 $log.log($scope.filtros.codigoProva + " " + id + " " + status);
+	dataService.atualizaPresencaProvasEscritas($scope.filtros.codigoProva, id, status)
  };
+ 
+ $scope.selecionaProva = function() {
+	 $log.log("Selecionou prova: " + $scope.filtros.codigoProva);
+ }
 	
 });
 
