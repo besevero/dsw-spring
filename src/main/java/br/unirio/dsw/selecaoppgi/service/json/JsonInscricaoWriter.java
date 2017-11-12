@@ -68,8 +68,9 @@ public class JsonInscricaoWriter
 		JsonObject json = new JsonObject();
 		if(prova.getProvaEscrita().getCodigo() != null)
 			json.addProperty("codigoProvaEscrita", prova.getProvaEscrita().getCodigo());		
+
 		if(prova.getProvaEscrita().getNome() != null)
-			json.addProperty("codigoProvaEscrita", prova.getProvaEscrita().getNome());
+			json.addProperty("nomeProvaEscrita", prova.getProvaEscrita().getNome());
 		
 		if(prova.getPresente() != null)
 			json.addProperty("presenca", prova.getPresente());
