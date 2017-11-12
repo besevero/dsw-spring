@@ -40,7 +40,7 @@ public class ProvaEscritaController
     
 	// /edital/escrita/presenca
     /**
-     * Ação AJAX que atualiza a status de presença dos candidatos em provas escritas
+     * Ação AJAX que atualiza o status de presença dos candidatos em provas escritas
      */
     @ResponseBody
 	@RequestMapping(value = "/edital/escrita/presenca/", method = RequestMethod.GET)
@@ -129,4 +129,4 @@ public class ProvaEscritaController
 		 	  
 		 	  System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado":"reprovado");
 	}
-	}
+}

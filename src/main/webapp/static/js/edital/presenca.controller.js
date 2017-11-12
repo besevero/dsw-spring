@@ -59,8 +59,6 @@ App.filter("filtroPresenca", function() {
 		var filtered = [];
 		angular.forEach(alunos, function(item) {
 			if (!tipoPresenca) {
-				tipoPresenca == item.provasEscritas[0].presenca;
-				filtered.push(item);
 			} else if (tipoPresenca == "presentes" && item.provasEscritas[0].presenca) {
 				filtered.push(item);
 			} else if (tipoPresenca == "ausentes" && !item.provasEscritas[0].presenca) {

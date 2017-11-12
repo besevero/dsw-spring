@@ -65,7 +65,9 @@
 						{{item.nomeCandidato}}
 					</td>
 					<td class="mdl-data-table__cell--non-numeric">
-						<input type="checkbox" data-ng-click="atualizaPresenca(item.idCandidato, !item.provasEscritas[0].presenca)" data-ng-checked="{{item.provasEscritas[0].presenca}}">
+						<input type="checkbox" 
+							data-ng-click="atualizaPresenca(item.idCandidato, !item.provasEscritas[0].presenca)" 
+							data-ng-checked="{{item.provasEscritas[0].presenca}}">
 					</td>
 				</tr>
 			</table>
