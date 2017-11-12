@@ -86,6 +86,12 @@ public class JsonInscricaoReader
 
 				if (avaliacao != null)
 				{
+					String codigoProvaEscrita = jsonProva.get("codigoProvaEscrita").getAsString();
+					avaliacao.getProvaEscrita().setCodigo(codigoProvaEscrita);
+					
+					String nomeProvaEscrita = jsonProva.get("nomeProvaEscrita").getAsString();
+					avaliacao.getProvaEscrita().setNome(nomeProvaEscrita);
+					
 					boolean presente = jsonProva.get("presente").getAsBoolean();
 					avaliacao.setPresente(presente);
 					
