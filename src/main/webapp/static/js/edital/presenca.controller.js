@@ -5,7 +5,7 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 * Filtros
 	 */
 	$scope.filtros = {
-		codigoProva : "FSI",
+		codigoProva : null,
 		nome : ""
 	}
 
@@ -28,15 +28,25 @@ App.controller("presencaController", function($scope, $log, dataService) {
 		atualizaLista();
 	}
 
+	$scope.selecionaPresenca = function (tipoPresenca) {
+		console.log("Tipo de presença selecionado:", tipoPresenca)
+	}
+	
+	
 	/*
 	 * Atualiza a lista de editais
 	 */
 	var atualizaLista = function() {
-		dataService.pegaInscricoesProvasEscritas($scope.filtros).then(
-				function(data) {
-					$log.log(data);
-					$scope.inscricoes = data.data;
-				});
+		if ($scope.filtros.codigoProva == null) {
+			console.log("dataService desativado")
+		} 
+		else {
+			dataService.pegaInscricoesProvasEscritas($scope.filtros).then(			
+					function(data) {
+						$log.log(data);
+						$scope.inscricoes = data.data;
+					});
+		}
 	}
 
 	atualizaLista();

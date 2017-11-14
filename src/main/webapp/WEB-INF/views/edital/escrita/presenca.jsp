@@ -62,7 +62,8 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-model="item" data-ng-repeat="item in inscricoes | filter : buscaCandidato | filter : filtros.codigoProva | filter : tipoPresenca">
+				<tr data-ng-model="item" data-ng-repeat="item in inscricoes | filter : buscaCandidato | filter : filtros.codigoProva | filter : tipoPresenca"
+					data-ng-show="filtros.codigoProva || tipoPresenca">
 					<td class="mdl-data-table__cell--non-numeric">
 						
 						<span data-ng-show="item">
@@ -82,6 +83,7 @@
 							</span>
 							
 						<input id="status" type="checkbox"
+								data-ng-model="subitem.presenca"
 								data-ng-click="atualizaPresenca(item.idCandidato, !subitem.presenca)"
 								data-ng-checked="{{subitem.presenca}}">	
 						</span>					
