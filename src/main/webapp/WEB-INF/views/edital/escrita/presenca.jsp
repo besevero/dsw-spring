@@ -68,22 +68,23 @@
 						<span data-ng-show="item">
 							{{item.nomeCandidato}}
 						</span>
-						
+					</td>
+					
+					<td class="mdl-data-table__cell--non-numeric">
+							
 						<span data-ng-model="subitem" data-ng-repeat="subitem in item.provasEscritas 
 						| filter : { codigoProvaEscrita : filtros.codigoProva }
-						| filter : { presenca : tipoPresenca } " >
+						| filter : { presenca : tipoPresenca }" >
 						
 							<span data-ng-show="subitem">
 								Prova: {{subitem.codigoProvaEscrita}}
 								Presença: {{subitem.presenca}}
 							</span>
-						</span>
-
-					</td>
-					<td class="mdl-data-table__cell--non-numeric">
-							<input id="status" type="checkbox"
-								data-ng-click="atualizaPresenca(item.idCandidato, !item.provasEscritas[0].presenca)"
-								data-ng-checked="statusPresenca">	
+							
+						<input id="status" type="checkbox"
+								data-ng-click="atualizaPresenca(item.idCandidato, !subitem.presenca)"
+								data-ng-checked="{{subitem.presenca}}">	
+						</span>					
 					</td>
 				</tr>
 			</table>
