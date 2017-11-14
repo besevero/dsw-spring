@@ -6,11 +6,20 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 */
 	$scope.filtros = {
 		codigoProva : "FSI",
-		codigoProvaDefault : '',
 		nome : ""
 	}
 
 	$scope.inscricoes = [];
+	
+	/*
+	 * Chama o dataSevice para carregar uma prova selecionada pelo usuário
+	 */
+	self.selecionaProva = function(codigoProva) {
+		$scope.filtros.codigoProva = codigoProva;
+		console.log("$scope.filtros.codigoProva =", $scope.filtros.codigoProva);
+		$scope.filtros.codigoProva = codigoProva;
+		dataService.pegaInscricoesProvasEscritas($scope.filtros).then(atualizaLista);
+	}
 	
 	/*
 	 * Altera os filtros de consulta
@@ -32,23 +41,12 @@ App.controller("presencaController", function($scope, $log, dataService) {
 
 	atualizaLista();
 
-	var carregaProvas = function() {
-		dataService.pegaProvasEscritas($scope.filtros).then(function(data) {
-			$log.log(data);
-			$scope.provas = data.data;
-		});
-	}
-
 	$scope.atualizaPresenca = function(idCandidato, status) {
 		$log.log("Checkbox > código da prova = " + $scope.filtros.codigoProva + "  idCandidato = " + idCandidato + "  status = " + status);
 		var codigoProva = $scope.filtros.codigoProva;
 		dataService.atualizaPresencaProvasEscritas(codigoProva, idCandidato, status).then(atualizaLista);
 	};
-
-	$scope.selecionaProva = function(codigoProvaSelecionado) {
-		$log.log("Select da prova > código da prova: ", codigoProvaSelecionado);
-		$scope.provaSelecionada = codigoProvaSelecionado;
-	}
+	
 
 });
 
