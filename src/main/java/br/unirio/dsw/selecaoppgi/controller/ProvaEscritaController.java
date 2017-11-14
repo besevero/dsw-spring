@@ -43,6 +43,7 @@ public class ProvaEscritaController
      * Ação AJAX que atualiza o status de presença dos candidatos em provas escritas
      */
     @ResponseBody
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca/", method = RequestMethod.GET)
     public boolean atualizaPresenca(HttpServletRequest request, @ModelAttribute("code") String codigoProva, @ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status) {
     	return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);

@@ -16,9 +16,21 @@
 	<div class="mdl-grid">
 		<div class="mdl-cell mdl-cell--12-col page-filter">
 			<div class="mdl-dialog__content presenca left">
-				<input type="text" size="40"
+				<input type="text" size="30"
 					placeholder="<spring:message code='presenca.prova.escrita.list.label.name.filter'/>"
 					data-ng-model="buscaCandidato"/>
+			</div>
+			<div class="mdl-dialog__content presenca left">
+				<select class="wide" data-ng-model="filtros.codigoProvaDefault" data-ng-blur="selecionaProva(filtros.codigoProvaDefault)">
+					<option value="" selected>
+						<spring:message code='presenca.prova.escrita.list.label.select.filter.prova' />	
+					</option>
+					<c:forEach var="prova" items="${sessionScope.edital.provasEscritas}">
+						<option value="${prova.codigo}">
+							<c:out value="${prova.nome}"/> 
+						</option>
+					</c:forEach>
+				</select>
 			</div>
 			<div class="mdl-dialog__content presenca left">
 				<select class="wide" data-ng-model="tipoPresenca">
@@ -31,18 +43,6 @@
 					<option value="ausentes" data-ng-model="ausentes">
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.ausentes' />
 					</option>
-				</select>
-			</div>
-			<div class="mdl-dialog__content presenca left">
-				<select class="wide" data-ng-model="filtros.codigoProva" data-ng-click="selecionaProva()">
-					<option value="default">
-						<spring:message code='presenca.prova.escrita.list.label.select.filter.prova' />	
-					</option>
-					<c:forEach var="prova" items="${sessionScope.edital.provasEscritas}">
-						<option value="${prova.codigo}">
-							<c:out value="${prova.nome}"/> 
-						</option>
-					</c:forEach>
 				</select>
 			</div>
 			<div class="clear"></div>
@@ -60,14 +60,16 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-repeat="item in inscricoes | filter: buscaCandidato | filtroPresenca: tipoPresenca">
+				<tr data-ng-repeat="item in inscricoes | filter :buscaCandidato | filtroPresenca :tipoPresenca :provaSelecionada :statusPresenca">
 					<td class="mdl-data-table__cell--non-numeric">
 						{{item.nomeCandidato}}
+						{{filtros.codigoProva}}
 					</td>
 					<td class="mdl-data-table__cell--non-numeric">
-						<input type="checkbox" 
-							data-ng-click="atualizaPresenca(item.idCandidato, !item.provasEscritas[0].presenca)" 
-							data-ng-checked="{{item.provasEscritas[0].presenca}}">
+						<input id="status" type="checkbox"
+							data-ng-model="statusPresenca"
+							data-ng-click="atualizaPresenca(item.idCandidato, !item.provasEscritas[0].presenca)"
+							data-ng-checked="statusPresenca">					
 					</td>
 				</tr>
 			</table>
