@@ -480,12 +480,7 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
 		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		String SQLConsulta = "Select homologadoInicial, "
-				 					+ "homologadoRecurso, "		
-				 				 	+ "dispensadoProvaInicial, "		
-				 				 	+ "dispensadoProvaRecurso "		
-				 				 	+ "From inscricao"		
-				 				 	+ "WHERE id = ?;";
+		String SQLConsulta = "SELECT homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso FROM inscricao WHERE id = ?";
 		
 		Connection c = getConnection();
 
@@ -497,6 +492,8 @@ public class InscricaoDAO extends AbstractDAO
 			PreparedStatement ps = c.prepareStatement(SQLConsulta);
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
+			if (!rs.next())  
+			    throw new SQLException("erro ao ler o tipo do curso: "); 
 			
 			if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
 					rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0) {
@@ -531,12 +528,7 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
 		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		String SQLConsulta = "Select homologadoInicial, "		
-				 							+ "homologadoRecurso, "		
-				 							+ "dispensadoProvaInicial, "		
-				 				 			+ "dispensadoProvaRecurso "		
-				 				 			+ "From inscricao"		
-				 				 			+ "WHERE id = ?;";
+		String SQLConsulta = "SELECT homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso FROM inscricao WHERE id = ?";
 		
 		Connection c = getConnection();
 
@@ -548,6 +540,8 @@ public class InscricaoDAO extends AbstractDAO
 			PreparedStatement ps = c.prepareStatement(SQLConsulta);
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
+			if (!rs.next())  
+			    throw new SQLException("erro ao ler o tipo do curso: "); 
 			if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
 					rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
 			{

@@ -44,7 +44,7 @@ public class ProvaEscritaController
      */
     @ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/presenca/", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.GET)
     public boolean atualizaPresenca(HttpServletRequest request, @ModelAttribute("code") String codigoProva, @ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status) {
     	return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);
     }
