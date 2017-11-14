@@ -8,8 +8,9 @@ App.factory("dataService", ["$http", function ($http) {
 			return $http.get(contextPath + "/edital/escrita/presenca?code=" + params.codigoProva);
 		},
 		
-		atualizaPresencaProvasEscritas: function(params) {
-			return $http.get(contextPath + "/edital/escrita/presenca?code=" + params.codigoProva + "&id=" + params.idInscricao + "&status=" + params.status);
+		atualizaPresencaProvasEscritas: function(params, params2, params3) {
+			debugger;
+			return $http.get(contextPath + "/edital/escrita/presenca?code=" + params+ "&id=" + params2+ "&status=" + params3);
 		}
 	};
 }]);
