@@ -10,7 +10,9 @@ App.factory("dataService", ["$http", function ($http) {
 		
 		atualizaPresencaProvasEscritas: function(codigo, id, status) {
 			//debugger;
-			return $http.get(contextPath + "/edital/escrita/presenca/atualiza?code=" + codigo + "&id=" + id + "&status=" + status);
+			console.log(csrf.name + "=" + csrf.value);
+			return $http.post(contextPath + "/edital/escrita/presenca/atualiza?code=" + codigo + "&id=" + id + "&status=" + status,
+						"", { headers: { "X-CSRF-TOKEN": csrf.value }});
 		}
 	};
 }]);

@@ -44,7 +44,7 @@ public class ProvaEscritaController
      */
     @ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.POST)
     public boolean atualizaPresenca(HttpServletRequest request, @ModelAttribute("code") String codigoProva, @ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status) {
     	return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);
     }
@@ -92,42 +92,68 @@ public class ProvaEscritaController
 		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
 
 		for (InscricaoEdital candidato : lista) {
-			if (candidato.getHomologado() == false) {
-					candidatosComPendencia.add(candidato);
-				} else {
+			if (candidato.getHomologado() == true) 
+			{
+				if(verificaSeEstaComTodasAsNotas(candidato)) {
 					CalculaNotaDaProvaEscrita(candidato);
 				}
-			}
+				else
+				{
+					candidatosComPendencia.add(candidato);
+				}
+			} 
+			
+		}
 		
 		return candidatosComPendencia;
 	}
-/*
- * Função que calcula a nota da prova Escrita
- */
-	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
-		// Cálculo da prova
+	/*
+	 * Verifica se todas as provas já estão com nota
+	 */
+	public boolean verificaSeEstaComTodasAsNotas(InscricaoEdital candidato) {
 		
-		ProvaEscrita provaEscrita = new ProvaEscrita();
-		 	  if(!provaEscrita.isDispensavel()) {
-		     	  provaEscrita.adicionaQuestao(1);
-		     	  provaEscrita.adicionaQuestao(1);
-		     	  provaEscrita.adicionaQuestao(1);
-		 	  }
-		 	  else { return; }
-		 	  AvaliacaoProvaEscrita avaliacaoProvaEscrita = new AvaliacaoProvaEscrita(provaEscrita);
-		 	  avaliacaoProvaEscrita.setNotaOriginalQuestao(0, 50);
-		 	  avaliacaoProvaEscrita.setNotaOriginalQuestao(1, 80);
-		 	  avaliacaoProvaEscrita.setNotaOriginalQuestao(2, 100);
-		 	  
-		 	  for(int i=0; i<provaEscrita.contaQuestoes(); i++) {
-		 	    if(avaliacaoProvaEscrita.possuiNotaRecursoQuestao(i)) {
-		 	      avaliacaoProvaEscrita.setNotaOriginalQuestao(i, avaliacaoProvaEscrita.getNotaRecursoQuestao(i));
-		 	    }
-		 	  }
-		 	  
-		 	  int minhaNota = (avaliacaoProvaEscrita.getNotaOriginalQuestao(0) + avaliacaoProvaEscrita.getNotaOriginalQuestao(1) + avaliacaoProvaEscrita.getNotaOriginalQuestao(2))
-		 	  / provaEscrita.contaQuestoes();
-		 	  
-		 	  System.out.println(minhaNota >= provaEscrita.getNotaMinimaAprovacao() ? "aprovado":"reprovado");
+		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
+		
+		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
+			int indiceQuestao = 0;
+			while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) 
+			{
+				if(prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao)) {
+					
+			}
+				else 
+				{
+					return false;
+				}
+				indiceQuestao++;
+			}
+		}
+		return true;
+	}
+	
+	/*
+	 * Função que calcula a nota da prova Escrita
+	 */
+	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
+		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
+		
+		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
+			int indiceQuestao = 0;
+			int somatorio = 0;
+			while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
+				if(prova.possuiNotaRecursoQuestao(indiceQuestao)) {
+					somatorio = somatorio + prova.getNotaRecursoQuestao(indiceQuestao);
+				}
+				else
+				{
+					somatorio = somatorio + prova.getNotaOriginalQuestao(indiceQuestao);
+				}
+			}
+				indiceQuestao++;
+			}
+		}
+		
+		
+		
 	}
 }
