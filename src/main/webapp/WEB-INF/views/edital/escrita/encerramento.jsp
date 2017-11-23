@@ -8,7 +8,7 @@
 	<div class="mdl-grid">
 		<div class="mdl-cell mdl-cell--12-col page-header">
 			<h3>
-				<spring:message code="presenca.prova.escrita.titulo" />
+				<spring:message code="encerramento.prova.escrita.titulo" />
 			</h3>
 		</div>
 	</div>
@@ -62,7 +62,7 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-repeat="item in inscricoes | filter : buscaCandidato | filter : filtros.codigoProva : tipoPresenca"
+				<tr data-ng-repeat="item in provas | filter : buscaCandidato | filter : filtros.codigoProva : tipoPresenca"
 					data-ng-show="filtros.codigoProva && tipoPresenca">
 
 					<td class="mdl-data-table__cell--non-numeric">
