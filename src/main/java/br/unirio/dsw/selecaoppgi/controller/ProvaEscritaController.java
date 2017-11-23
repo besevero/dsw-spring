@@ -51,7 +51,6 @@ public class ProvaEscritaController
 	}
 	// /edital/escrita/nota
 
-	// /edital/escrita/encerramento
 
 	/**
 	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
@@ -84,6 +83,30 @@ public class ProvaEscritaController
 		model.setViewName("edital/escrita/presenca");
 		return model;
 	}
+	/**
+	 *Ação do encerramento de nota da prova escrita 
+	 * 
+	 */
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET, produces = "application/json")
+	public String encerramento(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
+	{
+		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
+		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
+		
+		JsonInscricaoWriter writer = new JsonInscricaoWriter();
+		JsonArray jsonInscricoesEdital = new JsonArray();
+
+		for (InscricaoEdital inscricao : VerificaCandidatosComPendenciaNasProvas(lista))
+			jsonInscricoesEdital.add(writer.execute(inscricao));
+		
+
+		return jsonInscricoesEdital.toString();
+	}
+
+	
+	
 	/*
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
 	 * prova caso não haja pendências.
@@ -169,7 +192,6 @@ public class ProvaEscritaController
 					indiceQuestao++;
 					
 					inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
-					//blabla.insetdao(media);
 			}
 		}
 	}
