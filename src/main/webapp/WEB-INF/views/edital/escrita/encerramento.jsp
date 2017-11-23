@@ -80,7 +80,6 @@
 								-->
 						
 								<input id="status" type="checkbox"
-									data-ng-click="atualizaPresenca(item.idCandidato, !subitem.presenca)"
 									data-ng-checked="{{subitem.presenca}}">		
 							</span>
 	
