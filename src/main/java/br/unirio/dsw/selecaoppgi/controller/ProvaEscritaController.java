@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.JsonArray;
 
 import br.unirio.dsw.selecaoppgi.model.edital.Edital;
-import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.service.ServicoEdital;
@@ -150,7 +149,7 @@ public class ProvaEscritaController
 			int indiceQuestao = 0;
 			int somatorio = 0;
 			int somaPesos = 0;
-			int media;
+			int media = 0;
 			if(!prova.getProvaEscrita().isDispensavel()) {
 				while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
 					int pegaPesoQuestao = prova.getProvaEscrita().pegaPesoQuestaoIndice(indiceQuestao);
@@ -168,6 +167,7 @@ public class ProvaEscritaController
 					}
 				}
 					indiceQuestao++;
+					
 					inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
 					//blabla.insetdao(media);
 			}
