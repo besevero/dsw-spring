@@ -90,7 +90,7 @@ public class ProvaEscritaController
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET, produces = "application/json")
-	public String encerramento(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
+	public String encerramento(HttpServletRequest request)
 	{
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
