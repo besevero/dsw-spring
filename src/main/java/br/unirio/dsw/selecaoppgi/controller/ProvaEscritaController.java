@@ -89,20 +89,13 @@ public class ProvaEscritaController
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET, produces = "application/json")
-	public String encerramento(HttpServletRequest request)
+	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
+	public List<String> encerramento(HttpServletRequest request)
 	{
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
 		
-		JsonInscricaoWriter writer = new JsonInscricaoWriter();
-		JsonArray jsonInscricoesEdital = new JsonArray();
-
-		for (InscricaoEdital inscricao : VerificaCandidatosComPendenciaNasProvas(lista))
-			jsonInscricoesEdital.add(writer.execute(inscricao));
-		
-
-		return jsonInscricoesEdital.toString();
+		return VerificaCandidatosComPendenciaNasProvas(lista);
 	}
 
 	
@@ -113,35 +106,38 @@ public class ProvaEscritaController
 	 * 
 	 */
 
-	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
+	public List<String> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
 	{
-		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
+				List<String> pendencias= new ArrayList<String>();
 
 		for (InscricaoEdital candidato : lista)
 		{
 			if (candidato.getHomologado() == true)
 			{
-				if (verificaSeEstaComTodasAsNotas(candidato))
+				if (verificaSeEstaComTodasAsNotas(candidato).equals(""))
 				{
 					CalculaNotaDaProvaEscrita(candidato);
 				} else
 				{
-					candidatosComPendencia.add(candidato);
+					String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato() + 
+							" está sem nota na prova " + verificaSeEstaComTodasAsNotas(candidato);
+					pendencias.add(pendenciaFormatada);
 				}
 			}
 
 		}
 
-		return candidatosComPendencia;
+		return pendencias;
 	}
 
 	/*
 	 * Verifica se todas as provas já estão com nota
 	 */
-	public boolean verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
+	public String verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
 	{
 
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
+		String nomeProva = "";
 
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
 		{
@@ -153,12 +149,12 @@ public class ProvaEscritaController
 
 				} else
 				{
-					return false;
+					nomeProva =  prova.getProvaEscrita().getNome();
 				}
 				indiceQuestao++;
 			}
 		}
-		return true;
+		return nomeProva;
 	}
 
 	/*
