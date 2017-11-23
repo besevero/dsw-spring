@@ -91,22 +91,16 @@ public class ProvaEscritaController
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
-	public List<String> encerramento(HttpServletRequest request)
+	public ModelAndView encerramento(HttpServletRequest request)
 	{
+		ModelAndView model = new ModelAndView();
+		
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
 		
-		return VerificaCandidatosComPendenciaNasProvas(lista);
-	}
-
-	/**
-	 * Ação que redireciona o usuário para a tela de encerramento em prova escrita
-	 */
-	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
-	public ModelAndView mostraPaginaEncerramentoPresencaProvaEscrita()
-	{
-		ModelAndView model = new ModelAndView();
+		model.getModel().put("Candidatos", VerificaCandidatosComPendenciaNasProvas(lista));
 		model.setViewName("/edital/escrita/encerramento");
+		
 		return model;
 	}
 	
