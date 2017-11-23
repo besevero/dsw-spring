@@ -137,26 +137,32 @@ public class ProvaEscritaController
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
 		
+		
 		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
 			int indiceQuestao = 0;
 			int somatorio = 0;
 			int somaPesos = 0;
+			int media;
 			if(!prova.getProvaEscrita().isDispensavel()) {
 				while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
 					int pegaPesoQuestao = prova.getProvaEscrita().pegaPesoQuestaoIndice(indiceQuestao);
 					if(prova.possuiNotaRecursoQuestao(indiceQuestao)) {
 						somatorio = somatorio + (prova.getNotaRecursoQuestao(indiceQuestao) * pegaPesoQuestao);
 						somaPesos = somaPesos + pegaPesoQuestao;
+						media= somatorio / somaPesos;
 						
 					}
 					else
 					{
 						somatorio = somatorio + (prova.getNotaOriginalQuestao(indiceQuestao) * pegaPesoQuestao);
 						somaPesos = somaPesos + pegaPesoQuestao;
+						media= somatorio / somaPesos;
 					}
 				}
 					indiceQuestao++;
-				}
+					inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
+					//blabla.insetdao(media);
+			}
 		}
 	}
 		

@@ -1,0 +1,15 @@
+DROP PROCEDURE IF EXISTS atualizaNotaFinal;
+DELIMITER //
+CREATE PROCEDURE atualizaNotaFinal(vNotaFinal INT, vId INT)
+BEGIN
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION ROLLBACK;
+	START TRANSACTION;
+
+	UPDATE inscricaoprovaescrita 
+	SET notaFinal = vNotaFinal 
+	WHERE idInscricaoProvaEscrita = vId;
+	
+	COMMIT;
+END //
+
+DELIMITER ;
