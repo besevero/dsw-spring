@@ -62,31 +62,28 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-model="item" data-ng-repeat="item in inscricoes | filter : buscaCandidato | filter : filtros.codigoProva | filter : tipoPresenca"
-					data-ng-show="filtros.codigoProva || tipoPresenca">
+				<tr data-ng-repeat="item in inscricoes | filter : buscaCandidato | filter : filtros.codigoProva : tipoPresenca"
+					data-ng-show="filtros.codigoProva && tipoPresenca">
+
 					<td class="mdl-data-table__cell--non-numeric">
-						
-						<span data-ng-show="item">
-							{{item.nomeCandidato}}
-						</span>
+						{{item.nomeCandidato}}					
 					</td>
 					
 					<td class="mdl-data-table__cell--non-numeric">
 							
-						<span data-ng-model="subitem" data-ng-repeat="subitem in item.provasEscritas 
-						| filter : { codigoProvaEscrita : filtros.codigoProva }
-						| filter : { presenca : tipoPresenca }" >
-						
-							<span data-ng-show="subitem">
+							<span data-ng-repeat="subitem in item.provasEscritas
+							| filter : { codigoProvaEscrita : filtros.codigoProva }
+							| filter : { presenca : tipoPresenca }" >
+								<!--
 								Prova: {{subitem.codigoProvaEscrita}}
 								Presença: {{subitem.presenca}}
+								-->
+						
+								<input id="status" type="checkbox"
+									data-ng-click="atualizaPresenca(item.idCandidato, !subitem.presenca)"
+									data-ng-checked="{{subitem.presenca}}">		
 							</span>
-							
-						<input id="status" type="checkbox"
-								data-ng-model="subitem.presenca"
-								data-ng-click="atualizaPresenca(item.idCandidato, !subitem.presenca)"
-								data-ng-checked="{{subitem.presenca}}">	
-						</span>					
+	
 					</td>
 				</tr>
 			</table>

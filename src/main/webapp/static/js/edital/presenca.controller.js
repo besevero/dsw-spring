@@ -17,7 +17,6 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	self.selecionaProva = function(codigoProva) {
 		$scope.filtros.codigoProva = codigoProva;
 		console.log("$scope.filtros.codigoProva =", $scope.filtros.codigoProva);
-		$scope.filtros.codigoProva = codigoProva;
 		dataService.pegaInscricoesProvasEscritas($scope.filtros).then(atualizaLista);
 	}
 	

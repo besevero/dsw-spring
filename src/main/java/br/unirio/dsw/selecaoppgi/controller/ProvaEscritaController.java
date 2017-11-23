@@ -27,35 +27,36 @@ import br.unirio.dsw.selecaoppgi.service.dao.UsuarioDAO;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoWriter;
 
 @Controller
-public class ProvaEscritaController 
+public class ProvaEscritaController
 {
-    @Autowired
+	@Autowired
 	private UsuarioDAO userDAO;
-    
-    @Autowired
+
+	@Autowired
 	private EditalDAO editalDAO;
-    
-    @Autowired
+
+	@Autowired
 	private InscricaoDAO inscricaoDAO;
-    
+
 	// /edital/escrita/presenca
-    /**
-     * Ação AJAX que atualiza o status de presença dos candidatos em provas escritas
-     */
-    @ResponseBody
+	/**
+	 * Ação AJAX que atualiza o status de presença dos candidatos em provas escritas
+	 */
+	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.POST)
-    public boolean atualizaPresenca(HttpServletRequest request, @ModelAttribute("code") String codigoProva, @ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status) {
-    	return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);
-    }
+	public boolean atualizaPresenca(HttpServletRequest request, @ModelAttribute("code") String codigoProva,
+			@ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status)
+	{
+		return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);
+	}
 	// /edital/escrita/nota
 
 	// /edital/escrita/encerramento
-		
-	
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
+	 * escritas de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
@@ -64,64 +65,71 @@ public class ProvaEscritaController
 	{
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
-		
+
 		JsonInscricaoWriter writer = new JsonInscricaoWriter();
 		JsonArray jsonInscricoesEdital = new JsonArray();
-		
+
 		for (InscricaoEdital inscricao : lista)
 			jsonInscricoesEdital.add(writer.execute(inscricao));
-		
+
 		return jsonInscricoesEdital.toString();
 	}
-	
+
 	/**
 	 * Ação que redireciona o usuário para a tela presença em prova escrita
 	 */
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET)
-	public ModelAndView mostraPaginaPresencaProvaEscrita() {
+	public ModelAndView mostraPaginaPresencaProvaEscrita()
+	{
 		ModelAndView model = new ModelAndView();
 		model.setViewName("edital/escrita/presenca");
 		return model;
 	}
 	/*
-	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova caso não haja pendências.
+	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
+	 * prova caso não haja pendências.
 	 * 
 	 */
-	
-	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista) {
+
+	public List<InscricaoEdital> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
+	{
 		List<InscricaoEdital> candidatosComPendencia = new ArrayList<InscricaoEdital>();
 
-		for (InscricaoEdital candidato : lista) {
-			if (candidato.getHomologado() == true) 
+		for (InscricaoEdital candidato : lista)
+		{
+			if (candidato.getHomologado() == true)
 			{
-				if(verificaSeEstaComTodasAsNotas(candidato)) {
+				if (verificaSeEstaComTodasAsNotas(candidato))
+				{
 					CalculaNotaDaProvaEscrita(candidato);
-				}
-				else
+				} else
 				{
 					candidatosComPendencia.add(candidato);
 				}
-			} 
-			
+			}
+
 		}
-		
+
 		return candidatosComPendencia;
 	}
+
 	/*
 	 * Verifica se todas as provas já estão com nota
 	 */
-	public boolean verificaSeEstaComTodasAsNotas(InscricaoEdital candidato) {
-		
+	public boolean verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
+	{
+
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
-		
-		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
+
+		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
+		{
 			int indiceQuestao = 0;
-			while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) 
+			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
 			{
-				if(prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao)) {
-					
-			}
-				else 
+				if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
+				{
+
+				} else
 				{
 					return false;
 				}
@@ -130,30 +138,30 @@ public class ProvaEscritaController
 		}
 		return true;
 	}
-	
+
 	/*
 	 * Função que calcula a nota da prova Escrita
 	 */
-	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato) {
+	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato)
+	{
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
-		
-		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
+
+		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
+		{
 			int indiceQuestao = 0;
 			int somatorio = 0;
-			while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
-				if(prova.possuiNotaRecursoQuestao(indiceQuestao)) {
+			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
+			{
+				if (prova.possuiNotaRecursoQuestao(indiceQuestao))
+				{
 					somatorio = somatorio + prova.getNotaRecursoQuestao(indiceQuestao);
-				}
-				else
+				} else
 				{
 					somatorio = somatorio + prova.getNotaOriginalQuestao(indiceQuestao);
 				}
 			}
-				indiceQuestao++;
-			}
+			indiceQuestao++;
 		}
-		
-		
-		
 	}
+
 }
