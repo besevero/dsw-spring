@@ -83,6 +83,7 @@ public class ProvaEscritaController
 		model.setViewName("edital/escrita/presenca");
 		return model;
 	}
+	
 	/**
 	 *Ação do encerramento de nota da prova escrita 
 	 * 
@@ -98,7 +99,16 @@ public class ProvaEscritaController
 		return VerificaCandidatosComPendenciaNasProvas(lista);
 	}
 
-	
+	/**
+	 * Ação que redireciona o usuário para a tela de encerramento em prova escrita
+	 */
+	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
+	public ModelAndView mostraPaginaEncerramentoPresencaProvaEscrita()
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/edital/escrita/encerramento");
+		return model;
+	}
 	
 	/*
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
