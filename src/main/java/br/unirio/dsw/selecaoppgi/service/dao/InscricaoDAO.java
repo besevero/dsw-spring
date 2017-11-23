@@ -649,7 +649,30 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		}
 	}
+/**
+ *Atualiza a nota final da prova escrita 
+ */
+	public boolean atualizaMediaProvaFinal(int notaFinal, int idInscricaoProvaEscrita) {
+	
+		Connection c = getConnection();
+		
+		if(c == null)
+			return false;
+		try
+		{
+			CallableStatement cs = c.prepareCall("{call atualizaNotaFinal(?,?)}");
+			cs.setInt(1, notaFinal);
+			cs.setInt(2, idInscricaoProvaEscrita);
+			cs.execute();
+			c.close();
+			return true;
 
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.atualizaMediaProvaFinal: " + e.getMessage());
+			return false;
+		}
+	}
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova oral
