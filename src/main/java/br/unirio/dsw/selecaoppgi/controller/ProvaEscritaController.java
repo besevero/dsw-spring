@@ -140,20 +140,27 @@ public class ProvaEscritaController
 		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
 			int indiceQuestao = 0;
 			int somatorio = 0;
-			while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
-				if(prova.possuiNotaRecursoQuestao(indiceQuestao)) {
-					somatorio = somatorio + prova.getNotaRecursoQuestao(indiceQuestao);
+			int somaPesos = 0;
+			if(!prova.getProvaEscrita().isDispensavel()) {
+				while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
+					int pegaPesoQuestao = prova.getProvaEscrita().pegaPesoQuestaoIndice(indiceQuestao);
+					if(prova.possuiNotaRecursoQuestao(indiceQuestao)) {
+						somatorio = somatorio + (prova.getNotaRecursoQuestao(indiceQuestao) * pegaPesoQuestao);
+						somaPesos = somaPesos + pegaPesoQuestao;
+						
+					}
+					else
+					{
+						somatorio = somatorio + (prova.getNotaOriginalQuestao(indiceQuestao) * pegaPesoQuestao);
+						somaPesos = somaPesos + pegaPesoQuestao;
+					}
 				}
-				else
-				{
-					somatorio = somatorio + prova.getNotaOriginalQuestao(indiceQuestao);
+					indiceQuestao++;
 				}
-			}
-				indiceQuestao++;
-			}
 		}
-		
-		
-		
 	}
+		
+		
+		
+	
 }
