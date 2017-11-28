@@ -117,14 +117,20 @@ public class ProvaEscritaController
 		{
 			if (candidato.getHomologado() == true)
 			{
-				if (verificaSeEstaComTodasAsNotas(candidato).equals(""))
-				{
-					CalculaNotaDaProvaEscrita(candidato);
-				} else
-				{
-					String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato()
-							+ " está sem nota na prova " + verificaSeEstaComTodasAsNotas(candidato);
-					pendencias.add(pendenciaFormatada);
+				ArrayList<String> listaNomesProvas = verificaSeEstaComTodasAsNotas(candidato);
+				for(String nome : listaNomesProvas) {
+					if (nome.equals(""))
+					{
+						CalculaNotaDaProvaEscrita(candidato);
+					
+					} else
+					{
+					
+						String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato()
+								+ " está sem nota na prova " + nome;
+						pendencias.add(pendenciaFormatada);
+					}
+					
 				}
 			}
 
@@ -136,15 +142,14 @@ public class ProvaEscritaController
 	/*
 	 * Verifica se todas as provas já estão com nota
 	 */
-	public String verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
+	public ArrayList<String> verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
 	{
 
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
-		String nomeProva = "";
+		ArrayList<String> nomeProva = new ArrayList<String>();
 
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
-		{
-			int indiceQuestao = 0;
+		{	int indiceQuestao = 0; 
 			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
 			{
 				if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
@@ -152,7 +157,8 @@ public class ProvaEscritaController
 
 				} else
 				{
-					nomeProva = prova.getProvaEscrita().getNome();
+					nomeProva.add(prova.getProvaEscrita().getNome());
+					break;
 				}
 				indiceQuestao++;
 			}

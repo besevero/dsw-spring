@@ -720,6 +720,7 @@ public class InscricaoDAO extends AbstractDAO
 			cs.setInt(1, notaFinal);
 			cs.setInt(2, idInscricaoProvaEscrita);
 			cs.execute();
+			 
 			c.close();
 			return true;
 
