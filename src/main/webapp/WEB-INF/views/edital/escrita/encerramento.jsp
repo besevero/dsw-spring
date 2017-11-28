@@ -30,5 +30,12 @@
 			</c:forEach>
 		</table>
 	</div>
+	
+   	<div class="mdl-grid right" style="margin-bottom: 10px;">
+		<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button" onclick="myFunction()">
+			<spring:message code='encerramento.prova.escrita.encerrar'/>
+		</button>
+	</div>
+	
 </div>
 
