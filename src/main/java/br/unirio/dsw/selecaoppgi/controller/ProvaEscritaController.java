@@ -2,12 +2,15 @@ package br.unirio.dsw.selecaoppgi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +27,7 @@ import br.unirio.dsw.selecaoppgi.service.dao.EditalDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.UsuarioDAO;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoWriter;
+import br.unirio.dsw.selecaoppgi.view.edital.EditalForm;
 
 @Controller
 public class ProvaEscritaController
@@ -205,5 +209,16 @@ public class ProvaEscritaController
 				inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
 			}
 		}
+	}
+	/**
+	 * Ação que apresenta o formulário de edição de um edital
+	 */
+	
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/encerramento/{id}", method = RequestMethod.POST)
+	public void atualizaPresenca(HttpServletRequest request, @PathVariable("id") int id)
+	{
+		inscricaoDAO.atualizaStatusEdital(id);
 	}
 }
