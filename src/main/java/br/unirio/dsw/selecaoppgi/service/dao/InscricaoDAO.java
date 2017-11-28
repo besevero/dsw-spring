@@ -731,6 +731,32 @@ public class InscricaoDAO extends AbstractDAO
 		}
 	}
 	/**
+	 *Atualiza o status do edital
+	 */
+		public boolean atualizaStatusEdital(int idEdital) {
+		
+			Connection c = getConnection();
+			
+			if(c == null)
+				return false;
+			try
+			{
+				CallableStatement cs = c.prepareCall("{call AtualizaStatus(?)}");
+				cs.setInt(1, idEdital);
+				
+				cs.execute();
+				 
+				c.close();
+				return true;
+
+			} catch (SQLException e)
+			{
+				log("InscricaoDAO.atualizaStatusEdital: " + e.getMessage());
+				return false;
+			}
+		}
+
+	/**
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova oral
 	 */
