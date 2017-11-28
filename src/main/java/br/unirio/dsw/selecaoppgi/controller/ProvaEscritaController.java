@@ -96,8 +96,11 @@ public class ProvaEscritaController
 
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
-
-		model.getModel().put("candidatos", VerificaCandidatosComPendenciaNasProvas(lista));
+		List<String> resultado = VerificaCandidatosComPendenciaNasProvas(lista);
+		if(resultado.isEmpty())
+			resultado.add("Nenhuma pendência encontrada");
+		
+		model.getModel().put("candidatos", resultado);
 		model.setViewName("/edital/escrita/encerramento");
 
 		return model;
