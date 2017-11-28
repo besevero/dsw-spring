@@ -51,7 +51,6 @@ public class ProvaEscritaController
 	}
 	// /edital/escrita/nota
 
-
 	/**
 	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
 	 * escritas de um edital
@@ -83,9 +82,9 @@ public class ProvaEscritaController
 		model.setViewName("edital/escrita/presenca");
 		return model;
 	}
-	
+
 	/**
-	 *Ação do encerramento de nota da prova escrita 
+	 * Ação do encerramento de nota da prova escrita
 	 * 
 	 */
 	@ResponseBody
@@ -94,16 +93,16 @@ public class ProvaEscritaController
 	public ModelAndView encerramento(HttpServletRequest request)
 	{
 		ModelAndView model = new ModelAndView();
-		
+
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
-		
+
 		model.getModel().put("candidatos", VerificaCandidatosComPendenciaNasProvas(lista));
 		model.setViewName("/edital/escrita/encerramento");
-		
+
 		return model;
 	}
-	
+
 	/*
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
 	 * prova caso não haja pendências.
@@ -112,7 +111,7 @@ public class ProvaEscritaController
 
 	public List<String> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
 	{
-				List<String> pendencias= new ArrayList<String>();
+		List<String> pendencias = new ArrayList<String>();
 
 		for (InscricaoEdital candidato : lista)
 		{
@@ -123,8 +122,8 @@ public class ProvaEscritaController
 					CalculaNotaDaProvaEscrita(candidato);
 				} else
 				{
-					String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato() + 
-							" está sem nota na prova " + verificaSeEstaComTodasAsNotas(candidato);
+					String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato()
+							+ " está sem nota na prova " + verificaSeEstaComTodasAsNotas(candidato);
 					pendencias.add(pendenciaFormatada);
 				}
 			}
@@ -153,7 +152,7 @@ public class ProvaEscritaController
 
 				} else
 				{
-					nomeProva =  prova.getProvaEscrita().getNome();
+					nomeProva = prova.getProvaEscrita().getNome();
 				}
 				indiceQuestao++;
 			}
@@ -166,32 +165,35 @@ public class ProvaEscritaController
 	 */
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato)
 	{
-		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();	
-		
-		for(AvaliacaoProvaEscrita prova : listaAvaliacoes) {
+		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
+
+		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
+		{
 			int indiceQuestao = 0;
 			int somatorio = 0;
 			int somaPesos = 0;
 			int media = 0;
-			if(!prova.getProvaEscrita().isDispensavel()) {
-				while(indiceQuestao < prova.getProvaEscrita().contaQuestoes()) {
+			if (!prova.getProvaEscrita().isDispensavel())
+			{
+				while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
+				{
 					int pegaPesoQuestao = prova.getProvaEscrita().pegaPesoQuestaoIndice(indiceQuestao);
-					if(prova.possuiNotaRecursoQuestao(indiceQuestao)) {
+					if (prova.possuiNotaRecursoQuestao(indiceQuestao))
+					{
 						somatorio = somatorio + (prova.getNotaRecursoQuestao(indiceQuestao) * pegaPesoQuestao);
 						somaPesos = somaPesos + pegaPesoQuestao;
-						media= somatorio / somaPesos;
-						
-					}
-					else
+						media = somatorio / somaPesos;
+
+					} else
 					{
 						somatorio = somatorio + (prova.getNotaOriginalQuestao(indiceQuestao) * pegaPesoQuestao);
 						somaPesos = somaPesos + pegaPesoQuestao;
-						media= somatorio / somaPesos;
+						media = somatorio / somaPesos;
 					}
 				}
-					indiceQuestao++;
-					
-					inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
+				indiceQuestao++;
+
+				inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
 			}
 		}
 	}

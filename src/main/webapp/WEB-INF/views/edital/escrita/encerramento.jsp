@@ -14,7 +14,6 @@
 	</div>
 
 	<div class="mdl-grid">
-		
 		<table
 			class="mdl-data-table mdl-js-data-table mdl-shadow--2dp wide paginated" style="font-size: 12px">
 			<tr>
@@ -30,7 +29,6 @@
 				</tr>
 			</c:forEach>
 		</table>
-		
 	</div>
 </div>
 
