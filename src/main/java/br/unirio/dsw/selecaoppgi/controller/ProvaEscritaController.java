@@ -2,7 +2,6 @@ package br.unirio.dsw.selecaoppgi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +25,6 @@ import br.unirio.dsw.selecaoppgi.service.dao.EditalDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.InscricaoDAO;
 import br.unirio.dsw.selecaoppgi.service.dao.UsuarioDAO;
 import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoWriter;
-import br.unirio.dsw.selecaoppgi.view.edital.EditalForm;
 
 @Controller
 public class ProvaEscritaController
@@ -101,9 +98,7 @@ public class ProvaEscritaController
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
 		List<String> resultado = VerificaCandidatosComPendenciaNasProvas(lista);
-		if(resultado.isEmpty())
-			resultado.add("Nenhuma pendência encontrada");
-		
+				
 		model.getModel().put("candidatos", resultado);
 		model.setViewName("/edital/escrita/encerramento");
 
@@ -115,7 +110,6 @@ public class ProvaEscritaController
 	 * prova caso não haja pendências.
 	 * 
 	 */
-
 	public List<String> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
 	{
 		List<String> pendencias = new ArrayList<String>();
@@ -126,13 +120,8 @@ public class ProvaEscritaController
 			{
 				ArrayList<String> listaNomesProvas = verificaSeEstaComTodasAsNotas(candidato);
 				for(String nome : listaNomesProvas) {
-					if (nome.equals(""))
+					if (!nome.equals(""))
 					{
-						CalculaNotaDaProvaEscrita(candidato);
-					
-					} else
-					{
-					
 						String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato()
 								+ " está sem nota na prova " + nome;
 						pendencias.add(pendenciaFormatada);
@@ -149,6 +138,7 @@ public class ProvaEscritaController
 	/*
 	 * Verifica se todas as provas já estão com nota
 	 */
+	
 	public ArrayList<String> verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
 	{
 
@@ -156,7 +146,8 @@ public class ProvaEscritaController
 		ArrayList<String> nomeProva = new ArrayList<String>();
 
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
-		{	int indiceQuestao = 0; 
+		{	
+			int indiceQuestao = 0; 
 			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
 			{
 				if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
@@ -214,11 +205,47 @@ public class ProvaEscritaController
 	 * Ação que apresenta o formulário de edição de um edital
 	 */
 	
-	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento/{id}", method = RequestMethod.POST)
-	public void atualizaPresenca(HttpServletRequest request, @PathVariable("id") int id)
+	@RequestMapping(value = "/edital/escrita/encerramento/", method = RequestMethod.GET)
+	public void atualizaPresenca(HttpServletRequest request)
 	{
-		inscricaoDAO.atualizaStatusEdital(id);
+		//Pega Edital
+		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
+		//Verifica novamente as regras
+		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
+		
+		for(InscricaoEdital candidato : lista) 
+		{
+			if(confirmaEncerramentoCandidato(candidato))
+				CalculaNotaDaProvaEscrita(candidato);
+		}
+		//atualiza
+		inscricaoDAO.atualizaStatusEdital(editalSelecionado.getId());
+	}
+	
+	public boolean confirmaEncerramentoCandidato(InscricaoEdital candidato) {
+		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
+		
+		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
+		{
+			int indiceQuestao = 0; 
+			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
+			{
+				if(candidato.getHomologado() == true) {
+					if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao)) 
+					{
+					}
+					else
+					{
+						return false;
+					}
+					indiceQuestao++;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
