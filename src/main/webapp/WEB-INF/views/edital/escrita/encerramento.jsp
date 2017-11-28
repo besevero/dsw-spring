@@ -32,9 +32,13 @@
 	</div>
 	
    	<div class="mdl-grid right" style="margin-bottom: 10px;">
-		<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button" onclick="myFunction()">
-			<spring:message code='encerramento.prova.escrita.encerrar'/>
-		</button>
+	   	<c:if test="${not empty requestScope.candidatos}">
+	   		<a href="${pageContext.request.contextPath}/edital/escrita/encerramento">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button" onclick="myFunction()">
+					<spring:message code='encerramento.prova.escrita.encerrar'/>
+				</button>
+			</a>
+		</c:if>
 	</div>
 	
 </div>
