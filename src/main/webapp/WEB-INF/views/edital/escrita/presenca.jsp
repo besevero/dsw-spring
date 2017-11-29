@@ -39,10 +39,10 @@
 					<option value="" selected>
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca' />
 					</option>
-					<option value="true">
+					<option ng-value="true">
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.presentes' />
 					</option>
-					<option value="false">
+					<option ng-value="false">
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.ausentes' />
 					</option>
 				</select>
@@ -62,8 +62,7 @@
 						<spring:message code='presenca.prova.escrita.list.table.status' />
 					</td>
 				</tr>
-				<tr data-ng-repeat="item in inscricoes | filter : buscaCandidato | filter : filtros.codigoProva : tipoPresenca"
-					data-ng-show="filtros.codigoProva && tipoPresenca">
+				<tr data-ng-repeat="item in pegaInscricoes() | filter : buscaCandidato">
 
 					<td class="mdl-data-table__cell--non-numeric">
 						{{item.nomeCandidato}}					

@@ -56,5 +56,28 @@ App.controller("presencaController", function($scope, $log, dataService) {
 		dataService.atualizaPresencaProvasEscritas(codigoProva, idCandidato, status).then(atualizaLista);
 	};
 	
+	$scope.pegaInscricoes = function() {
+		var inscricoes = $scope.inscricoes.filter(function(inscricao){
+			var existeProva = inscricao.provasEscritas.some(function(prova){
+				return prova.codigoProvaEscrita == $scope.filtros.codigoProva;
+			});
+			return existeProva;
+		});
+		
+		inscricoes = inscricoes.filter(function(inscricao){
+			var estaPresente = inscricao.provasEscritas.some(function(prova){
+				return prova.presenca;
+			});
+			
+			if ($scope.tipoPresenca) {
+				return estaPresente;
+			} else {
+				return !estaPresente;
+			}
+		});
+
+		return inscricoes;
+	}
+	
 
 });
