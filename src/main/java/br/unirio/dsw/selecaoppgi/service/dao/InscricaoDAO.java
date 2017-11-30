@@ -280,13 +280,15 @@ public class InscricaoDAO extends AbstractDAO
 
 					if (jsonQuestoesInicialString.length() > 0)
 					{
-						JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser().parse(jsonQuestoesInicialString);
+						JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser()
+								.parse(jsonQuestoesInicialString);
 						readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray, inscricaoProva);
 					}
-					
+
 					if (jsonQuestoesRecursoString.length() > 0)
 					{
-						JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser().parse(jsonQuestoesRecursoString);
+						JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser()
+								.parse(jsonQuestoesRecursoString);
 						readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
 					}
 				}
@@ -302,31 +304,31 @@ public class InscricaoDAO extends AbstractDAO
 		return lista;
 	}
 
-/**
- * Atualiza as notas na avaliacao original	
- */
+	/**
+	 * Atualiza as notas na avaliacao original
+	 */
 	public boolean atualizaNotasOriginal(AvaliacaoProvaEscrita avaliacao, int idUsuario, int indiceQuestao, int nota)
 	{
 		Connection c = getConnection();
-		
+
 		if (c == null)
 			return false;
-		
+
 		try
 		{
 			JsonQuestoesWritter writerJsonQuestoes = new JsonQuestoesWritter();
-			
+
 			String jsonQuestoesOriginal = writerJsonQuestoes.salvaNotasIniciais(avaliacao).toString();
-						
+
 			CallableStatement cs = c.prepareCall("{call NotaOriginalAtualiza(?,?)}");
-			
+
 			cs.setInt(1, indiceQuestao);
 			cs.setInt(2, nota);
 			cs.setString(3, jsonQuestoesOriginal);
-			
+
 			cs.executeUpdate();
 			avaliacao.setNotaOriginalQuestao(indiceQuestao, nota);
-			
+
 			c.close();
 			return true;
 
@@ -336,33 +338,32 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		}
 	}
-	
-	
+
 	/**
 	 * Atualiza as notas no recurso
 	 */
 	public boolean atualizaNotasRecurso(AvaliacaoProvaEscrita avaliacao, int idUsuario, int indiceQuestao, int nota)
 	{
 		Connection c = getConnection();
-		
+
 		if (c == null)
 			return false;
-		
+
 		try
 		{
 			JsonQuestoesWritter writerJsonQuestoes = new JsonQuestoesWritter();
-			
+
 			String jsonQuestoesRecurso = writerJsonQuestoes.salvaNotasRecurso(avaliacao).toString();
-						
+
 			CallableStatement cs = c.prepareCall("{call NotaRecursoAtualiza(?,?)}");
-			
+
 			cs.setInt(1, indiceQuestao);
 			cs.setInt(2, nota);
 			cs.setString(3, jsonQuestoesRecurso);
-			
+
 			cs.executeUpdate();
 			avaliacao.setNotaRecursoQuestao(indiceQuestao, nota);
-			
+
 			c.close();
 			return true;
 
@@ -372,24 +373,23 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		}
 	}
-	
-	
 
 	/**
 	 * Retorna o id de inscrição de um candidato da lista de inscrições de um edital
 	 */
 	private InscricaoEdital pegaInscricaoId(List<InscricaoEdital> lista, int idInscricao)
-	{	
+	{
 		for (int i = lista.size() - 1; i >= 0; i--)
 		{
 			InscricaoEdital inscricao = lista.get(i);
-			
+
 			if (inscricao.getId() == idInscricao)
 				return inscricao;
 		}
-		
+
 		return null;
 	}
+
 	/**
 	 * Carrega todas as inscrições em um edital
 	 */
@@ -401,7 +401,7 @@ public class InscricaoDAO extends AbstractDAO
 
 		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
 		Connection c = getConnection();
-		if(c == null)
+		if (c == null)
 			return null;
 
 		try
@@ -446,9 +446,8 @@ public class InscricaoDAO extends AbstractDAO
 		return lista;
 	}
 
-	
 	/**
-	 * Carrega todas as inscrições em um edital
+	 * Carrega todas as inscrições em um edital a partir de uma conexão já aberta
 	 */
 	private List<InscricaoEdital> carregaInscricoesEdital(Connection c, Edital edital)
 	{
@@ -522,7 +521,7 @@ public class InscricaoDAO extends AbstractDAO
 		}
 
 	}
-	
+
 	/**
 	 * Indica que um candidato esteve presente em uma prova
 	 */
@@ -537,7 +536,7 @@ public class InscricaoDAO extends AbstractDAO
 		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 		String SQLConsulta = "SELECT homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso FROM inscricao WHERE id = ?";
-		
+
 		Connection c = getConnection();
 
 		if (c == null)
@@ -548,19 +547,20 @@ public class InscricaoDAO extends AbstractDAO
 			PreparedStatement ps = c.prepareStatement(SQLConsulta);
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
-			if (!rs.next())  
-			    throw new SQLException("erro ao ler o tipo do curso: "); 
-			
-			if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
-					rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0) {
-				
+			if (!rs.next())
+				throw new SQLException("erro ao ler o tipo do curso: ");
+
+			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
+					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
+			{
+
 				CallableStatement cs = c.prepareCall("{call AtualizaPresencaProvaEscrita(?, ?, ?)}");
 				cs.setInt(1, idInscricao);
 				cs.setString(2, codigoProva);
 				cs.setInt(3, 1);
 				cs.execute();
-				
-			c.close();
+
+				c.close();
 			}
 			return true;
 
@@ -585,7 +585,7 @@ public class InscricaoDAO extends AbstractDAO
 		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
 		String SQLConsulta = "SELECT homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso FROM inscricao WHERE id = ?";
-		
+
 		Connection c = getConnection();
 
 		if (c == null)
@@ -596,10 +596,10 @@ public class InscricaoDAO extends AbstractDAO
 			PreparedStatement ps = c.prepareStatement(SQLConsulta);
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
-			if (!rs.next())  
-			    throw new SQLException("erro ao ler o tipo do curso: "); 
-			if(rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1 ||
-					rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
+			if (!rs.next())
+				throw new SQLException("erro ao ler o tipo do curso: ");
+			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
+					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
 			{
 				CallableStatement cs = c.prepareCall("{call AtualizaPresencaProvaEscrita(?, ?, ?)}");
 				cs.setInt(1, idInscricao);
@@ -705,14 +705,16 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		}
 	}
-/**
- *Atualiza a nota final da prova escrita 
- */
-	public boolean atualizaMediaProvaFinal(int notaFinal, int idInscricaoProvaEscrita) {
-	
+
+	/**
+	 * Atualiza a nota final da prova escrita
+	 */
+	public boolean atualizaMediaProvaFinal(int notaFinal, int idInscricaoProvaEscrita)
+	{
+
 		Connection c = getConnection();
-		
-		if(c == null)
+
+		if (c == null)
 			return false;
 		try
 		{
@@ -720,7 +722,7 @@ public class InscricaoDAO extends AbstractDAO
 			cs.setInt(1, notaFinal);
 			cs.setInt(2, idInscricaoProvaEscrita);
 			cs.execute();
-			 
+
 			c.close();
 			return true;
 
@@ -730,31 +732,33 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		}
 	}
-	/**
-	 *Atualiza o status do edital
-	 */
-		public boolean atualizaStatusEdital(int idEdital) {
-		
-			Connection c = getConnection();
-			
-			if(c == null)
-				return false;
-			try
-			{
-				CallableStatement cs = c.prepareCall("{call AtualizaStatus(?)}");
-				cs.setInt(1, idEdital);
-				
-				cs.execute();
-				 
-				c.close();
-				return true;
 
-			} catch (SQLException e)
-			{
-				log("InscricaoDAO.atualizaStatusEdital: " + e.getMessage());
-				return false;
-			}
+	/**
+	 * Atualiza o status do edital
+	 */
+	public boolean atualizaStatusEdital(int idEdital)
+	{
+
+		Connection c = getConnection();
+
+		if (c == null)
+			return false;
+		try
+		{
+			CallableStatement cs = c.prepareCall("{call AtualizaStatus(?)}");
+			cs.setInt(1, idEdital);
+
+			cs.execute();
+
+			c.close();
+			return true;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.atualizaStatusEdital: " + e.getMessage());
+			return false;
 		}
+	}
 
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
