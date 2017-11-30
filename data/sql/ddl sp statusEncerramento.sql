@@ -1,0 +1,20 @@
+--
+-- Atualiza status do edital
+--
+DROP PROCEDURE IF EXISTS AtualizaStatus;
+DELIMETER//
+
+CREATE PROCEDURE AtualizaStatus(vIdEdital INT)
+BEGIN
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION ROLLBACK;
+	START TRANSACTION;
+	
+	UPDATE edital
+	SET status = 4
+	WHERE id = vIdEdital;
+	
+	COMMIT;
+	
+END //
+
+DELIMITER ;
