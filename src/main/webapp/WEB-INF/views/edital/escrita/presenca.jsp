@@ -90,5 +90,5 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/edital/presenca.controller.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/edital/presenca.dataService.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/edital/presencaEscrita.controller.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/edital/presencaEscrita.dataService.js"></script>
