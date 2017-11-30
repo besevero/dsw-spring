@@ -31,7 +31,6 @@ App.controller("presencaController", function($scope, $log, dataService) {
 		console.log("Tipo de presença selecionado:", tipoPresenca)
 	}
 	
-	
 	/*
 	 * Atualiza a lista de editais
 	 */
@@ -57,25 +56,26 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	};
 	
 	$scope.pegaInscricoes = function() {
-		var inscricoes = $scope.inscricoes.filter(function(inscricao){
-			var existeProva = inscricao.provasEscritas.some(function(prova){
+		var inscricoes = $scope.inscricoes.filter(function(inscricao) {
+			var existeProva = inscricao.provasEscritas.some(function(prova) {
 				return prova.codigoProvaEscrita == $scope.filtros.codigoProva;
 			});
 			return existeProva;
 		});
 		
-		inscricoes = inscricoes.filter(function(inscricao){
-			var estaPresente = inscricao.provasEscritas.some(function(prova){
+		inscricoes = inscricoes.filter(function(inscricao) {
+			var estaPresente = inscricao.provasEscritas.some(function(prova) {
 				return prova.presenca;
 			});
 			
-			if ($scope.tipoPresenca) {
+			if ($scope.tipoPresenca == true) {
 				return estaPresente;
-			} else {
+			} 
+			else
+			if ($scope.tipoPresenca == false) {
 				return !estaPresente;
 			}
 		});
-
 		return inscricoes;
 	}
 	

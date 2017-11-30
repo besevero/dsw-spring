@@ -36,13 +36,13 @@
 			</div>
 			<div class="mdl-dialog__content presenca left">
 				<select class="wide" data-ng-model="tipoPresenca" data-ng-click=selecionaPresenca(tipoPresenca)>
-					<option value="" selected>
+					<option data-ng-value="" selected>
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca' />
 					</option>
-					<option ng-value="true">
+					<option data-ng-value="true">
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.presentes' />
 					</option>
-					<option ng-value="false">
+					<option data-ng-value="false">
 						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.ausentes' />
 					</option>
 				</select>
