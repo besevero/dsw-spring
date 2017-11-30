@@ -8,7 +8,7 @@
 	<div class="mdl-grid">
 		<div class="mdl-cell mdl-cell--12-col page-header">
 			<h3>
-				<spring:message code="presenca.prova.escrita.titulo" />
+				<spring:message code="presenca.prova.oral.titulo" />
 			</h3>
 		</div>
 	</div>
@@ -17,7 +17,7 @@
 		<div class="mdl-cell mdl-cell--12-col page-filter">
 			<div class="mdl-dialog__content presenca left">
 				<input type="text" size="30"
-					placeholder="<spring:message code='presenca.prova.escrita.list.label.name.filter'/>"
+					placeholder="<spring:message code='presenca.prova.oral.list.label.name.filter'/>"
 					data-ng-model="buscaCandidato"/>
 			</div>
 			<div class="mdl-dialog__content presenca left">
@@ -25,7 +25,7 @@
 					data-ng-model="filtros.codigoProva"
 					data-ng-change="ctrl.selecionaProva(filtros.codigoProva)">
 					<option value="" selected>
-						<spring:message code='presenca.prova.escrita.list.label.select.filter.prova' />	
+						<spring:message code='presenca.prova.oral.list.label.select.filter.projeto' />	
 					</option>
 					<c:forEach var="prova" items="${sessionScope.edital.provasEscritas}">
 						<option value="${prova.codigo}">
@@ -37,13 +37,13 @@
 			<div class="mdl-dialog__content presenca left">
 				<select class="wide" data-ng-model="tipoPresenca" data-ng-click=selecionaPresenca(tipoPresenca)>
 					<option data-ng-value="" selected>
-						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca' />
+						<spring:message code='presenca.prova.oral.list.label.select.filter.presenca' />
 					</option>
 					<option data-ng-value="true">
-						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.presentes' />
+						<spring:message code='presenca.prova.oral.list.label.select.filter.presenca.presentes' />
 					</option>
 					<option data-ng-value="false">
-						<spring:message code='presenca.prova.escrita.list.label.select.filter.presenca.ausentes' />
+						<spring:message code='presenca.prova.oral.list.label.select.filter.presenca.ausentes' />
 					</option>
 				</select>
 			</div>
@@ -56,10 +56,10 @@
 				style="font-size: 12px">
 				<tr>
 					<td class="mdl-data-table__cell--non-numeric">
-						<spring:message code='presenca.prova.escrita.list.table.nome' />
+						<spring:message code='presenca.prova.oral.list.table.nome' />
 					</td>
 					<td class="mdl-data-table__cell--non-numeric">
-						<spring:message code='presenca.prova.escrita.list.table.status' />
+						<spring:message code='presenca.prova.oral.list.table.status' />
 					</td>
 				</tr>
 				<tr data-ng-repeat="item in pegaInscricoes() | filter : buscaCandidato">

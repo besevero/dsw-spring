@@ -39,7 +39,6 @@ public class ProvaEscritaController
 	@Autowired
 	private InscricaoDAO inscricaoDAO;
 
-	// /edital/escrita/presenca
 	/**
 	 * Ação AJAX que atualiza o status de presença dos candidatos em provas escritas
 	 */
@@ -51,7 +50,6 @@ public class ProvaEscritaController
 	{
 		return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);
 	}
-	// /edital/escrita/nota
 
 	/**
 	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
@@ -86,6 +84,17 @@ public class ProvaEscritaController
 	}
 
 	/**
+	 * Ação que redireciona o usuário para a tela presença em prova oral
+	 */
+	@RequestMapping(value = "/edital/alinhamento/presenca", method = RequestMethod.GET)
+	public ModelAndView mostraPaginaPresencaProvaOral()
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("edital/alinhamento/presenca");
+		return model;
+	}
+
+	/**
 	 * Ação do encerramento de nota da prova escrita
 	 * 
 	 */
@@ -99,7 +108,7 @@ public class ProvaEscritaController
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
 		List<String> resultado = VerificaCandidatosComPendenciaNasProvas(lista);
-				
+
 		model.getModel().put("candidatos", resultado);
 		model.setViewName("/edital/escrita/encerramento");
 
@@ -120,14 +129,15 @@ public class ProvaEscritaController
 			if (candidato.getHomologado() == true)
 			{
 				ArrayList<String> listaNomesProvas = verificaSeEstaComTodasAsNotas(candidato);
-				for(String nome : listaNomesProvas) {
+				for (String nome : listaNomesProvas)
+				{
 					if (!nome.equals(""))
 					{
 						String pendenciaFormatada = "O candidato " + candidato.getNomeCandidato()
 								+ " está sem nota na prova " + nome;
 						pendencias.add(pendenciaFormatada);
 					}
-					
+
 				}
 			}
 
@@ -139,7 +149,7 @@ public class ProvaEscritaController
 	/*
 	 * Verifica se todas as provas já estão com nota
 	 */
-	
+
 	public ArrayList<String> verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
 	{
 
@@ -147,8 +157,8 @@ public class ProvaEscritaController
 		ArrayList<String> nomeProva = new ArrayList<String>();
 
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
-		{	
-			int indiceQuestao = 0; 
+		{
+			int indiceQuestao = 0;
 			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
 			{
 				if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
@@ -202,47 +212,49 @@ public class ProvaEscritaController
 			}
 		}
 	}
+
 	/**
 	 * Ação que apresenta o formulário de edição de um edital
 	 */
-	
+
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/encerramento/", method = RequestMethod.GET)
 	public void atualizaPresenca(HttpServletRequest request)
 	{
-		//Pega Edital
+		// Pega Edital
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
-		//Verifica novamente as regras
+		// Verifica novamente as regras
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
-		
-		for(InscricaoEdital candidato : lista) 
+
+		for (InscricaoEdital candidato : lista)
 		{
-			if(confirmaEncerramentoCandidato(candidato))
+			if (confirmaEncerramentoCandidato(candidato))
 				CalculaNotaDaProvaEscrita(candidato);
 		}
-		//atualiza
+		// atualiza
 		inscricaoDAO.atualizaStatusEdital(editalSelecionado.getId());
 	}
-	
-	public boolean confirmaEncerramentoCandidato(InscricaoEdital candidato) {
+
+	public boolean confirmaEncerramentoCandidato(InscricaoEdital candidato)
+	{
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
-		
+
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
 		{
-			int indiceQuestao = 0; 
+			int indiceQuestao = 0;
 			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
 			{
-				if(candidato.getHomologado() == true) {
-					if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao)) 
+				if (candidato.getHomologado() == true)
+				{
+					if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
 					{
-					}
-					else
+					} else
 					{
 						return false;
 					}
 					indiceQuestao++;
-				}
-				else {
+				} else
+				{
 					return false;
 				}
 			}
