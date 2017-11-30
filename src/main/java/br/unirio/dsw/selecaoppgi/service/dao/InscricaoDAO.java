@@ -395,11 +395,9 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public List<InscricaoEdital> carregaInscricoesEdital(Edital edital)
 	{
-		String SQL = "SELECT usuario.id AS id, usuario.nome AS nome, inscricao.*, jsonQuestoesInicial, jsonQuestoesRecurso" 
-				+ "FROM Inscricao"
-				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1"
-				+ "AND idEdital = ?"
-				+ "INNER JOIN inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.id";
+		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
+				 + "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
+				 + "AND idEdital = ?";
 
 		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
 		Connection c = getConnection();
@@ -484,12 +482,18 @@ public class InscricaoDAO extends AbstractDAO
 				item.setDispensadoProvaRecurso(rs.getInt("dispensadoProvaRecurso") != 0);
 				item.setJustificativaDispensaRecurso(rs.getString("justificativaDispensaRecurso"));
 
+//				String textoQuestoesOriginal = rs.getString("inscricao.jsonQuestoesInicial");
+//				JsonArray jsonQuestoesOriginal = (JsonArray) new JsonParser().parse(textoQuestoesOriginal);
+//				JsonQuestoesReader questoesReader = new JsonQuestoesReader();
+//				reader.execute(jsonProjetos, edital, item);
+
 				String jsonProjetosString = rs.getString("inscricao.jsonProjetos");
 				JsonArray jsonProjetos = (JsonArray) new JsonParser().parse(jsonProjetosString);
-
 				JsonInscricaoProjetoPesquisaReader reader = new JsonInscricaoProjetoPesquisaReader();
 				reader.execute(jsonProjetos, edital, item);
 
+				carregaAvaliacaoProvasEscritas(c, item);
+				
 				lista.add(item);
 			}
 
@@ -499,6 +503,54 @@ public class InscricaoDAO extends AbstractDAO
 		}
 
 		return lista;
+	}
+
+	/**
+	 * Carrega todas as avaliações de prova escrita de uma inscricao a partir de uma conexão já aberta
+	 */
+	private void carregaAvaliacaoProvasEscritas(Connection c, InscricaoEdital inscricao)
+	{
+		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
+				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
+				+ "AND idEdital = ?";
+
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQL);
+			ps.setInt(1, inscricao.getId());
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next())
+			{
+				String codigoProva = rs.getString("codigoProvaEscrita");
+				ProvaEscrita prova = inscricao.getEdital().pegaProvaEscritaCodigo(codigoProva);
+				
+				if (prova != null)
+				{
+					AvaliacaoProvaEscrita avaliacao = inscricao.pegaAvaliacaoProvaEscrita(prova);
+
+					if (avaliacao != null)
+					{
+						// ler o campo de presenca
+						
+						String textoQuestoesOriginal = rs.getString("jsonQuestoesInicial");
+						JsonArray jsonQuestoesOriginal = (JsonArray) new JsonParser().parse(textoQuestoesOriginal);
+
+						String textoQuestoesRecurso = rs.getString("jsonQuestoesRecurso");
+						JsonArray jsonQuestoesRecurso = (JsonArray) new JsonParser().parse(textoQuestoesRecurso);
+
+						JsonQuestoesReader reader = new JsonQuestoesReader();
+						reader.carregaNotasIniciais(jsonQuestoesOriginal, avaliacao);
+						reader.carregaNotasRecurso(jsonQuestoesRecurso, avaliacao);
+					}
+				}
+			}
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.carregaAvaliacaoProvasEscritas: " + e.getMessage());
+		}
 	}
 
 	/**
