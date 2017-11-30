@@ -40,15 +40,28 @@ public class ProvaEscritaController
 	private InscricaoDAO inscricaoDAO;
 
 	/**
-	 * Ação AJAX que atualiza o status de presença dos candidatos em provas escritas
+	 * Ação AJAX que atualiza o status de presença de um candidato em uma prova
+	 * escrita
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.POST)
-	public boolean atualizaPresenca(HttpServletRequest request, @ModelAttribute("code") String codigoProva,
+	public boolean atualizaPresencaProvaEscrita(HttpServletRequest request, @ModelAttribute("code") String codigoProva,
 			@ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status)
 	{
 		return ServicoInscricao.atualizaPresencaCandidato(request, codigoProva, idInscricao, status);
+	}
+
+	/**
+	 * Ação AJAX que atualiza o status de presença de um candidato em uma prova oral
+	 */
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.POST)
+	public boolean atualizaPresencaProvaOral(HttpServletRequest request, @ModelAttribute("code") String codigoProjeto,
+			@ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status)
+	{
+		return ServicoInscricao.atualizaPresencaCandidato(request, codigoProjeto, idInscricao, status);
 	}
 
 	/**
@@ -58,7 +71,7 @@ public class ProvaEscritaController
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
-	public String lista(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
+	public String listaProvasEscritas(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
 	{
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
 		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
@@ -73,7 +86,28 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Ação que redireciona o usuário para a tela presença em prova escrita
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
+	 * orais de um edital
+	 */
+	@ResponseBody
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
+	public String listaProvasOrais(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
+	{
+		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
+		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
+
+		JsonInscricaoWriter writer = new JsonInscricaoWriter();
+		JsonArray jsonInscricoesEdital = new JsonArray();
+
+		for (InscricaoEdital inscricao : lista)
+			jsonInscricoesEdital.add(writer.execute(inscricao));
+
+		return jsonInscricoesEdital.toString();
+	}
+
+	/**
+	 * Ação que redireciona o usuário para a tela de presença em prova escrita
 	 */
 	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET)
 	public ModelAndView mostraPaginaPresencaProvaEscrita()
@@ -84,7 +118,7 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Ação que redireciona o usuário para a tela presença em prova oral
+	 * Ação que redireciona o usuário para a tela de presença em prova oral
 	 */
 	@RequestMapping(value = "/edital/alinhamento/presenca", method = RequestMethod.GET)
 	public ModelAndView mostraPaginaPresencaProvaOral()
@@ -96,7 +130,6 @@ public class ProvaEscritaController
 
 	/**
 	 * Ação do encerramento de nota da prova escrita
-	 * 
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
@@ -115,10 +148,9 @@ public class ProvaEscritaController
 		return model;
 	}
 
-	/*
+	/**
 	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
-	 * prova caso não haja pendências.
-	 * 
+	 * prova escrita caso não haja pendências
 	 */
 	public List<String> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
 	{
@@ -146,10 +178,9 @@ public class ProvaEscritaController
 		return pendencias;
 	}
 
-	/*
-	 * Verifica se todas as provas já estão com nota
+	/**
+	 * Função que verifica se todas as provas escritas possuem notas
 	 */
-
 	public ArrayList<String> verificaSeEstaComTodasAsNotas(InscricaoEdital candidato)
 	{
 
@@ -175,8 +206,8 @@ public class ProvaEscritaController
 		return nomeProva;
 	}
 
-	/*
-	 * Função que calcula a nota da prova Escrita
+	/**
+	 * Função que calcula a nota de uma prova escrita
 	 */
 	public void CalculaNotaDaProvaEscrita(InscricaoEdital candidato)
 	{
@@ -214,9 +245,8 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Ação que apresenta o formulário de edição de um edital
+	 * Ação AJAX que apresenta o formulário de edição de um edital
 	 */
-
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/encerramento/", method = RequestMethod.GET)
 	public void atualizaPresenca(HttpServletRequest request)
@@ -235,6 +265,9 @@ public class ProvaEscritaController
 		inscricaoDAO.atualizaStatusEdital(editalSelecionado.getId());
 	}
 
+	/**
+	 * Função que realiza verificações de regras após confirmação de encerramento de provas escritas
+	 */
 	public boolean confirmaEncerramentoCandidato(InscricaoEdital candidato)
 	{
 		Iterable<AvaliacaoProvaEscrita> listaAvaliacoes = candidato.getAvaliacoesProvasEscritas();
