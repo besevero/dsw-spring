@@ -395,9 +395,11 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	public List<InscricaoEdital> carregaInscricoesEdital(Edital edital)
 	{
-		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
-				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
-				+ "AND idEdital = ?";
+		String SQL = "SELECT usuario.id AS id, usuario.nome AS nome, inscricao.*, jsonQuestoesInicial, jsonQuestoesRecurso" 
+				+ "FROM Inscricao"
+				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1"
+				+ "AND idEdital = ?"
+				+ "INNER JOIN inscricaoprovaescrita ON usuario.id = inscricaoprovaescrita.id";
 
 		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
 		Connection c = getConnection();
