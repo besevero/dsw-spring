@@ -57,7 +57,7 @@ public class ProvaEscritaController
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/presenca/atualiza", method = RequestMethod.POST)
+	@RequestMapping(value = "/edital/escrita/alinhamento/atualiza", method = RequestMethod.POST)
 	public boolean atualizaPresencaProvaOral(HttpServletRequest request, @ModelAttribute("code") String codigoProjeto,
 			@ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status)
 	{
@@ -65,8 +65,7 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
-	 * escritas de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
@@ -86,16 +85,15 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
-	 * orais de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas orais de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/presenca", method = RequestMethod.GET, produces = "application/json")
-	public String listaProvasOrais(HttpServletRequest request, @ModelAttribute("code") String codigoProva)
+	@RequestMapping(value = "/edital/alinhamento/presenca", method = RequestMethod.GET, produces = "application/json")
+	public String listaProvasOrais(HttpServletRequest request, @ModelAttribute("code") String codigoProjetoPesquisa)
 	{
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
-		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaEscrita(editalSelecionado, codigoProva);
+		List<InscricaoEdital> lista = inscricaoDAO.carregaPresencaProvaOral(editalSelecionado, codigoProjetoPesquisa);
 
 		JsonInscricaoWriter writer = new JsonInscricaoWriter();
 		JsonArray jsonInscricoesEdital = new JsonArray();
@@ -149,8 +147,7 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
-	 * prova escrita caso não haja pendências
+	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova escrita caso não haja pendências
 	 */
 	public List<String> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
 	{
