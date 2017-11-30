@@ -491,7 +491,7 @@ public class InscricaoDAO extends AbstractDAO
 				JsonArray jsonProjetos = (JsonArray) new JsonParser().parse(jsonProjetosString);
 				JsonInscricaoProjetoPesquisaReader reader = new JsonInscricaoProjetoPesquisaReader();
 				reader.execute(jsonProjetos, edital, item);
-
+				
 				carregaAvaliacaoProvasEscritas(c, item);
 				
 				lista.add(item);
@@ -510,15 +510,14 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	private void carregaAvaliacaoProvasEscritas(Connection c, InscricaoEdital inscricao)
 	{
-		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
-				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
-				+ "AND idEdital = ?";
+		String SQL = "SELECT jsonQuestoesInicial, jsonQuestoesRecurso, codigoProvaEscrita, presenca FROM inscricaoprovaescrita "
+				+ "WHERE idInscricao = ?";
 
 		try
 		{
 			PreparedStatement ps = c.prepareStatement(SQL);
 			ps.setInt(1, inscricao.getId());
-
+			
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next())
@@ -533,18 +532,20 @@ public class InscricaoDAO extends AbstractDAO
 					if (avaliacao != null)
 					{
 						// ler o campo de presenca
-						
-						String textoQuestoesOriginal = rs.getString("jsonQuestoesInicial");
-						JsonArray jsonQuestoesOriginal = (JsonArray) new JsonParser().parse(textoQuestoesOriginal);
-
-						String textoQuestoesRecurso = rs.getString("jsonQuestoesRecurso");
-						JsonArray jsonQuestoesRecurso = (JsonArray) new JsonParser().parse(textoQuestoesRecurso);
-
+						avaliacao.setPresente(rs.getBoolean("presente"));
 						JsonQuestoesReader reader = new JsonQuestoesReader();
-						reader.carregaNotasIniciais(jsonQuestoesOriginal, avaliacao);
-						reader.carregaNotasRecurso(jsonQuestoesRecurso, avaliacao);
+						String textoQuestoesOriginal = rs.getString("jsonQuestoesInicial");
+						if(!textoQuestoesOriginal.equals("")) {
+							JsonArray jsonQuestoesOriginal = (JsonArray) new JsonParser().parse(textoQuestoesOriginal);
+							reader.carregaNotasIniciais(jsonQuestoesOriginal, avaliacao);
+						}
+						String textoQuestoesRecurso = rs.getString("jsonQuestoesRecurso");
+						if(!textoQuestoesRecurso.equals("")) {
+							JsonArray jsonQuestoesRecurso = (JsonArray) new JsonParser().parse(textoQuestoesRecurso);
+							reader.carregaNotasRecurso(jsonQuestoesRecurso, avaliacao);
+						}
 					}
-				}
+				}	
 			}
 
 		} catch (SQLException e)
