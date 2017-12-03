@@ -1,14 +1,14 @@
 DROP PROCEDURE IF EXISTS AtualizaPresencaProvaOral;
 DELIMITER //
-CREATE PROCEDURE AtualizaPresencaProvaOral(vIdInscricao INT, vCodigoProvaEscrita VARCHAR(8), vPresente INT)
+CREATE PROCEDURE AtualizaPresencaProvaOral(vIdInscricao INT, vCodigoProjetoPesquisa VARCHAR(8), vPresente INT)
 BEGIN
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION ROLLBACK;
 	START TRANSACTION;
 
-	UPDATE inscricaoprovaescrita
-	SET presente = vPresente
+	UPDATE inscricaoprovaalinhamento
+	SET presenteProvaOral = vPresente
 	WHERE idInscricao = vIdInscricao
-	AND codigoProvaEscrita = vCodigoProvaEscrita;
+	AND CodigoProjetoPesquisa = vCodigoProjetoPesquisa;
 	
 	COMMIT;
 END //
