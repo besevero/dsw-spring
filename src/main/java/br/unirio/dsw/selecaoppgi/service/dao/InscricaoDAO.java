@@ -999,9 +999,50 @@ public class InscricaoDAO extends AbstractDAO
 		// mínima para aprovação
 		// Somente se o projeto exigir prova oral
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		return false;
-	}
+		
+		String SQLConsulta = "SELECT idInscricao, homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso, aprovadoProvas, presenteProvaOral" + 
+				"FROM inscricao i" +
+				"INNER JOIN inscricaoprovaalinhamento ipa ON i.idCandidato = ipa.idInscricao" + 
+				"WHERE aprovadoProvas = 1" +
+				"AND idInscricao = ?" +
+				"AND codigoProjetoPesquisa = ?";
 
+		Connection c = getConnection();
+
+		if (c == null)
+			return false;
+
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQLConsulta);
+			ps.setInt(1, idInscricao);
+			ps.setString(2, codigoProjetoPesquisa);
+			ResultSet rs = ps.executeQuery();
+			
+			if (!rs.next())
+				throw new SQLException("cursor posicionado antes da primeira opção válida em indicaAusenciaProvaOral");
+			
+			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
+					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
+			{
+
+				CallableStatement cs = c.prepareCall("{call AtualizaPresencaProvaOral(?, ?, ?)}");
+				cs.setInt(1, idInscricao);
+				cs.setString(2, codigoProjetoPesquisa);
+				cs.setInt(3, 0);
+				cs.execute();
+
+				c.close();
+			}
+			return true;
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.indicaAusenciaProvaOral: " + e.getMessage());
+			return false;
+		}
+	}
+	
 	/**
 	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
 	 * prova oral
