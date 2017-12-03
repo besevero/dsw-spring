@@ -829,6 +829,7 @@ public class InscricaoDAO extends AbstractDAO
 	public List<InscricaoEdital> carregaPresencaProvaOral(Edital edital, String codigoProjetoPesquisa)
 	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
+		
 		String SQL = "SELECT ipa.* FROM InscricaoProvaAlinhamento ipa"
 				+ "INNER JOIN Inscricao i ON ipa.idInscricao = i.id" + "WHERE codigoProjetoPesquisa = ?"
 				+ "AND idEdital = ?";
@@ -892,11 +893,9 @@ public class InscricaoDAO extends AbstractDAO
 
 			c.close();
 
-			c.close();
-
 		} catch (SQLException e)
 		{
-			log("InscricaoDAO.lista: " + e.getMessage());
+			log("InscricaoDAO.carregaPresencaProvaOral: " + e.getMessage());
 		}
 
 		return lista;
