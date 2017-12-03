@@ -597,6 +597,7 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
 		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
+		
 		String SQLConsulta = "SELECT homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso FROM inscricao WHERE id = ?";
 
 		Connection c = getConnection();
@@ -610,7 +611,7 @@ public class InscricaoDAO extends AbstractDAO
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
 			if (!rs.next())
-				throw new SQLException("erro ao ler o tipo do curso: ");
+				throw new SQLException("cursor posicionado antes da primeira opção válida em indicaPresencaProvaEscrita");
 
 			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
 					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
@@ -939,12 +940,13 @@ public class InscricaoDAO extends AbstractDAO
 		// mínima para aprovação
 		// Somente se o projeto exigir prova oral
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		String SQLConsulta = "Select homologadoInicial, " + "homologadoRecurso, " + "dispensadoProvaInicial, "
-				+ "dispensadoProvaRecurso " + "notaFinalProvaEscrita" + "exigeProvaOral" + "From inscricao"
-				+ "WHERE id = ?;";
-
-		String SQLUpdate = "UPDATE inscricaoprovaoral " + "SET presente = 0 "
-				+ "WHERE idInscricao = ? and codigoProvaOral = ?";
+		
+		String SQLConsulta = "SELECT idInscricao, homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso, aprovadoProvas, presenteProvaOral" + 
+				"FROM inscricao i" +
+				"INNER JOIN inscricaoprovaalinhamento ipa ON i.idCandidato = ipa.idInscricao" + 
+				"WHERE aprovadoProvas = 1" +
+				"AND idInscricao = ?" +
+				"AND codigoProjetoPesquisa = ?";
 
 		Connection c = getConnection();
 
@@ -955,25 +957,31 @@ public class InscricaoDAO extends AbstractDAO
 		{
 			PreparedStatement ps = c.prepareStatement(SQLConsulta);
 			ps.setInt(1, idInscricao);
+			ps.setString(2, codigoProjetoPesquisa);
 			ResultSet rs = ps.executeQuery();
-
+			
+			if (!rs.next())
+				throw new SQLException("cursor posicionado antes da primeira opção válida em indicaPresencaProvaOral");
+			
 			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
-					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0
-					|| rs.getInt("notaFinalProvaEscrita") > 7)
+					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
 			{
-				ps = c.prepareStatement(SQLUpdate);
-				ps.setInt(1, idInscricao);
-				ps.setString(1, codigoProjetoPesquisa);
-				rs = ps.executeQuery();
-			}
 
-			c.close();
+				CallableStatement cs = c.prepareCall("{call AtualizaPresencaProvaOral(?, ?, ?)}");
+				cs.setInt(1, idInscricao);
+				cs.setString(2, codigoProjetoPesquisa);
+				cs.setInt(3, 1);
+				cs.execute();
+
+				c.close();
+			}
+			return true;
+
 		} catch (SQLException e)
 		{
-			log("EditalDAO.lista: " + e.getMessage());
+			log("InscricaoDAO.indicaPresencaProvaOral: " + e.getMessage());
+			return false;
 		}
-
-		return true;
 	}
 
 	/**
