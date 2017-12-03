@@ -485,12 +485,6 @@ public class InscricaoDAO extends AbstractDAO
 				item.setDispensadoProvaRecurso(rs.getInt("dispensadoProvaRecurso") != 0);
 				item.setJustificativaDispensaRecurso(rs.getString("justificativaDispensaRecurso"));
 
-				// String textoQuestoesOriginal = rs.getString("inscricao.jsonQuestoesInicial");
-				// JsonArray jsonQuestoesOriginal = (JsonArray) new
-				// JsonParser().parse(textoQuestoesOriginal);
-				// JsonQuestoesReader questoesReader = new JsonQuestoesReader();
-				// reader.execute(jsonProjetos, edital, item);
-
 				String jsonProjetosString = rs.getString("inscricao.jsonProjetos");
 				JsonArray jsonProjetos = (JsonArray) new JsonParser().parse(jsonProjetosString);
 				JsonInscricaoProjetoPesquisaReader reader = new JsonInscricaoProjetoPesquisaReader();
