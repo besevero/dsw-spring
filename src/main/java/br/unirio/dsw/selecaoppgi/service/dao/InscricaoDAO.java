@@ -597,7 +597,7 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o campo dispensadoProvaInicial estiver FALSE ou
 		// dispensadoProvaRecurso estiver FALSE
 		// TODO Grupo 1: implementar este método em função do caso de uso #9
-		
+
 		String SQLConsulta = "SELECT homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso FROM inscricao WHERE id = ?";
 
 		Connection c = getConnection();
@@ -611,7 +611,8 @@ public class InscricaoDAO extends AbstractDAO
 			ps.setInt(1, idInscricao);
 			ResultSet rs = ps.executeQuery();
 			if (!rs.next())
-				throw new SQLException("cursor posicionado antes da primeira opção válida em indicaPresencaProvaEscrita");
+				throw new SQLException(
+						"cursor posicionado antes da primeira opção válida em indicaPresencaProvaEscrita");
 
 			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
 					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
@@ -824,12 +825,13 @@ public class InscricaoDAO extends AbstractDAO
 	}
 
 	/**
-	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma prova oral
+	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
+	 * prova oral
 	 */
 	public List<InscricaoEdital> carregaPresencaProvaOral(Edital edital, String codigoProjetoPesquisa)
 	{
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		
+
 		String SQL = "SELECT ipa.* FROM InscricaoProvaAlinhamento ipa"
 				+ "INNER JOIN Inscricao i ON ipa.idInscricao = i.id" + "WHERE codigoProjetoPesquisa = ?"
 				+ "AND idEdital = ?";
@@ -866,29 +868,28 @@ public class InscricaoDAO extends AbstractDAO
 
 				if (inscricao != null)
 				{
-									
+
 					/*
-					AvaliacaoProvaEscrita inscricaoProva = inscricao.pegaAvaliacaoProvaEscrita(prova);
-					inscricaoProva.setPresente(presente);
-
-					JsonQuestoesReader readerJsonQuestoes = new JsonQuestoesReader();
-
-					if (jsonQuestoesInicialString.length() > 0)
-					{
-						JsonArray jsonQuestoesInicialArray = (JsonArray) new JsonParser()
-								.parse(jsonQuestoesInicialString);
-						readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray, inscricaoProva);
-					}
-
-					if (jsonQuestoesRecursoString.length() > 0)
-					{
-						JsonArray jsonQuestoesRecursoArray = (JsonArray) new JsonParser()
-								.parse(jsonQuestoesRecursoString);
-						readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray, inscricaoProva);
-					}
-					*/
+					 * AvaliacaoProvaEscrita inscricaoProva =
+					 * inscricao.pegaAvaliacaoProvaEscrita(prova);
+					 * inscricaoProva.setPresente(presente);
+					 * 
+					 * JsonQuestoesReader readerJsonQuestoes = new JsonQuestoesReader();
+					 * 
+					 * if (jsonQuestoesInicialString.length() > 0) { JsonArray
+					 * jsonQuestoesInicialArray = (JsonArray) new JsonParser()
+					 * .parse(jsonQuestoesInicialString);
+					 * readerJsonQuestoes.carregaNotasIniciais(jsonQuestoesInicialArray,
+					 * inscricaoProva); }
+					 * 
+					 * if (jsonQuestoesRecursoString.length() > 0) { JsonArray
+					 * jsonQuestoesRecursoArray = (JsonArray) new JsonParser()
+					 * .parse(jsonQuestoesRecursoString);
+					 * readerJsonQuestoes.carregaNotasRecurso(jsonQuestoesRecursoArray,
+					 * inscricaoProva); }
+					 */
 				}
-				
+
 			}
 
 			c.close();
@@ -939,13 +940,10 @@ public class InscricaoDAO extends AbstractDAO
 		// mínima para aprovação
 		// Somente se o projeto exigir prova oral
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		
-		String SQLConsulta = "SELECT idInscricao, homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso, aprovadoProvas, presenteProvaOral" + 
-				"FROM inscricao i" +
-				"INNER JOIN inscricaoprovaalinhamento ipa ON i.idCandidato = ipa.idInscricao" + 
-				"WHERE aprovadoProvas = 1" +
-				"AND idInscricao = ?" +
-				"AND codigoProjetoPesquisa = ?";
+
+		String SQLConsulta = "SELECT idInscricao, homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso, aprovadoProvas, presenteProvaOral"
+				+ "FROM inscricao i" + "INNER JOIN inscricaoprovaalinhamento ipa ON i.idCandidato = ipa.idInscricao"
+				+ "WHERE aprovadoProvas = 1" + "AND idInscricao = ?" + "AND codigoProjetoPesquisa = ?";
 
 		Connection c = getConnection();
 
@@ -958,10 +956,10 @@ public class InscricaoDAO extends AbstractDAO
 			ps.setInt(1, idInscricao);
 			ps.setString(2, codigoProjetoPesquisa);
 			ResultSet rs = ps.executeQuery();
-			
+
 			if (!rs.next())
 				throw new SQLException("cursor posicionado antes da primeira opção válida em indicaPresencaProvaOral");
-			
+
 			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
 					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
 			{
@@ -998,13 +996,10 @@ public class InscricaoDAO extends AbstractDAO
 		// mínima para aprovação
 		// Somente se o projeto exigir prova oral
 		// TODO Grupo 1: implementar este método em função do caso de uso #13
-		
-		String SQLConsulta = "SELECT idInscricao, homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso, aprovadoProvas, presenteProvaOral" + 
-				"FROM inscricao i" +
-				"INNER JOIN inscricaoprovaalinhamento ipa ON i.idCandidato = ipa.idInscricao" + 
-				"WHERE aprovadoProvas = 1" +
-				"AND idInscricao = ?" +
-				"AND codigoProjetoPesquisa = ?";
+
+		String SQLConsulta = "SELECT idInscricao, homologadoInicial, homologadoRecurso, dispensadoProvaInicial, dispensadoProvaRecurso, aprovadoProvas, presenteProvaOral"
+				+ "FROM inscricao i" + "INNER JOIN inscricaoprovaalinhamento ipa ON i.idCandidato = ipa.idInscricao"
+				+ "WHERE aprovadoProvas = 1" + "AND idInscricao = ?" + "AND codigoProjetoPesquisa = ?";
 
 		Connection c = getConnection();
 
@@ -1017,10 +1012,10 @@ public class InscricaoDAO extends AbstractDAO
 			ps.setInt(1, idInscricao);
 			ps.setString(2, codigoProjetoPesquisa);
 			ResultSet rs = ps.executeQuery();
-			
+
 			if (!rs.next())
 				throw new SQLException("cursor posicionado antes da primeira opção válida em indicaAusenciaProvaOral");
-			
+
 			if (rs.getInt("homologadoInicial") == 1 || rs.getInt("homologadoRecurso") == 1
 					|| rs.getInt("dispensadoProvaInicial") == 0 || rs.getInt("dispensadoProvaRecurso") == 0)
 			{
@@ -1041,9 +1036,10 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma prova oral
+	 * Carrega a lista de inscrições de um determinado edital que podem fazer uma
+	 * prova oral
 	 */
 	public List<InscricaoEdital> carregaAvaliacaoAlinhamento(int idEdital, String codigoProjetoPesquisa)
 	{
