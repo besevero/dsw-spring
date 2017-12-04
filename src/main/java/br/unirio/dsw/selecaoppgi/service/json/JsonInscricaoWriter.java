@@ -43,8 +43,6 @@ public class JsonInscricaoWriter
 
 		if (jsonProvas.size() > 0)
 			json.add("provasEscritas", jsonProvas);
-		
-		json.addProperty("exigeProvaOral", inscricaoEdital.exigeProvaOral());
 
 		return json;
 	}

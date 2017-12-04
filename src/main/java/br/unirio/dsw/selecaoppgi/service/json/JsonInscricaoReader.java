@@ -7,7 +7,6 @@ import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
-import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
 
 
 public class JsonInscricaoReader
@@ -31,7 +30,6 @@ public class JsonInscricaoReader
 		Boolean cotaNegros = json.get("cotaNegros").getAsBoolean();
 		inscricao.setCotaNegros(cotaNegros);
 
-		
 		Boolean cotaDeficientes = json.get("cotaDeficientes").getAsBoolean();
 		inscricao.setCotaDeficientes(cotaDeficientes);
 
@@ -60,7 +58,6 @@ public class JsonInscricaoReader
 		inscricao.setJustificativaDispensaRecurso(justificativaDispensaRecurso);
 
 		carregaProvasEscritas(json, inscricao);	
-		carregaProjetoDePesquisa(json, inscricao);
 		return inscricao;
 	}
 
@@ -106,13 +103,6 @@ public class JsonInscricaoReader
 					leitorQuestoes.carregaNotasRecurso(jsonNotaRecurso, avaliacao);
 				}
 			}
-		}
-	}
-	private void carregaProjetoDePesquisa(JsonObject json, InscricaoEdital inscricao) {
-		
-		for (InscricaoProjetoPesquisa projetoPesquisa : inscricao.getInscricoesProjetoPesquisa()){
-			projetoPesquisa.getProjetoPesquisa().setExigeProvaOral(json.get("exigeProvaOral").getAsBoolean());
-			
 		}
 	}
 }
