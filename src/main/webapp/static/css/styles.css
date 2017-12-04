@@ -667,7 +667,7 @@ div.page-filter input, div.page-filter select {
 }
 
 div.page-filter select {
-	width: 100%;
+	width: 300px;
 }
 
 .mdl-dialog__content.presenca {

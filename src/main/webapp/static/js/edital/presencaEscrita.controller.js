@@ -49,11 +49,19 @@ App.controller("presencaController", function($scope, $log, dataService) {
 
 	atualizaLista();
 
+	/*
+	 * Atualiza o status de presença de um candidato que fez uma prova escrita
+	 */
+	
 	$scope.atualizaPresenca = function(idCandidato, status) {
 		$log.log("Atualiza presença > código da prova = " + $scope.filtros.codigoProva + "  idCandidato = " + idCandidato + "  status = " + status);
 		var codigoProva = $scope.filtros.codigoProva;
 		dataService.atualizaPresencaProvasEscritas(codigoProva, idCandidato, status).then(atualizaLista);
 	};
+	
+	/*
+	 * Filtro que seleciona candidatos presentes ou ausentes em uma prova escrita
+	 */
 	
 	$scope.pegaInscricoes = function() {
 		var inscricoes = $scope.inscricoes.filter(function(inscricao) {

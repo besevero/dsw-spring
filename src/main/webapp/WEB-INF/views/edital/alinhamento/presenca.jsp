@@ -22,15 +22,17 @@
 			</div>
 			<div class="mdl-dialog__content presenca left">
 				<select class="wide"
-					data-ng-model="filtros.codigoProva"
-					data-ng-change="ctrl.selecionaProva(filtros.codigoProva)">
+					data-ng-model="filtros.codigoProjetoPesquisa"
+					data-ng-change="ctrl.selecionaProjeto(filtros.codigoProjetoPesquisa)">
 					<option value="" selected>
 						<spring:message code='presenca.prova.oral.list.label.select.filter.projeto' />	
 					</option>
-					<c:forEach var="prova" items="${sessionScope.edital.provasEscritas}">
-						<option value="${prova.codigo}">
-							<c:out value="${prova.nome}"/> 
-						</option>
+					<c:forEach var="projeto" items="${sessionScope.edital.projetosPesquisa}">
+						<c:if test="${projeto.exigeProvaOral == true}">
+							<option value="${projeto.codigo}">
+								<c:out value="${projeto.nome}"/> 
+							</option>
+						</c:if>
 					</c:forEach>
 				</select>
 			</div>

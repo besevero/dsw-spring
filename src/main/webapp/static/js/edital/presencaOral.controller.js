@@ -5,19 +5,19 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 * Filtros
 	 */
 	$scope.filtros = {
-		codigoProva : null,
+		codigoProjetoPesquisa : null,
 		nome : ""
 	}
 
 	$scope.inscricoes = [];
 	
 	/*
-	 * Chama o dataSevice para carregar uma prova selecionada pelo usuário
+	 * Chama o dataSevice para carregar um projeto de pesquisa selecionado pelo usuário
 	 */
-	self.selecionaProva = function(codigoProva) {
-		$scope.filtros.codigoProva = codigoProva;
-		console.log("$scope.filtros.codigoProva =", $scope.filtros.codigoProva);
-		dataService.pegaInscricoesProvasEscritas($scope.filtros).then(atualizaLista);
+	self.selecionaProjeto = function(codigoProjetoPesquisa) {
+		$scope.filtros.codigoProjetoPesquisa = codigoProjetoPesquisa;
+		console.log("$scope.filtros.codigoProjetoPesquisa =", $scope.filtros.codigoProjetoPesquisa);
+		dataService.pegaInscricoesProjetosPesquisa($scope.filtros).then(atualizaLista);
 	}
 	
 	/*
@@ -35,11 +35,11 @@ App.controller("presencaController", function($scope, $log, dataService) {
 	 * Atualiza a lista de editais
 	 */
 	var atualizaLista = function() {
-		if ($scope.filtros.codigoProva == null) {
+		if ($scope.filtros.codigoProjetoPesquisa == null) {
 			console.log("dataService desativado")
 		} 
 		else {
-			dataService.pegaInscricoesProvasEscritas($scope.filtros).then(			
+			dataService.pegaInscricoesProjetosPesquisa($scope.filtros).then(			
 					function(data) {
 						$log.log(data);
 						$scope.inscricoes = data.data;
@@ -49,22 +49,31 @@ App.controller("presencaController", function($scope, $log, dataService) {
 
 	atualizaLista();
 
+	/*
+	 * Atualiza o status de presença de um candidato inscrito em um projeto de pesquisa
+	 */
+	
 	$scope.atualizaPresenca = function(idCandidato, status) {
-		$log.log("Atualiza presença > código da prova = " + $scope.filtros.codigoProva + "  idCandidato = " + idCandidato + "  status = " + status);
-		var codigoProva = $scope.filtros.codigoProva;
-		dataService.atualizaPresencaProvasEscritas(codigoProva, idCandidato, status).then(atualizaLista);
+		$log.log("Atualiza presença > código do projeto de pesquisa = " + $scope.filtros.codigoProjetoPesquisa + "  idCandidato = " + idCandidato + "  status = " + status);
+		var codigoProva = $scope.filtros.codigoProjetoPesquisa;
+		dataService.atualizaPresencaProvasEscritas(codigoProjetoPesquisa, idCandidato, status).then(atualizaLista);
 	};
+	
+
+	/*
+	 * Filtro que seleciona candidatos presentes ou ausentes em uma projeto de pesquisa
+	 */
 	
 	$scope.pegaInscricoes = function() {
 		var inscricoes = $scope.inscricoes.filter(function(inscricao) {
-			var existeProva = inscricao.provasEscritas.some(function(prova) {
-				return prova.codigoProvaEscrita == $scope.filtros.codigoProva;
+			var existeProjeto = inscricao.projetosPesquisa.some(function(prova) {
+				return prova.codigoProvaEscrita == $scope.filtros.codigoProjetoPesquisa;
 			});
-			return existeProva;
+			return existeProjeto;
 		});
 		
 		inscricoes = inscricoes.filter(function(inscricao) {
-			var estaPresente = inscricao.provasEscritas.some(function(prova) {
+			var estaPresente = inscricao.projetosPesquisa.some(function(prova) {
 				return prova.presenca;
 			});
 			
