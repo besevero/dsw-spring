@@ -512,7 +512,7 @@ public class InscricaoDAO extends AbstractDAO
 	 */
 	private void carregaAvaliacaoProvasEscritas(Connection c, InscricaoEdital inscricao)
 	{
-		String SQL = "SELECT jsonQuestoesInicial, jsonQuestoesRecurso, codigoProvaEscrita, presenca FROM inscricaoprovaescrita "
+		String SQL = "SELECT jsonQuestoesInicial, jsonQuestoesRecurso, codigoProvaEscrita, presente FROM inscricaoprovaescrita "
 				+ "WHERE idInscricao = ?";
 
 		try
