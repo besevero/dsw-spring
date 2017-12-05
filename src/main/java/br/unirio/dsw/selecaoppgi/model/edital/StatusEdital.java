@@ -1,3 +1,4 @@
+
 package br.unirio.dsw.selecaoppgi.model.edital;
 
 import lombok.Getter;

@@ -131,7 +131,7 @@ public class ProvaEscritaController
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/encerramento/confirma", method = RequestMethod.GET)
 	public ModelAndView encerramento(HttpServletRequest request)
 	{
 		ModelAndView model = new ModelAndView();
@@ -244,12 +244,12 @@ public class ProvaEscritaController
 	 * Ação AJAX que apresenta o formulário de edição de um edital
 	 */
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento/confirma", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
 	public void atualizaPresenca(HttpServletRequest request)
 	{
-		// Pega Edital
+		// pega o edital da sessão atual
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
-		// Verifica novamente as regras
+		// realiza verificação das regras de negócio novamente
 		List<InscricaoEdital> lista = inscricaoDAO.carregaInscricoesEdital(editalSelecionado);
 
 		for (InscricaoEdital candidato : lista)
@@ -257,7 +257,7 @@ public class ProvaEscritaController
 			if (confirmaEncerramentoCandidato(candidato))
 				CalculaNotaDaProvaEscrita(candidato);
 		}
-		// atualiza
+		// atualiza a status do edital para 4 Em provas de alinhamento
 		inscricaoDAO.atualizaStatusEdital(editalSelecionado.getId());
 	}
 
