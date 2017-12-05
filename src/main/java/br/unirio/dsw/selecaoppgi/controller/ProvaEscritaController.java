@@ -134,7 +134,7 @@ public class ProvaEscritaController
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento/confirma", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
 	public ModelAndView encerramento(HttpServletRequest request)
 	{
 		ModelAndView model = new ModelAndView();
@@ -191,17 +191,16 @@ public class ProvaEscritaController
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
 		{
 			int indiceQuestao = 0;
-			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
-			{
-				if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
-				{
 
-				} else
-				{
-					nomeProva.add(prova.getProvaEscrita().getNome());
-					break;
-				}
-				indiceQuestao++;
+			boolean estaHomologado = candidato.getHomologado() == true;
+			boolean possuiNotaOriginalQuestao = prova.possuiNotaOriginalQuestao(indiceQuestao);
+			boolean possuiNotaOriginalRecurso = prova.possuiNotaRecursoQuestao(indiceQuestao);
+
+			if (estaHomologado && possuiNotaOriginalQuestao || possuiNotaOriginalRecurso)
+			{
+			} else
+			{
+				nomeProva.add(prova.getProvaEscrita().getNome());
 			}
 		}
 		return nomeProva;
@@ -250,7 +249,7 @@ public class ProvaEscritaController
 	 * Ação AJAX que apresenta o formulário de edição de um edital
 	 */
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/encerramento/confirma", method = RequestMethod.GET)
 	public void atualizaPresenca(HttpServletRequest request)
 	{
 		// pega o edital da sessão atual
