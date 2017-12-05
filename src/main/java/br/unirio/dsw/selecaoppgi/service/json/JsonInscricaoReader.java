@@ -1,5 +1,8 @@
 package br.unirio.dsw.selecaoppgi.service.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -8,6 +11,7 @@ import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.edital.ProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.edital.SubcriterioAlinhamento;
+import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoCriterioAlinhamento;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.usuario.Usuario;
@@ -67,6 +71,8 @@ public class JsonInscricaoReader
 		
 		carregaRepresentacaoProjetosPesquisa(json, edital, userDAO);
 		carregaRepresentacaoCriteriosAlinhamento(json, edital);
+		
+		carregaRepresentacaoProjetoPesquisa(json, inscricao);
 		
 		return inscricao;
 	}
@@ -240,5 +246,51 @@ public class JsonInscricaoReader
 		subcriterio.setPeso(json.get("peso").getAsInt());
 		return subcriterio;
 	}
+	public void carregaRepresentacaoProjetoPesquisa(JsonObject json, InscricaoEdital inscricao) 
+	{
+		JsonArray jsonInscricaoProjetoPesquisa = json.getAsJsonArray("projetoPesquisa");
+		
+		if (jsonInscricaoProjetoPesquisa == null)
+			return;
+		
+		for (int i = 0; i < jsonInscricaoProjetoPesquisa.size(); i++)
+		{
+			JsonObject inscricaoProjetoPesquisa = jsonInscricaoProjetoPesquisa.get(i).getAsJsonObject();
+			String intencoes = inscricaoProjetoPesquisa.get("intencoes").getAsString();
+			
+			JsonObject projeto = inscricaoProjetoPesquisa.get("projetoPesquisa").getAsJsonObject();
+
+			ProjetoPesquisa projetoPesquisa = carregaRepresentacaoProjetoPesquisa(projeto);
+			
+			inscricao.adicionaInscricaoProjetoPesquisa(projetoPesquisa, intencoes);
+			
+			JsonArray criterioAlinhamento = inscricaoProjetoPesquisa.get("criteriosAlinhamento").getAsJsonArray();
+			
+			carregaRepresentacaoAvaliacaoCriterioAlinhamento(criterioAlinhamento, (ArrayList<AvaliacaoCriterioAlinhamento>)inscricao.pegaInscricaoProjetoPesquisa(i).getAvaliacoesCriterioAlinhamento());
+			
+			
+			
+			
+		}	
+	}
+	public ProjetoPesquisa carregaRepresentacaoProjetoPesquisa(JsonObject json) {
+		ProjetoPesquisa projetoPesquisa = new ProjetoPesquisa();
+		projetoPesquisa.setNome(json.get("nome").getAsString());
+		projetoPesquisa.setCodigo(json.get("codigo").getAsString());
+		projetoPesquisa.setExigeProvaOral(json.get("exigeProvaOral").getAsBoolean());
+		return projetoPesquisa;
+		
+	}
+	public void carregaRepresentacaoAvaliacaoCriterioAlinhamento(JsonArray json, List<AvaliacaoCriterioAlinhamento> criteriosAlinhamento) {
+		if(json == null)
+			return ;
+		for(int i = 0; i < json.size(); i++) {
+			JsonObject criterio = json.get(i).getAsJsonObject();
+			criteriosAlinhamento.get(i).setPresenteProvaOral(criterio.get("presenteProvaOral").getAsBoolean());
+		}
+		return ;
+		
+	}
+	
 	
 }
