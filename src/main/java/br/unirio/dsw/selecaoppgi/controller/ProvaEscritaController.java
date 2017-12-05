@@ -233,8 +233,9 @@ public class ProvaEscritaController
 						somaPesos = somaPesos + pegaPesoQuestao;
 						media = somatorio / somaPesos;
 					}
+					indiceQuestao++;
 				}
-				indiceQuestao++;
+
 
 				inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
 			}
@@ -245,7 +246,7 @@ public class ProvaEscritaController
 	 * Ação AJAX que apresenta o formulário de edição de um edital
 	 */
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/edital/escrita/encerramento/", method = RequestMethod.GET)
+	@RequestMapping(value = "/edital/escrita/encerramento/confirma", method = RequestMethod.GET)
 	public void atualizaPresenca(HttpServletRequest request)
 	{
 		// Pega Edital

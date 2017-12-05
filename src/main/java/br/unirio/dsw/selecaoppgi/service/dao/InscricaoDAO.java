@@ -806,7 +806,7 @@ public class InscricaoDAO extends AbstractDAO
 			return false;
 		try
 		{
-			CallableStatement cs = c.prepareCall("{call AtualizaStatus(?)}");
+			CallableStatement cs = c.prepareCall("{call AtualizaStatusEdital(?)}");
 			cs.setInt(1, idEdital);
 
 			cs.execute();

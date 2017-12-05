@@ -33,8 +33,8 @@
 	
    	<div class="mdl-grid right" style="margin-bottom: 10px;">
 	   	<c:if test="${empty requestScope.candidatos}">
-	   		<a href="${pageContext.request.contextPath}/edital/escrita/encerramento">
-				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button" onclick="myFunction()">
+	   		<a href="${pageContext.request.contextPath}/edital/escrita/encerramento/confirma">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button">
 					<spring:message code='encerramento.prova.escrita.encerrar'/>
 				</button>
 			</a>
