@@ -1,9 +1,5 @@
---
--- Atualiza status do edital
---
 DROP PROCEDURE IF EXISTS AtualizaStatusEdital;
-DELIMETER//
-
+DELIMITER //
 CREATE PROCEDURE AtualizaStatusEdital(vIdEdital INT)
 BEGIN
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION ROLLBACK;
