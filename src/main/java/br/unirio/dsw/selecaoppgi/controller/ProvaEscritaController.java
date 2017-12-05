@@ -58,14 +58,16 @@ public class ProvaEscritaController
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/alinhamento/atualiza", method = RequestMethod.POST)
-	public boolean atualizaPresencaProvaOral(HttpServletRequest request, @ModelAttribute("code") String codigoProjetoPesquisa,
-			@ModelAttribute("id") int idInscricao, @ModelAttribute("status") boolean status)
+	public boolean atualizaPresencaProvaOral(HttpServletRequest request,
+			@ModelAttribute("code") String codigoProjetoPesquisa, @ModelAttribute("id") int idInscricao,
+			@ModelAttribute("status") boolean status)
 	{
 		return ServicoInscricao.atualizaPresencaCandidato(request, codigoProjetoPesquisa, idInscricao, status);
 	}
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas escritas de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
+	 * escritas de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
@@ -85,7 +87,8 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas orais de um edital
+	 * Ação AJAX que lista todas as inscrições de candidatos que podem fazer provas
+	 * orais de um edital
 	 */
 	@ResponseBody
 	@Secured("ROLE_ADMIN")
@@ -147,7 +150,8 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Função que verifica quais candidatos possuem pendências e calcula a nota da prova escrita caso não haja pendências
+	 * Função que verifica quais candidatos possuem pendências e calcula a nota da
+	 * prova escrita caso não haja pendências
 	 */
 	public List<String> VerificaCandidatosComPendenciaNasProvas(List<InscricaoEdital> lista)
 	{
@@ -231,10 +235,12 @@ public class ProvaEscritaController
 					{
 						somatorio = somatorio + (prova.getNotaOriginalQuestao(indiceQuestao) * pegaPesoQuestao);
 						somaPesos = somaPesos + pegaPesoQuestao;
-						media = somatorio / somaPesos;
+
 					}
+
 					indiceQuestao++;
 				}
+				media = somatorio / somaPesos;
 				inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
 			}
 		}
@@ -262,7 +268,8 @@ public class ProvaEscritaController
 	}
 
 	/**
-	 * Função que realiza verificações de regras após confirmação de encerramento de provas escritas
+	 * Função que realiza verificações de regras após confirmação de encerramento de
+	 * provas escritas
 	 */
 	public boolean confirmaEncerramentoCandidato(InscricaoEdital candidato)
 	{
@@ -271,21 +278,17 @@ public class ProvaEscritaController
 		for (AvaliacaoProvaEscrita prova : listaAvaliacoes)
 		{
 			int indiceQuestao = 0;
-			while (indiceQuestao < prova.getProvaEscrita().contaQuestoes())
+
+			boolean estaHomologado = candidato.getHomologado() == true;
+			boolean possuiNotaOriginalQuestao = prova.possuiNotaOriginalQuestao(indiceQuestao);
+			boolean possuiNotaOriginalRecurso = prova.possuiNotaRecursoQuestao(indiceQuestao);
+
+			if (estaHomologado && possuiNotaOriginalQuestao || possuiNotaOriginalRecurso)
 			{
-				if (candidato.getHomologado() == true)
-				{
-					if (prova.possuiNotaOriginalQuestao(indiceQuestao) || prova.possuiNotaRecursoQuestao(indiceQuestao))
-					{
-					} else
-					{
-						return false;
-					}
-					indiceQuestao++;
-				} else
-				{
-					return false;
-				}
+				return true;
+			} else
+			{
+				return false;
 			}
 		}
 		return true;
