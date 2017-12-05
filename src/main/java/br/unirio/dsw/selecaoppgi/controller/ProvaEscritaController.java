@@ -235,8 +235,6 @@ public class ProvaEscritaController
 					}
 					indiceQuestao++;
 				}
-
-
 				inscricaoDAO.atualizaMediaProvaFinal(media, candidato.getId());
 			}
 		}

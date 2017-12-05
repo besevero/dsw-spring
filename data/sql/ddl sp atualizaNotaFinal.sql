@@ -7,7 +7,7 @@ BEGIN
 
 	UPDATE inscricaoprovaescrita 
 	SET notaFinal = vNotaFinal 
-	WHERE idInscricaoProvaEscrita = vId;
+	WHERE id = vId;
 	
 	COMMIT;
 END //
