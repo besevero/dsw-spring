@@ -2,6 +2,7 @@ package br.unirio.dsw.selecaoppgi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -250,7 +251,7 @@ public class ProvaEscritaController
 	 */
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/edital/escrita/encerramento/confirma", method = RequestMethod.GET)
-	public void atualizaPresenca(HttpServletRequest request)
+	public String atualizaPresenca(HttpServletRequest request, Locale locale)
 	{
 		// pega o edital da sessão atual
 		Edital editalSelecionado = ServicoEdital.pegaEditalSelecionado(request, editalDAO, userDAO);
@@ -264,6 +265,7 @@ public class ProvaEscritaController
 		}
 		// atualiza a status do edital para 4 Em provas de alinhamento
 		inscricaoDAO.atualizaStatusEdital(editalSelecionado.getId());
+		return "redirect:/";
 	}
 
 	/**
