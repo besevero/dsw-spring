@@ -11,6 +11,7 @@ import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.edital.SubcriterioAlinhamento;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
+import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.model.usuario.Usuario;
 
 public class JsonInscricaoWriter
@@ -61,8 +62,24 @@ public class JsonInscricaoWriter
 
 		if (jsonCriterios.size() > 0)
 			json.add("criteriosAlinhamento", jsonCriterios);
+		
+		JsonArray jsonInscricaoProjetoPesquisa = geraRepresentacaoInscricaoProjetoPesquisa(inscricaoEdital.getInscricoesProjetoPesquisa());
+		if(jsonInscricaoProjetoPesquisa.size() > 0)
+			json.add("inscricaoProjetoPesquisa", jsonInscricaoProjetoPesquisa);
 
 		return json;
+	}
+
+	private JsonArray geraRepresentacaoInscricaoProjetoPesquisa(
+			Iterable<InscricaoProjetoPesquisa> inscricoesProjetoPesquisa) {
+		JsonArray jsonProjetoPesquisa = new JsonArray();
+		
+		for(InscricaoProjetoPesquisa projeto: inscricoesProjetoPesquisa) {
+			
+			InscricaoProjetoPesquisa
+		}
+		
+		return jsonProjetoPesquisa ;
 	}
 
 	/**
