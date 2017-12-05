@@ -403,6 +403,7 @@ public class InscricaoDAO extends AbstractDAO
 				+ "AND idEdital = ?";
 
 		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
+		
 		Connection c = getConnection();
 		if (c == null)
 			return null;
@@ -438,6 +439,8 @@ public class InscricaoDAO extends AbstractDAO
 				JsonInscricaoProjetoPesquisaReader reader = new JsonInscricaoProjetoPesquisaReader();
 				reader.execute(jsonProjetos, edital, item);
 
+				carregaAvaliacaoProvasEscritas(c, item);
+				
 				lista.add(item);
 			}
 
@@ -484,12 +487,6 @@ public class InscricaoDAO extends AbstractDAO
 				item.setJustificativaDispensaOriginal(rs.getString("justificativaDispensaInicial"));
 				item.setDispensadoProvaRecurso(rs.getInt("dispensadoProvaRecurso") != 0);
 				item.setJustificativaDispensaRecurso(rs.getString("justificativaDispensaRecurso"));
-
-				// String textoQuestoesOriginal = rs.getString("inscricao.jsonQuestoesInicial");
-				// JsonArray jsonQuestoesOriginal = (JsonArray) new
-				// JsonParser().parse(textoQuestoesOriginal);
-				// JsonQuestoesReader questoesReader = new JsonQuestoesReader();
-				// reader.execute(jsonProjetos, edital, item);
 
 				String jsonProjetosString = rs.getString("inscricao.jsonProjetos");
 				JsonArray jsonProjetos = (JsonArray) new JsonParser().parse(jsonProjetosString);
