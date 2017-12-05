@@ -9,6 +9,7 @@ import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.edital.ProjetoPesquisa;
 import br.unirio.dsw.selecaoppgi.model.edital.ProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.edital.SubcriterioAlinhamento;
+import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoCriterioAlinhamento;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
@@ -72,15 +73,24 @@ public class JsonInscricaoWriter
 
 	private JsonArray geraRepresentacaoInscricaoProjetoPesquisa(
 			Iterable<InscricaoProjetoPesquisa> inscricoesProjetoPesquisa) {
-		JsonArray jsonProjetoPesquisa = new JsonArray();
+			JsonArray jsonProjetoPesquisa = new JsonArray();
 		
 		for(InscricaoProjetoPesquisa projeto: inscricoesProjetoPesquisa) {
-			
-			InscricaoProjetoPesquisa
+			jsonProjetoPesquisa.add(carregaAvaliacaoCriterioAlinhamento(projeto));
 		}
+		
 		
 		return jsonProjetoPesquisa ;
 	}
+	private JsonArray carregaAvaliacaoCriterioAlinhamento(InscricaoProjetoPesquisa projeto) {
+		JsonArray jsonAvaliacao = new JsonArray();
+		for(AvaliacaoCriterioAlinhamento avaliacao : projeto.getAvaliacoesCriterioAlinhamento()) {
+			JsonObject json = new JsonObject();
+			json.addProperty("presencaProvaOral", avaliacao.getPresenteProvaOral());
+			jsonAvaliacao.add(json);
+	}
+		return jsonAvaliacao;
+}
 
 	/**
 	 * Gera a representação Json das avaliações de provas escritas
